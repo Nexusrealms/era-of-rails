@@ -1,6 +1,8 @@
 package de.nexusrealms.newrailways.entity;
 
 import com.google.common.annotations.VisibleForTesting;
+import de.nexusrealms.newrailways.item.RailwaysItems;
+import de.nexusrealms.newrailways.network.CartJukeboxSongPacket;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.jukebox.JukeboxSong;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -46,13 +49,17 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     }
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getStackInHand(hand);
-        boolean dropped = dropRecord();
-        if(isValid(stack)){
-            setStack(stack);
-            return ActionResult.SUCCESS;
+        if(hand == Hand.MAIN_HAND){
+            ItemStack stack = player.getStackInHand(hand);
+            boolean dropped = dropRecord();
+            if(isValid(stack)){
+                setStack(stack);
+                player.setStackInHand(hand, ItemStack.EMPTY);
+                return ActionResult.SUCCESS;
+            }
+            return dropped ? ActionResult.SUCCESS : ActionResult.FAIL;
         }
-        return dropped ? ActionResult.SUCCESS : ActionResult.FAIL;
+        return ActionResult.PASS;
     }
     @Override
     public void killAndDropSelf(ServerWorld world, DamageSource damageSource) {
@@ -170,12 +177,12 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     }
     @Override
     public ItemStack getPickBlockStack() {
-        return null;
+        return new ItemStack(asItem());
     }
 
     @Override
     protected Item asItem() {
-        return null;
+        return RailwaysItems.JUKEBOX_MINECART;
     }
 
 
@@ -212,7 +219,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
             startedPlayingPos = JukeboxMinecartEntity.super.getBlockPos();
             this.songTicks = 0L;
             int i = JukeboxMinecartEntity.super.getRegistryManager().getOrThrow(RegistryKeys.JUKEBOX_SONG).getRawId(this.song.value());
-            getWorld().syncWorldEvent(JukeboxMinecartEntity.this, 1810, startedPlayingPos, i);
+            if(!getWorld().isClient()) getWorld().getServer().getPlayerManager().sendToAround(null, getX(), getY(), getZ(), 64f, getWorld().getRegistryKey(), new CustomPayloadS2CPacket(new CartJukeboxSongPacket(getId(), i, false)));
             //JukeboxMinecartEntity.super.not;
         }
 
@@ -221,7 +228,9 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
                 this.song = null;
                 this.songTicks = 0L;
                 getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_STOP_PLAY, getPos());
-                getWorld().syncWorldEvent(JukeboxMinecartEntity.this, 1811, startedPlayingPos, 0);
+                if(!getWorld().isClient()){
+                    getWorld().getServer().getPlayerManager().sendToAround(null, getX(), getY(), getZ(), 64f, getWorld().getRegistryKey(), new CustomPayloadS2CPacket(new CartJukeboxSongPacket(getId(), 0, true)));
+                }
                 //this.changeNotifier.notifyChange();
             }
         }

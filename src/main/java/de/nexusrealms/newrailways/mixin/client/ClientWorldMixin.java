@@ -1,6 +1,7 @@
 package de.nexusrealms.newrailways.mixin.client;
 
 import de.nexusrealms.newrailways.client.CartJukeboxHandler;
+import de.nexusrealms.newrailways.client.CartJukeboxHandlerProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.WorldRenderer;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientWorld.class)
-public class ClientWorldMixin {
+public class ClientWorldMixin implements CartJukeboxHandlerProvider {
     @Unique
     private CartJukeboxHandler cartJukeboxHandler;
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -35,12 +36,9 @@ public class ClientWorldMixin {
                        CallbackInfo ci){
         cartJukeboxHandler = new CartJukeboxHandler((ClientWorld) (Object) (this));
     }
-    @Inject(method = "syncWorldEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/WorldEventHandler;processWorldEvent(ILnet/minecraft/util/math/BlockPos;I)V"), cancellable = true)
-    public void handleCartEvent(Entity source, int eventId, BlockPos pos, int data, CallbackInfo ci){
-        if(source != null && (eventId == 1810 || eventId == 1811)){
-            if(cartJukeboxHandler.handleCartJukeboxWorldEvent(source, data, eventId == 1811)){
-                ci.cancel();
-            }
-        }
+
+    @Override
+    public CartJukeboxHandler getHandler() {
+        return cartJukeboxHandler;
     }
 }

@@ -3,6 +3,7 @@ package de.nexusrealms.newrailways;
 import de.nexusrealms.newrailways.block.RailwaysBlocks;
 import de.nexusrealms.newrailways.entity.RailwaysEntities;
 import de.nexusrealms.newrailways.item.RailwaysItems;
+import de.nexusrealms.newrailways.network.RailwaysPackets;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -25,6 +26,7 @@ public class NewRailways implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		RailwaysPackets.init();
 		RailwaysEntities.init();
 		RailwaysItems.init();
 		RailwaysBlocks.init();

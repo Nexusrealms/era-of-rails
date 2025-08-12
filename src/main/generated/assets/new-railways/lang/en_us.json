@@ -1,5 +1,6 @@
 {
   "block.new-railways.copper_rail": "Copper Powered Rail",
+  "block.new-railways.switch_rail": "Rail Switch",
   "entity.new-railways.chest_copper_minecart": "Copper Minecart with Chest",
   "entity.new-railways.command_block_copper_minecart": "Copper Minecart with Command Block",
   "entity.new-railways.copper_minecart": "Copper Minecart",

@@ -18,6 +18,7 @@ public class LangGen extends FabricLanguageProvider {
 
     private void generateBlockTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder){
         translationBuilder.add(RailwaysBlocks.COPPER_RAIL, "Copper Powered Rail");
+        translationBuilder.add(RailwaysBlocks.SWITCH_RAIL, "Rail Switch");
     }
     private void generateItemTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder){
         translationBuilder.add(RailwaysItems.SPAWNER_MINECART, "Minecart with Spawner");

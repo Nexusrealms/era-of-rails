@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractMinecartEntityMixin",
+    "DetectorRailMixin",
     "SpawnerMinecartEntityMixin",
     "TntMinecartEntityMixin"
   ],
