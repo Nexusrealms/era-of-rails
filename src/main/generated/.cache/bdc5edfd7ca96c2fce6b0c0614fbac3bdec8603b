@@ -1,0 +1,4 @@
+// 1.21.8	-999999999-01-01T00:00:00	New Railways/Tags for minecraft:block
+1a4b594ac989e73733d3a43a3cf495140b0c1b11 data/minecraft/tags/block/rails.json
+e508bd08a2e20de8e7e7f5bee541d9b9c49c3d6e data/new-railways/tags/block/high_speed_rail.json
+cd633d8abb86dac4e56fb8837364e8da41ef8e9d data/new-railways/tags/block/powered_high_speed_rail.json
