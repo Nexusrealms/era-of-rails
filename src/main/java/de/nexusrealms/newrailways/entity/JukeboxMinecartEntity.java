@@ -212,7 +212,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
             startedPlayingPos = JukeboxMinecartEntity.super.getBlockPos();
             this.songTicks = 0L;
             int i = JukeboxMinecartEntity.super.getRegistryManager().getOrThrow(RegistryKeys.JUKEBOX_SONG).getRawId(this.song.value());
-            getWorld().syncWorldEvent(null, WorldEvents.JUKEBOX_STARTS_PLAYING, startedPlayingPos, i);
+            getWorld().syncWorldEvent(JukeboxMinecartEntity.this, 1810, startedPlayingPos, i);
             //JukeboxMinecartEntity.super.not;
         }
 
@@ -221,7 +221,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
                 this.song = null;
                 this.songTicks = 0L;
                 getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_STOP_PLAY, getPos());
-                JukeboxMinecartEntity.super.getWorld().syncWorldEvent(WorldEvents.JUKEBOX_STOPS_PLAYING, startedPlayingPos, 0);
+                getWorld().syncWorldEvent(JukeboxMinecartEntity.this, 1811, startedPlayingPos, 0);
                 //this.changeNotifier.notifyChange();
             }
         }
