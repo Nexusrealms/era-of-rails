@@ -1,5 +1,6 @@
 package de.nexusrealms.newrailways.datagen;
 
+import de.nexusrealms.newrailways.block.RailwaysBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
@@ -44,6 +45,11 @@ public abstract class LootTableGen extends SimpleFabricLootTableProvider {
 
         @Override
         public void generate() {
+            addDrop(RailwaysBlocks.COPPER_RAIL);
+            addDrop(RailwaysBlocks.SWITCH_RAIL);
+            addDrop(RailwaysBlocks.LOCKED_SWITCH_RAIL);
+            addDrop(RailwaysBlocks.INPUT_RAIL);
+
         }
     }
 

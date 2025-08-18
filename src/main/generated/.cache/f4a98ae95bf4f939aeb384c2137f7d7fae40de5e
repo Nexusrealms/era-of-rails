@@ -1,1 +1,5 @@
 // 1.21.8	-999999999-01-01T00:00:00	New Railways/Block Loot Tables
+fb95a9ea48e1e117157d3ece2b79a395da3b33e3 data/new-railways/loot_table/blocks/copper_rail.json
+cb633ddc2f585b8147655cca7fa35000d6d21adb data/new-railways/loot_table/blocks/input_rail.json
+5eb421c9e17eeaef33556e03c2de1f581b2bd54d data/new-railways/loot_table/blocks/locked_switch_rail.json
+830c9cb2184eac33af7e8e2fd9e61c4d2467344f data/new-railways/loot_table/blocks/switch_rail.json

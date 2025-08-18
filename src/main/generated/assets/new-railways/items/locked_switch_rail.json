@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "new-railways:item/locked_switch_rail"
+  }
+}

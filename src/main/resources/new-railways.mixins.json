@@ -5,6 +5,7 @@
   "mixins": [
     "AbstractMinecartEntityMixin",
     "DetectorRailMixin",
+    "RailPlacementHelperMixin",
     "SpawnerMinecartEntityMixin",
     "TntMinecartEntityMixin"
   ],

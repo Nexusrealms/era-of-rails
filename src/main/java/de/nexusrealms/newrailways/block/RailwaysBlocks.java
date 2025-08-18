@@ -6,10 +6,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -21,12 +18,17 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class RailwaysBlocks {
-    public static final Block COPPER_RAIL = createWithItem("copper_rail", CopperRailBlock::new, AbstractBlock.Settings.copy(Blocks.POWERED_RAIL), ItemGroups.REDSTONE, (fabricItemGroupEntries, item) -> fabricItemGroupEntries.addAfter(Blocks.POWERED_RAIL, item));
+    public static final Block COPPER_RAIL = createWithItem("copper_rail", CopperRailBlock::new, AbstractBlock.Settings.copy(Blocks.POWERED_RAIL), ItemGroups.REDSTONE, Blocks.POWERED_RAIL);
 
     public static final Block SWITCH_RAIL = createWithItem("switch_rail", SwitchRailBlock::new, AbstractBlock.Settings.copy(Blocks.RAIL), ItemGroups.REDSTONE, (fabricItemGroupEntries, item) -> fabricItemGroupEntries.addBefore(COPPER_RAIL, item));
+    public static final Block LOCKED_SWITCH_RAIL = createWithItem("locked_switch_rail", LockedSwitchRailBlock::new, AbstractBlock.Settings.copy(SWITCH_RAIL), ItemGroups.REDSTONE, SWITCH_RAIL);
+    public static final Block INPUT_RAIL = createWithItem("input_rail", InputRailBlock::new, AbstractBlock.Settings.copy(Blocks.DETECTOR_RAIL), ItemGroups.REDSTONE, LOCKED_SWITCH_RAIL);
 
     private static <T extends Block> T createWithItem(String name, Function<AbstractBlock.Settings, T> constructor, AbstractBlock.Settings settings, RegistryKey<ItemGroup> itemGroup){
         return createWithItem(name, constructor, settings, itemGroup, FabricItemGroupEntries::add);
+    }
+    private static <T extends Block> T createWithItem(String name, Function<AbstractBlock.Settings, T> constructor, AbstractBlock.Settings settings, RegistryKey<ItemGroup> itemGroup, ItemConvertible after){
+        return createWithItem(name, constructor, settings, itemGroup, (fabricItemGroupEntries, item) -> fabricItemGroupEntries.addAfter(after, item));
     }
     private static <T extends Block> T createWithItem(String name, Function<AbstractBlock.Settings, T> constructor, AbstractBlock.Settings settings, RegistryKey<ItemGroup> itemGroup, BiConsumer<FabricItemGroupEntries, Item> itemGrouper){
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, NewRailways.id(name));
@@ -45,6 +47,7 @@ public class RailwaysBlocks {
     public static class Tags{
         public static final TagKey<Block> HIGH_SPEED_RAIL = TagKey.of(RegistryKeys.BLOCK, NewRailways.id("high_speed_rail"));
         public static final TagKey<Block> POWERED_HIGH_SPEED_RAIL = TagKey.of(RegistryKeys.BLOCK, NewRailways.id("powered_high_speed_rail"));
+        public static final TagKey<Block> INPUT_RAIL = TagKey.of(RegistryKeys.BLOCK, NewRailways.id("input_rail"));
 
     }
 }

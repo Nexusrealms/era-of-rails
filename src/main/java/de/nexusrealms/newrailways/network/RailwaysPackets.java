@@ -16,6 +16,7 @@ public class RailwaysPackets {
         registerClientReceiverPacket(CartJukeboxSongPacket.ID, CartJukeboxSongPacket.PACKET_CODEC);
     }
     private static void initC2S(){
+        registerServerReceiverPacket(SetInputCartDataPacket.ID, SetInputCartDataPacket.PACKET_CODEC);
     }
 
 

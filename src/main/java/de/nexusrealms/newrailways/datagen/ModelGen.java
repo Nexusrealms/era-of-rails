@@ -34,6 +34,9 @@ public class ModelGen extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerStraightRail(RailwaysBlocks.COPPER_RAIL);
         registerSwitch(RailwaysBlocks.SWITCH_RAIL, blockStateModelGenerator);
+        registerSwitch(RailwaysBlocks.LOCKED_SWITCH_RAIL, blockStateModelGenerator);
+        blockStateModelGenerator.registerStraightRail(RailwaysBlocks.INPUT_RAIL);
+
     }
 
     @Override
@@ -41,6 +44,7 @@ public class ModelGen extends FabricModelProvider {
         itemModelGenerator.register(RailwaysItems.SPAWNER_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.JUKEBOX_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.REDSTONE_BLOCK_MINECART, Models.GENERATED);
+        itemModelGenerator.register(RailwaysItems.INPUT_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.COPPER_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.CHEST_COPPER_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.COMMAND_BLOCK_COPPER_MINECART, Models.GENERATED);
@@ -50,6 +54,8 @@ public class ModelGen extends FabricModelProvider {
         itemModelGenerator.register(RailwaysItems.SPAWNER_COPPER_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.JUKEBOX_COPPER_MINECART, Models.GENERATED);
         itemModelGenerator.register(RailwaysItems.REDSTONE_BLOCK_COPPER_MINECART, Models.GENERATED);
+        itemModelGenerator.register(RailwaysItems.INPUT_COPPER_MINECART, Models.GENERATED);
+
     }
     public final void registerSwitch(Block rail, BlockStateModelGenerator modelGenerator) {
         WeightedVariant leftUnswitched = createWeightedVariant(modelGenerator.createSubModel(rail, "", Models.RAIL_FLAT, TextureMap::rail));

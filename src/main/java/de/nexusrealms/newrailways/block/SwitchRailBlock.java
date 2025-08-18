@@ -9,9 +9,14 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SwitchRailBlock extends AbstractRailBlock {
     public static final MapCodec<SwitchRailBlock> CODEC = createCodec(SwitchRailBlock::new);
@@ -26,7 +31,14 @@ public class SwitchRailBlock extends AbstractRailBlock {
         super(true, settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(SWITCHED, false).with(WATERLOGGED, false).with(RIGHT_HANDED, false).with(ORIENTATION, Direction.NORTH));
     }
-
+    public List<BlockPos> getNeighbors(BlockPos pos, BlockState state){
+        List<BlockPos> list = new ArrayList<>();
+        Direction direction = state.get(ORIENTATION);
+        list.add(pos.offset(direction));
+        list.add(pos.offset(direction.getOpposite()));
+        list.add(pos.offset(state.get(RIGHT_HANDED) ? direction.rotateYClockwise() : direction.rotateYCounterclockwise()));
+        return list;
+    }
     @Override
     protected MapCodec<? extends AbstractRailBlock> getCodec() {
         return CODEC;
@@ -82,4 +94,5 @@ public class SwitchRailBlock extends AbstractRailBlock {
         BlockState state = getDefaultState().with(ORIENTATION, direction).with(RIGHT_HANDED, rightHanded);
         return state.with(SHAPE, getShapeFromState(state));
     }
+    //TODO Implement rotation and mirroring
 }

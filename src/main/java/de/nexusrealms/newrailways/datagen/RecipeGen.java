@@ -33,7 +33,7 @@ public class RecipeGen extends FabricRecipeProvider {
         protected Generator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
             super(registries, exporter);
         }
-
+        //TODO add rail and minecart recipes
         @Override
         public void generate() {
 

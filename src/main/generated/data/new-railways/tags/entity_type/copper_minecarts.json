@@ -8,6 +8,7 @@
     "new-railways:tnt_copper_minecart",
     "new-railways:spawner_copper_minecart",
     "new-railways:jukebox_copper_minecart",
-    "new-railways:redstone_block_copper_minecart"
+    "new-railways:redstone_block_copper_minecart",
+    "new-railways:input_copper_minecart"
   ]
 }

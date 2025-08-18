@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,right_handed=false,switched=false": {
+      "model": "new-railways:block/locked_switch_rail",
+      "y": 90
+    },
+    "facing=east,right_handed=false,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_switched",
+      "y": 90
+    },
+    "facing=east,right_handed=true,switched=false": {
+      "model": "new-railways:block/locked_switch_rail_right",
+      "y": 90
+    },
+    "facing=east,right_handed=true,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_right_switched",
+      "y": 90
+    },
+    "facing=north,right_handed=false,switched=false": {
+      "model": "new-railways:block/locked_switch_rail"
+    },
+    "facing=north,right_handed=false,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_switched"
+    },
+    "facing=north,right_handed=true,switched=false": {
+      "model": "new-railways:block/locked_switch_rail_right"
+    },
+    "facing=north,right_handed=true,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_right_switched"
+    },
+    "facing=south,right_handed=false,switched=false": {
+      "model": "new-railways:block/locked_switch_rail",
+      "y": 180
+    },
+    "facing=south,right_handed=false,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_switched",
+      "y": 180
+    },
+    "facing=south,right_handed=true,switched=false": {
+      "model": "new-railways:block/locked_switch_rail_right",
+      "y": 180
+    },
+    "facing=south,right_handed=true,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_right_switched",
+      "y": 180
+    },
+    "facing=west,right_handed=false,switched=false": {
+      "model": "new-railways:block/locked_switch_rail",
+      "y": 270
+    },
+    "facing=west,right_handed=false,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_switched",
+      "y": 270
+    },
+    "facing=west,right_handed=true,switched=false": {
+      "model": "new-railways:block/locked_switch_rail_right",
+      "y": 270
+    },
+    "facing=west,right_handed=true,switched=true": {
+      "model": "new-railways:block/locked_switch_rail_right_switched",
+      "y": 270
+    }
+  }
+}

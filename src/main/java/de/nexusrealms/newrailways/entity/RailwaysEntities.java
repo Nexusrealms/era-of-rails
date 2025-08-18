@@ -38,6 +38,10 @@ public class RailwaysEntities {
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
     public static final EntityType<RedstoneCopperBlockMinecart> REDSTONE_BLOCK_COPPER_MINECART = create("redstone_block_copper_minecart", EntityType.Builder.create(RedstoneCopperBlockMinecart::new, SpawnGroup.MISC)
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
+    public static final EntityType<InputMinecartEntity> INPUT_MINECART = create("input_minecart", EntityType.Builder.create(InputMinecartEntity::new, SpawnGroup.MISC)
+            .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
+    public static final EntityType<InputCopperMinecartEntity> INPUT_COPPER_MINECART = create("input_copper_minecart", EntityType.Builder.create(InputCopperMinecartEntity::new, SpawnGroup.MISC)
+            .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
     public static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder){
         RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, NewRailways.id(name));
         return Registry.register(Registries.ENTITY_TYPE, key, builder.build(key));

@@ -35,9 +35,13 @@ public class TagGen {
                     .add(RailwaysBlocks.COPPER_RAIL);
             valueLookupBuilder(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
                     .addTag(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL);
+            valueLookupBuilder(RailwaysBlocks.Tags.INPUT_RAIL)
+                    .add(RailwaysBlocks.INPUT_RAIL);
             valueLookupBuilder(BlockTags.RAILS)
+                    .addTag(RailwaysBlocks.Tags.INPUT_RAIL)
                     .addTag(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
-                    .add(RailwaysBlocks.SWITCH_RAIL);
+                    .add(RailwaysBlocks.SWITCH_RAIL)
+                    .add(RailwaysBlocks.LOCKED_SWITCH_RAIL);
         }
 
     }
@@ -60,7 +64,8 @@ public class TagGen {
                             RailwaysEntities.TNT_COPPER_MINECART,
                             RailwaysEntities.SPAWNER_COPPER_MINECART,
                             RailwaysEntities.JUKEBOX_COPPER_MINECART,
-                            RailwaysEntities.REDSTONE_BLOCK_COPPER_MINECART);
+                            RailwaysEntities.REDSTONE_BLOCK_COPPER_MINECART,
+                            RailwaysEntities.INPUT_COPPER_MINECART);
         }
     }
 }

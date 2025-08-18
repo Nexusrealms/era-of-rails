@@ -24,11 +24,14 @@ public class NewRailwaysClient implements ClientModInitializer {
     private static void initBlockRenderLayers(){
         BlockRenderLayerMap.putBlock(RailwaysBlocks.COPPER_RAIL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(RailwaysBlocks.SWITCH_RAIL, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(RailwaysBlocks.LOCKED_SWITCH_RAIL, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(RailwaysBlocks.INPUT_RAIL, BlockRenderLayer.CUTOUT);
     }
     private static void initEntityRenderers(){
         EntityRendererRegistry.register(RailwaysEntities.JUKEBOX_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
         EntityRendererRegistry.register(RailwaysEntities.COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
         EntityRendererRegistry.register(RailwaysEntities.REDSTONE_BLOCK_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
+        EntityRendererRegistry.register(RailwaysEntities.INPUT_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
 
         EntityRendererRegistry.register(RailwaysEntities.CHEST_COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.CHEST_MINECART));
         EntityRendererRegistry.register(RailwaysEntities.COMMAND_BLOCK_COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.COMMAND_BLOCK_MINECART));
@@ -38,6 +41,7 @@ public class NewRailwaysClient implements ClientModInitializer {
         EntityRendererRegistry.register(RailwaysEntities.SPAWNER_COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.SPAWNER_MINECART));
         EntityRendererRegistry.register(RailwaysEntities.JUKEBOX_COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
         EntityRendererRegistry.register(RailwaysEntities.REDSTONE_BLOCK_COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
+        EntityRendererRegistry.register(RailwaysEntities.INPUT_COPPER_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));
 
     }
 }
