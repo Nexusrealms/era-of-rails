@@ -1,16 +1,15 @@
-package de.nexusrealms.newrailways.entity;
+package de.nexusrealms.newrailways.entity.types;
 
 import de.nexusrealms.newrailways.item.RailwaysItems;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class RedstoneBlockMinecart extends AbstractMinecartEntity {
-    protected RedstoneBlockMinecart(EntityType<?> entityType, World world) {
+public class RedstoneCopperBlockMinecartEntity extends RedstoneBlockMinecartEntity {
+    public RedstoneCopperBlockMinecartEntity(EntityType<?> entityType, World world) {
         super(entityType, world);
     }
 
@@ -21,11 +20,10 @@ public class RedstoneBlockMinecart extends AbstractMinecartEntity {
 
     @Override
     protected Item asItem() {
-        return RailwaysItems.REDSTONE_BLOCK_MINECART;
+        return RailwaysItems.REDSTONE_BLOCK_COPPER_MINECART;
     }
-
     @Override
-    public BlockState getDefaultContainedBlock() {
-        return Blocks.REDSTONE_BLOCK.getDefaultState();
+    public boolean collidesWith(Entity other) {
+        return other instanceof AbstractMinecartEntity;
     }
 }

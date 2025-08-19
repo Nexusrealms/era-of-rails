@@ -1,8 +1,7 @@
 package de.nexusrealms.newrailways.network;
 
 import de.nexusrealms.newrailways.NewRailways;
-import de.nexusrealms.newrailways.client.InputCartScreen;
-import de.nexusrealms.newrailways.entity.InputMinecartEntity;
+import de.nexusrealms.newrailways.entity.types.InputMinecartEntity;
 import io.netty.buffer.ByteBuf;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;

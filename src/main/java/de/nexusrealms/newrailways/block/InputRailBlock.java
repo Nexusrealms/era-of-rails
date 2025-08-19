@@ -1,16 +1,12 @@
 package de.nexusrealms.newrailways.block;
 
 import com.mojang.serialization.MapCodec;
-import de.nexusrealms.newrailways.entity.InputMinecartEntity;
+import de.nexusrealms.newrailways.entity.types.InputMinecartEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.CommandBlockMinecartEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;

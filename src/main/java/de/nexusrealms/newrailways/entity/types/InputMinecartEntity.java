@@ -1,4 +1,4 @@
-package de.nexusrealms.newrailways.entity;
+package de.nexusrealms.newrailways.entity.types;
 
 import de.nexusrealms.newrailways.client.InputCartScreen;
 import de.nexusrealms.newrailways.item.RailwaysItems;
@@ -7,10 +7,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
@@ -21,7 +19,6 @@ import net.minecraft.storage.WriteView;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class InputMinecartEntity extends AbstractMinecartEntity {
     public static final TrackedData<Long> SEQUENCE = DataTracker.registerData(InputMinecartEntity.class, TrackedDataHandlerRegistry.LONG);
@@ -29,7 +26,7 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
     public static final TrackedData<Integer> NEXT_INST = DataTracker.registerData(InputMinecartEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
 
-    protected InputMinecartEntity(EntityType<?> entityType, World world) {
+    public InputMinecartEntity(EntityType<?> entityType, World world) {
         super(entityType, world);
     }
 

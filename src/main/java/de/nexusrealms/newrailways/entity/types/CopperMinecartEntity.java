@@ -1,9 +1,9 @@
-package de.nexusrealms.newrailways.entity;
+package de.nexusrealms.newrailways.entity.types;
 
+import de.nexusrealms.newrailways.entity.ComparatorOutputtingMinecart;
 import de.nexusrealms.newrailways.item.RailwaysItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AbstractDonkeyEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractBoatEntity;
@@ -14,11 +14,10 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class CopperMinecartEntity extends MinecartEntity implements ComparatorOutputtingMinecart {
-    protected CopperMinecartEntity(EntityType<?> entityType, World world) {
+    public CopperMinecartEntity(EntityType<?> entityType, World world) {
         super(entityType, world);
     }
 

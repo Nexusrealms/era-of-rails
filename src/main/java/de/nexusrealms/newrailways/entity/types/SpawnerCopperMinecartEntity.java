@@ -1,10 +1,9 @@
-package de.nexusrealms.newrailways.entity;
+package de.nexusrealms.newrailways.entity.types;
 
 import de.nexusrealms.newrailways.item.RailwaysItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
 import net.minecraft.entity.vehicle.SpawnerMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

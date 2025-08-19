@@ -1,6 +1,7 @@
-package de.nexusrealms.newrailways.entity;
+package de.nexusrealms.newrailways.entity.types;
 
 import com.google.common.annotations.VisibleForTesting;
+import de.nexusrealms.newrailways.entity.ComparatorOutputtingMinecart;
 import de.nexusrealms.newrailways.item.RailwaysItems;
 import de.nexusrealms.newrailways.network.CartJukeboxSongPacket;
 import net.minecraft.block.BlockState;
@@ -27,14 +28,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class JukeboxMinecartEntity extends AbstractMinecartEntity implements ComparatorOutputtingMinecart {
-    protected JukeboxMinecartEntity(EntityType<?> entityType, World world) {
+    public JukeboxMinecartEntity(EntityType<?> entityType, World world) {
         super(entityType, world);
     }
     private ItemStack recordStack = ItemStack.EMPTY;

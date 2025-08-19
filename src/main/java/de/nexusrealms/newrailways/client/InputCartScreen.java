@@ -1,28 +1,19 @@
 package de.nexusrealms.newrailways.client;
 
 import de.nexusrealms.newrailways.NewRailways;
-import de.nexusrealms.newrailways.entity.InputMinecartEntity;
+import de.nexusrealms.newrailways.entity.types.InputMinecartEntity;
 import de.nexusrealms.newrailways.network.SetInputCartDataPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.StructureBlockBlockEntity;
-import net.minecraft.block.enums.StructureBlockMode;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 import java.util.Optional;
 
 public class InputCartScreen extends Screen {

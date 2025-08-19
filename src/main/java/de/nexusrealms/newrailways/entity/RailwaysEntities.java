@@ -1,11 +1,10 @@
 package de.nexusrealms.newrailways.entity;
 
 import de.nexusrealms.newrailways.NewRailways;
-import de.nexusrealms.newrailways.datagen.LootTableGen;
+import de.nexusrealms.newrailways.entity.types.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -34,9 +33,9 @@ public class RailwaysEntities {
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
     public static final EntityType<JukeboxCopperMinecartEntity> JUKEBOX_COPPER_MINECART = create("jukebox_copper_minecart", EntityType.Builder.create(JukeboxCopperMinecartEntity::new, SpawnGroup.MISC)
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
-    public static final EntityType<RedstoneBlockMinecart> REDSTONE_BLOCK_MINECART = create("redstone_block_minecart", EntityType.Builder.create(RedstoneBlockMinecart::new, SpawnGroup.MISC)
+    public static final EntityType<RedstoneBlockMinecartEntity> REDSTONE_BLOCK_MINECART = create("redstone_block_minecart", EntityType.Builder.create(RedstoneBlockMinecartEntity::new, SpawnGroup.MISC)
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
-    public static final EntityType<RedstoneCopperBlockMinecart> REDSTONE_BLOCK_COPPER_MINECART = create("redstone_block_copper_minecart", EntityType.Builder.create(RedstoneCopperBlockMinecart::new, SpawnGroup.MISC)
+    public static final EntityType<RedstoneCopperBlockMinecartEntity> REDSTONE_BLOCK_COPPER_MINECART = create("redstone_block_copper_minecart", EntityType.Builder.create(RedstoneCopperBlockMinecartEntity::new, SpawnGroup.MISC)
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
     public static final EntityType<InputMinecartEntity> INPUT_MINECART = create("input_minecart", EntityType.Builder.create(InputMinecartEntity::new, SpawnGroup.MISC)
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));

@@ -1,12 +1,10 @@
 package de.nexusrealms.newrailways.entity;
 
 import de.nexusrealms.newrailways.NewRailways;
+import de.nexusrealms.newrailways.entity.types.CopperMinecartEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
 public class CopperMinecartController extends RailwaysMinecartController{

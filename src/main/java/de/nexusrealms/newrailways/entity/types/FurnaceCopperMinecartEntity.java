@@ -1,24 +1,20 @@
-package de.nexusrealms.newrailways.entity;
+package de.nexusrealms.newrailways.entity.types;
 
 import de.nexusrealms.newrailways.item.RailwaysItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.ChestMinecartEntity;
+import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class JukeboxCopperMinecartEntity extends JukeboxMinecartEntity {
+public class FurnaceCopperMinecartEntity extends FurnaceMinecartEntity {
 
-    public JukeboxCopperMinecartEntity(EntityType<? extends JukeboxMinecartEntity> entityType, World world) {
+    public FurnaceCopperMinecartEntity(EntityType<? extends FurnaceMinecartEntity> entityType, World world) {
         super(entityType, world);
+    }
 
-    }
-    @Override
-    public boolean collidesWith(Entity other) {
-        return other instanceof AbstractMinecartEntity;
-    }
     @Override
     public ItemStack getPickBlockStack() {
         return new ItemStack(asItem());
@@ -26,6 +22,10 @@ public class JukeboxCopperMinecartEntity extends JukeboxMinecartEntity {
 
     @Override
     protected Item asItem() {
-        return RailwaysItems.CHEST_COPPER_MINECART;
+        return RailwaysItems.FURNACE_COPPER_MINECART;
+    }
+    @Override
+    public boolean collidesWith(Entity other) {
+        return other instanceof AbstractMinecartEntity;
     }
 }
