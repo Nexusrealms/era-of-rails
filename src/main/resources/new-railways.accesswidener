@@ -3,3 +3,5 @@ extendable method net/minecraft/client/data/Model createTextureMap (Lnet/minecra
 accessible field net/minecraft/client/data/Model parent Ljava/util/Optional;
 extendable method net/minecraft/entity/vehicle/ExperimentalMinecartController accelerateFromPoweredRail (Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Lnet/minecraft/util/math/Vec3d;
 accessible field net/minecraft/entity/passive/AbstractHorseEntity items Lnet/minecraft/inventory/SimpleInventory;
+accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity moveOnRail (Lnet/minecraft/server/world/ServerWorld;)V
+accessible method net/minecraft/entity/vehicle/ExperimentalMinecartController tickClient ()V

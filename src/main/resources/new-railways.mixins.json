@@ -5,6 +5,7 @@
   "mixins": [
     "AbstractMinecartEntityMixin",
     "DetectorRailMixin",
+    "GameRulesMixin",
     "RailPlacementHelperMixin",
     "SpawnerMinecartEntityMixin",
     "TntMinecartEntityMixin"
@@ -17,6 +18,7 @@
   },
   "client": [
     "client.AbstractMinecartEntityRendererMixin",
-    "client.ClientWorldMixin"
+    "client.ClientWorldMixin",
+    "client.MinecartEntityRenderStateMixin"
   ]
 }

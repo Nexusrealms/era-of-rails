@@ -1,6 +1,7 @@
 package de.nexusrealms.newrailways.entity;
 
 import de.nexusrealms.newrailways.block.RailwaysBlocks;
+import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PoweredRailBlock;
@@ -9,10 +10,12 @@ import net.minecraft.entity.vehicle.ExperimentalMinecartController;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
-public class RailwaysMinecartController extends ExperimentalMinecartController {
+import java.util.Optional;
+
+public class RailwaysMinecartController extends ExperimentalMinecartController implements CartLinker{
 
 
     public RailwaysMinecartController(AbstractMinecartEntity abstractMinecartEntity) {
@@ -20,6 +23,57 @@ public class RailwaysMinecartController extends ExperimentalMinecartController {
     }
 
 
+    @Override
+    public void tick() {
+        World blockPos = this.getWorld();
+        if (blockPos instanceof ServerWorld serverWorld) {
+            if(getLinkedParent().isPresent()) {
+                AbstractMinecartEntity parent = getLinkedParent().get().asEntity();
+                double distance = parent.distanceTo(this.minecart) - 1;
+
+                if(distance <= 4) {
+                    Vec3d towardsParent = parent.getPos().subtract(getPos()).normalize();
+
+                    if(distance > 1) {
+                        Vec3d parentVelocity = parent.getVelocity();
+
+                        if(parentVelocity.length() == 0) {
+                            setVelocity(towardsParent.multiply(0.1));
+                        }
+                        else {
+                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance));
+                        }
+                    }
+                    else if(distance < 0.5) {
+                        setVelocity(towardsParent.multiply(-0.1));
+                    }
+                    else {
+                        setVelocity(Vec3d.ZERO);
+                    }
+                }
+                else {
+                    parent.setLinkedChild(null);
+                    setLinkedParent(null);
+                }
+            }
+            {
+                BlockPos var5 = this.minecart.getRailOrMinecartPos();
+                BlockState blockState = this.getWorld().getBlockState(var5);
+                if (this.minecart.isFirstUpdate()) {
+                    this.minecart.setOnRail(AbstractRailBlock.isRail(blockState));
+                    this.adjustToRail(var5, blockState, true);
+                }
+
+                this.minecart.applyGravity();
+                this.minecart.moveOnRail(serverWorld);
+            }
+        } else {
+            this.tickClient();
+            boolean bl = AbstractRailBlock.isRail(this.getWorld().getBlockState(this.minecart.getRailOrMinecartPos()));
+            this.minecart.setOnRail(bl);
+        }
+
+    }
 
     @Override
     public double getMaxSpeed(ServerWorld world) {
@@ -49,5 +103,31 @@ public class RailwaysMinecartController extends ExperimentalMinecartController {
         } else {
             return velocity;
         }
+    }
+
+    @Override
+    public Optional<CartLinker> getLinkedParent() {
+        return minecart.getLinkedParent();
+    }
+
+    @Override
+    public Optional<CartLinker> getLinkedChild() {
+        return minecart.getLinkedChild();
+    }
+
+    @Override
+    public void setLinkedParent(CartLinker cartLinker) {
+        minecart.setLinkedParent(cartLinker);
+
+    }
+
+    @Override
+    public void setLinkedChild(CartLinker cartLinker) {
+        minecart.setLinkedChild(cartLinker);
+    }
+
+    @Override
+    public AbstractMinecartEntity asEntity() {
+        return minecart;
     }
 }

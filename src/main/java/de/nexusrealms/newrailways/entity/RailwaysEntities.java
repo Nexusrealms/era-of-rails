@@ -2,16 +2,24 @@ package de.nexusrealms.newrailways.entity;
 
 import de.nexusrealms.newrailways.NewRailways;
 import de.nexusrealms.newrailways.entity.types.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
+import net.minecraft.entity.*;
+import net.minecraft.entity.data.TrackedDataHandler;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 
+import java.util.Optional;
+
 public class RailwaysEntities {
+    public static final TrackedDataHandler<Optional<LazyEntityReference<AbstractMinecartEntity>>> MINECART_REFERENCE = TrackedDataHandler.create(LazyEntityReference.<AbstractMinecartEntity>createPacketCodec().collect(PacketCodecs::optional));
+
+
     //Copper variants of vanilla minecarts
     public static final EntityType<CopperMinecartEntity> COPPER_MINECART = create("copper_minecart", EntityType.Builder.create(CopperMinecartEntity::new, SpawnGroup.MISC)
             .dropsNothing().dimensions(0.98F, 0.7F).passengerAttachments(0.1875F).maxTrackingRange(8));
@@ -45,7 +53,9 @@ public class RailwaysEntities {
         RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, NewRailways.id(name));
         return Registry.register(Registries.ENTITY_TYPE, key, builder.build(key));
     }
-    public static void init(){}
+    public static void init(){
+        FabricTrackedDataRegistry.register(NewRailways.id("minecart_reference"), MINECART_REFERENCE);
+    }
     public static class Tags {
         public static final TagKey<EntityType<?>> COPPER_MINECARTS = TagKey.of(RegistryKeys.ENTITY_TYPE, NewRailways.id("copper_minecarts"));
     }

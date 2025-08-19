@@ -39,5 +39,11 @@
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_1688": ["de/nexusrealms/newrailways/entity/CartLinker"],
+			"net/minecraft/class_10045": ["de/nexusrealms/newrailways/client/CartLinkerRenderState"]
+		}
 	}
 }
