@@ -42,7 +42,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                             setVelocity(towardsParent.multiply(0.1));
                         }
                         else {
-                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 4 ? 3 : 1));
+                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 5 ? 1.5 : 1));
                         }
                     }
                     else if(distance < 0.5) {
