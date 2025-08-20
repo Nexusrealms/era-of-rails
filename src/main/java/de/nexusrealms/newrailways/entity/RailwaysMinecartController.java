@@ -10,6 +10,7 @@ import net.minecraft.entity.vehicle.ExperimentalMinecartController;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -31,7 +32,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                 AbstractMinecartEntity parent = getLinkedParent().get().asEntity();
                 double distance = parent.distanceTo(this.minecart) - 1;
 
-                if(distance <= 4) {
+                if(distance <= 6) {
                     Vec3d towardsParent = parent.getPos().subtract(getPos()).normalize();
 
                     if(distance > 1) {
@@ -41,7 +42,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                             setVelocity(towardsParent.multiply(0.1));
                         }
                         else {
-                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance));
+                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 4 ? 3 : 1));
                         }
                     }
                     else if(distance < 0.5) {
@@ -74,6 +75,14 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
         }
 
     }
+
+    /*@Override
+    public boolean pushAwayFromEntities(Box box) {
+        if(getLinkedParent().isPresent()){
+            return false;
+        }
+        return super.pushAwayFromEntities(box);
+    }*/
 
     @Override
     public double getMaxSpeed(ServerWorld world) {
