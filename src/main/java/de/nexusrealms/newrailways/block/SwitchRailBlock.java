@@ -94,5 +94,16 @@ public class SwitchRailBlock extends AbstractRailBlock {
         BlockState state = getDefaultState().with(ORIENTATION, direction).with(RIGHT_HANDED, rightHanded);
         return state.with(SHAPE, getShapeFromState(state));
     }
-    //TODO Implement rotation and mirroring
+    @Override
+    protected BlockState rotate(BlockState state, BlockRotation rotation) {
+        BlockState state1 = state.with(ORIENTATION, rotation.rotate(state.get(ORIENTATION)));
+        return state1.with(SHAPE, getShapeFromState(state1));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, BlockMirror mirror) {
+        Direction direction = state.get(ORIENTATION);
+        BlockState state1 = state.with(ORIENTATION, mirror.getRotation(direction).rotate(direction)).with(RIGHT_HANDED, !state.get(RIGHT_HANDED));
+        return state1.with(SHAPE, getShapeFromState(state1));
+    }
 }
