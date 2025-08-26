@@ -2,6 +2,7 @@ package de.nexusrealms.newrailways.datagen;
 
 
 import de.nexusrealms.newrailways.NewRailways;
+import de.nexusrealms.newrailways.item.RailwaysItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Blocks;
@@ -36,7 +37,63 @@ public class RecipeGen extends FabricRecipeProvider {
         //TODO add rail and minecart recipes
         @Override
         public void generate() {
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.REDSTONE_BLOCK_MINECART)
+                    .input(Blocks.REDSTONE_BLOCK)
+                    .input(Items.MINECART)
+                    .criterion("has_minecart", conditionsFromItem(Items.MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.JUKEBOX_MINECART)
+                    .input(Blocks.JUKEBOX)
+                    .input(Items.MINECART)
+                    .criterion("has_minecart", conditionsFromItem(Items.MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.INPUT_MINECART)
+                    .input(Blocks.OBSERVER)
+                    .input(Items.MINECART)
+                    .criterion("has_minecart", conditionsFromItem(Items.MINECART))
+                    .offerTo(exporter);
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysItems.COPPER_MINECART)
+                    .pattern("# #")
+                    .pattern("###")
+                    .input('#', Items.COPPER_INGOT)
+                    .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
+                    .offerTo(exporter);
 
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.CHEST_COPPER_MINECART)
+                    .input(Blocks.CHEST)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.FURNACE_COPPER_MINECART)
+                    .input(Blocks.FURNACE)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.HOPPER_COPPER_MINECART)
+                    .input(Blocks.HOPPER)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.TNT_COPPER_MINECART)
+                    .input(Blocks.TNT)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.REDSTONE_BLOCK_COPPER_MINECART)
+                    .input(Blocks.REDSTONE_BLOCK)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.JUKEBOX_COPPER_MINECART)
+                    .input(Blocks.JUKEBOX)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
+            createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.INPUT_COPPER_MINECART)
+                    .input(Blocks.OBSERVER)
+                    .input(RailwaysItems.COPPER_MINECART)
+                    .criterion(hasItem(RailwaysItems.COPPER_MINECART), conditionsFromItem(RailwaysItems.COPPER_MINECART))
+                    .offerTo(exporter);
         }
     }
 }

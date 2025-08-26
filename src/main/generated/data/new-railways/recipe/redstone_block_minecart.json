@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:redstone_block",
+    "minecraft:minecart"
+  ],
+  "result": {
+    "count": 1,
+    "id": "new-railways:redstone_block_minecart"
+  }
+}
