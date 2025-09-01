@@ -2,6 +2,7 @@ package de.nexusrealms.newrailways.datagen;
 
 
 import de.nexusrealms.newrailways.NewRailways;
+import de.nexusrealms.newrailways.block.RailwaysBlocks;
 import de.nexusrealms.newrailways.item.RailwaysItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -58,6 +59,16 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('#', Items.COPPER_INGOT)
                     .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
                     .offerTo(exporter);
+
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.COPPER_RAIL)
+                    .pattern("C C")
+                            .pattern("CRC")
+                                    .pattern("CSC")
+                                            .input('C', Items.COPPER_INGOT)
+                                                    .input('R', Items.REDSTONE)
+                                                            .input('S', Items.STICK)
+                                                                    .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
+                                                                            .offerTo(exporter);
 
             createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.CHEST_COPPER_MINECART)
                     .input(Blocks.CHEST)
