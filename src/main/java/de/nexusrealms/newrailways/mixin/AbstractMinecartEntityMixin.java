@@ -15,6 +15,8 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.DefaultMinecartController;
 import net.minecraft.entity.vehicle.ExperimentalMinecartController;
 import net.minecraft.entity.vehicle.VehicleEntity;
+import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.world.World;
@@ -71,13 +73,19 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
                     return;
                 }
             }
+            if(getWorld() instanceof ServerWorld world){
+                dropItem(world, Items.CHAIN);
+            }
             dataTracker.set(LINKED_PARENT, Optional.empty());
         });
         dataTracker.get(LINKED_CHILD).ifPresent(abstractMinecartEntityLazyEntityReference -> {
             if(abstractMinecartEntityLazyEntityReference.resolve(getWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
-                if(!notNull.isRemoved()){
+                if(!notNull.isRemoved()) {
                     return;
                 }
+            }
+            if(getWorld() instanceof ServerWorld world){
+                dropItem(world, Items.CHAIN);
             }
             dataTracker.set(LINKED_CHILD, Optional.empty());
         });

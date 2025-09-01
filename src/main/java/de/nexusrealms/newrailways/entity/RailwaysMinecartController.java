@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.PoweredRailBlock;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.ExperimentalMinecartController;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -53,6 +54,9 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                     }
                 }
                 else {
+                    if(getWorld() instanceof ServerWorld world){
+                        minecart.dropItem(world, Items.CHAIN);
+                    }
                     parent.setLinkedChild(null);
                     setLinkedParent(null);
                 }

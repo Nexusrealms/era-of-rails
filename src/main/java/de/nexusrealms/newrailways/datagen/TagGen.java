@@ -6,6 +6,7 @@ import de.nexusrealms.newrailways.entity.RailwaysEntities;
 import de.nexusrealms.newrailways.item.RailwaysItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
@@ -23,7 +24,7 @@ public class TagGen {
         @Override
         protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
             valueLookupBuilder(RailwaysItems.Tags.LINK_CARTS)
-                    .add(RailwaysItems.CART_LINKING_TOOL);
+                    .add(RailwaysItems.CART_LINKING_TOOL, Items.CHAIN);
         }
     }
 

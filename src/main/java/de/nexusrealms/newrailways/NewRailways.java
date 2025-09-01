@@ -58,6 +58,7 @@ public class NewRailways implements ModInitializer {
 						parent.setLinkedChild(interacted);
 						interacted.setLinkedParent(parent);
 						stack.remove(RailwaysItems.Components.LINKING_PARENT);
+						stack.decrementUnlessCreative(1, playerEntity);
 						playerEntity.getItemCooldownManager().set(stack, 20);
 						return ActionResult.SUCCESS;
 					}
