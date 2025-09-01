@@ -25,6 +25,7 @@ public class RecipeGen extends FabricRecipeProvider {
     protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter recipeExporter) {
         return new Generator(wrapperLookup, recipeExporter);
     }
+
     @Override
     public String getName() {
         return NewRailways.MOD_ID;
@@ -35,6 +36,7 @@ public class RecipeGen extends FabricRecipeProvider {
         protected Generator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
             super(registries, exporter);
         }
+
         //TODO add rail and minecart recipes
         @Override
         public void generate() {
@@ -62,13 +64,42 @@ public class RecipeGen extends FabricRecipeProvider {
 
             createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.COPPER_RAIL)
                     .pattern("C C")
-                            .pattern("CRC")
-                                    .pattern("CSC")
-                                            .input('C', Items.COPPER_INGOT)
-                                                    .input('R', Items.REDSTONE)
-                                                            .input('S', Items.STICK)
-                                                                    .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
-                                                                            .offerTo(exporter);
+                    .pattern("CRC")
+                    .pattern("CSC")
+                    .input('C', Items.COPPER_INGOT)
+                    .input('R', Items.REDSTONE)
+                    .input('S', Items.STICK)
+                    .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
+                    .offerTo(exporter);
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.INPUT_RAIL)
+                    .pattern("CRC")
+                    .pattern("COC")
+                    .pattern("CSC")
+                    .input('C', Items.IRON_INGOT)
+                    .input('R', Items.REDSTONE)
+                    .input('S', Items.STICK)
+                    .input('O', Blocks.OBSERVER)
+                    .criterion(hasItem(Items.OBSERVER), conditionsFromItem(Items.OBSERVER))
+                    .offerTo(exporter);
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.SWITCH_RAIL)
+                    .pattern("CSC")
+                    .pattern("SRC")
+                    .pattern("CSC")
+                    .input('C', Items.IRON_INGOT)
+                    .input('R', Items.REDSTONE)
+                    .input('S', Items.STICK)
+                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                    .offerTo(exporter);
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.LOCKED_SWITCH_RAIL)
+                    .pattern("CSC")
+                    .pattern("SRC")
+                    .pattern("COC")
+                    .input('C', Items.IRON_INGOT)
+                    .input('R', Items.REDSTONE)
+                    .input('S', Items.STICK)
+                    .input('O', Items.COMPARATOR)
+                    .criterion(hasItem(Items.COMPARATOR), conditionsFromItem(Items.COMPARATOR))
+                    .offerTo(exporter);
 
             createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.CHEST_COPPER_MINECART)
                     .input(Blocks.CHEST)
