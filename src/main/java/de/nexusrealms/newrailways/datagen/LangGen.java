@@ -20,7 +20,7 @@ public class LangGen extends FabricLanguageProvider {
     private void generateBlockTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder tb){
         generateBlockAndItem(tb, RailwaysBlocks.COPPER_RAIL, "Copper Powered Rail");
         generateBlockAndItem(tb, RailwaysBlocks.SWITCH_RAIL, "Rail Switch");
-        generateBlockAndItem(tb, RailwaysBlocks.LOCKED_SWITCH_RAIL, "Locked Rail Switch");
+        //generateBlockAndItem(tb, RailwaysBlocks.LOCKED_SWITCH_RAIL, "Locked Rail Switch");
         generateBlockAndItem(tb, RailwaysBlocks.INPUT_RAIL, "Input Rail");
     }
     private void generateBlockAndItem(TranslationBuilder translationBuilder, Block block, String translation){

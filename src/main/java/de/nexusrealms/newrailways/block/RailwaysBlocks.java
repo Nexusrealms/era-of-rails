@@ -21,7 +21,7 @@ public class RailwaysBlocks {
     public static final Block COPPER_RAIL = createWithItem("copper_rail", CopperRailBlock::new, AbstractBlock.Settings.copy(Blocks.POWERED_RAIL), ItemGroups.REDSTONE, Blocks.POWERED_RAIL);
 
     public static final Block SWITCH_RAIL = createWithItem("switch_rail", SwitchRailBlock::new, AbstractBlock.Settings.copy(Blocks.RAIL), ItemGroups.REDSTONE, (fabricItemGroupEntries, item) -> fabricItemGroupEntries.addBefore(COPPER_RAIL, item));
-    public static final Block LOCKED_SWITCH_RAIL = createWithItem("locked_switch_rail", LockedSwitchRailBlock::new, AbstractBlock.Settings.copy(SWITCH_RAIL), ItemGroups.REDSTONE, SWITCH_RAIL);
+    //public static final Block LOCKED_SWITCH_RAIL = createWithItem("locked_switch_rail", LockedSwitchRailBlock::new, AbstractBlock.Settings.copy(SWITCH_RAIL), ItemGroups.REDSTONE, SWITCH_RAIL);
     public static final Block INPUT_RAIL = createWithItem("input_rail", InputRailBlock::new, AbstractBlock.Settings.copy(Blocks.DETECTOR_RAIL), ItemGroups.REDSTONE, LOCKED_SWITCH_RAIL);
 
     private static <T extends Block> T createWithItem(String name, Function<AbstractBlock.Settings, T> constructor, AbstractBlock.Settings settings, RegistryKey<ItemGroup> itemGroup){

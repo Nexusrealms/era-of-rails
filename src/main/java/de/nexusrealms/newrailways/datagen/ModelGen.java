@@ -34,7 +34,7 @@ public class ModelGen extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerStraightRail(RailwaysBlocks.COPPER_RAIL);
         registerSwitch(RailwaysBlocks.SWITCH_RAIL, blockStateModelGenerator);
-        registerSwitch(RailwaysBlocks.LOCKED_SWITCH_RAIL, blockStateModelGenerator);
+        //registerSwitch(RailwaysBlocks.LOCKED_SWITCH_RAIL, blockStateModelGenerator);
         blockStateModelGenerator.registerStraightRail(RailwaysBlocks.INPUT_RAIL);
 
     }

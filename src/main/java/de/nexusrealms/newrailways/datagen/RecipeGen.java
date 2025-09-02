@@ -90,7 +90,7 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('S', Items.STICK)
                     .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                     .offerTo(exporter);
-            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.LOCKED_SWITCH_RAIL)
+            /*createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.LOCKED_SWITCH_RAIL)
                     .pattern("CSC")
                     .pattern("SRC")
                     .pattern("COC")
@@ -99,7 +99,7 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('S', Items.STICK)
                     .input('O', Items.COMPARATOR)
                     .criterion(hasItem(Items.COMPARATOR), conditionsFromItem(Items.COMPARATOR))
-                    .offerTo(exporter);
+                    .offerTo(exporter);*/
 
             createShapeless(RecipeCategory.TRANSPORTATION, RailwaysItems.CHEST_COPPER_MINECART)
                     .input(Blocks.CHEST)

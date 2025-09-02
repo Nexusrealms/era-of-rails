@@ -2,7 +2,6 @@
   "values": [
     "#new-railways:input_rail",
     "#new-railways:high_speed_rail",
-    "new-railways:switch_rail",
-    "new-railways:locked_switch_rail"
+    "new-railways:switch_rail"
   ]
 }

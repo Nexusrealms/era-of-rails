@@ -45,7 +45,8 @@ public class TagGen {
                     .addTag(RailwaysBlocks.Tags.INPUT_RAIL)
                     .addTag(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
                     .add(RailwaysBlocks.SWITCH_RAIL)
-                    .add(RailwaysBlocks.LOCKED_SWITCH_RAIL);
+                    //.add(RailwaysBlocks.LOCKED_SWITCH_RAIL)
+            ;
         }
 
     }

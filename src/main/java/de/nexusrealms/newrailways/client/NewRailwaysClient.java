@@ -24,7 +24,7 @@ public class NewRailwaysClient implements ClientModInitializer {
     private static void initBlockRenderLayers(){
         BlockRenderLayerMap.putBlock(RailwaysBlocks.COPPER_RAIL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(RailwaysBlocks.SWITCH_RAIL, BlockRenderLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(RailwaysBlocks.LOCKED_SWITCH_RAIL, BlockRenderLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(RailwaysBlocks.LOCKED_SWITCH_RAIL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(RailwaysBlocks.INPUT_RAIL, BlockRenderLayer.CUTOUT);
     }
     private static void initEntityRenderers(){

@@ -1,7 +1,6 @@
 // 1.21.8	-999999999-01-01T00:00:00	New Railways/Model Definitions
 4187590b3209baa78dcedde1e1057b86e4b82c43 assets/new-railways/blockstates/copper_rail.json
 893ee6ae80c74030d83aab4ad831f547424abc10 assets/new-railways/blockstates/input_rail.json
-92396df2296ef72db8ae809c104391ec0a930bde assets/new-railways/blockstates/locked_switch_rail.json
 35c861f0927871c341f482744cf478fec81a2a38 assets/new-railways/blockstates/switch_rail.json
 7886381c79c2af43d7644ca6b7ec5756dfce87dd assets/new-railways/items/chest_copper_minecart.json
 41bd7eda885eeae9c75adf0b266d2ee4016fdee2 assets/new-railways/items/command_block_copper_minecart.json
@@ -14,7 +13,6 @@ fe96abc15f4a2e7f3a82cc994d5805466b51a0c9 assets/new-railways/items/input_minecar
 ea6f1f618c0fc854978b885fab3d713ce0940d90 assets/new-railways/items/input_rail.json
 8781c5d277f0ea04f6bd2d3988ec9c10e183b484 assets/new-railways/items/jukebox_copper_minecart.json
 cac51c2261f8a9417e2236feccaec9a879439853 assets/new-railways/items/jukebox_minecart.json
-7e417ec57cd82e75e22a89b17028e1e13a3997ce assets/new-railways/items/locked_switch_rail.json
 7c8d93930979fe40158309563e7323eaac941f31 assets/new-railways/items/redstone_block_copper_minecart.json
 1725e03e92fcbc96c7f3acb81493d04a9711eb1f assets/new-railways/items/redstone_block_minecart.json
 c3a516f125df4652f767b3f163a970533611d6fb assets/new-railways/items/spawner_copper_minecart.json
@@ -33,10 +31,6 @@ d9774d2452e596cadea03712124df59bc1320a60 assets/new-railways/models/block/input_
 e5aa519120672957880fc8f0d5a8ac1580560b25 assets/new-railways/models/block/input_rail_on_raised_sw.json
 4acde8c24e90b8d21d091d817e425fbc43510cf4 assets/new-railways/models/block/input_rail_raised_ne.json
 520ea83cf6d632449839c25b719a27566f5fa730 assets/new-railways/models/block/input_rail_raised_sw.json
-c4dbf3f9accbfcfe425ee70df07b2d3018fc0059 assets/new-railways/models/block/locked_switch_rail.json
-67488988aca040c702e8021a6f2a331c73e5f30e assets/new-railways/models/block/locked_switch_rail_right.json
-21c3c3f5e1ce37dad008cb579b57c3f0a966b93d assets/new-railways/models/block/locked_switch_rail_right_switched.json
-bde67b6caede80d2ccc9cb1c8f3eb8e5decf98f1 assets/new-railways/models/block/locked_switch_rail_switched.json
 051155e15d3c7750e5786b2cb12718695f2dd4ae assets/new-railways/models/block/switch_rail.json
 8c1ad97ebf0f8f531e6e6c2c8513b8268c9f0712 assets/new-railways/models/block/switch_rail_right.json
 622760f067db1f47733ea5e298a469b820b870c3 assets/new-railways/models/block/switch_rail_right_switched.json
@@ -52,7 +46,6 @@ a7bd459d848351a4ce56bdde9084be960dd8e52f assets/new-railways/models/item/input_m
 d19463752b2a919aeb28b077970e86f00bfb25a7 assets/new-railways/models/item/input_rail.json
 c292bc3dc51983a06ff967be6d279bf0618c11f3 assets/new-railways/models/item/jukebox_copper_minecart.json
 d4536a58d28efdbcd89b6ab1be4b43af707a6517 assets/new-railways/models/item/jukebox_minecart.json
-3838b3604b20d97a9ba778802cf2ee584420f94a assets/new-railways/models/item/locked_switch_rail.json
 d27dedc4b609a8dfac30bd8119b440bb53dac0b2 assets/new-railways/models/item/redstone_block_copper_minecart.json
 42e6a8f6a8b0c7442fba60736cd9754b4714be94 assets/new-railways/models/item/redstone_block_minecart.json
 efc6a37e01b57516fac5b62d9b02c672ab1ada3b assets/new-railways/models/item/spawner_copper_minecart.json

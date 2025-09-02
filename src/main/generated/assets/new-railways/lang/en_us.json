@@ -1,7 +1,6 @@
 {
   "block.new-railways.copper_rail": "Copper Powered Rail",
   "block.new-railways.input_rail": "Input Rail",
-  "block.new-railways.locked_switch_rail": "Locked Rail Switch",
   "block.new-railways.switch_rail": "Rail Switch",
   "entity.new-railways.chest_copper_minecart": "Copper Minecart with Chest",
   "entity.new-railways.command_block_copper_minecart": "Copper Minecart with Command Block",
@@ -27,7 +26,6 @@
   "item.new-railways.input_rail": "Input Rail",
   "item.new-railways.jukebox_copper_minecart": "Copper Minecart with Jukebox",
   "item.new-railways.jukebox_minecart": "Minecart with Jukebox",
-  "item.new-railways.locked_switch_rail": "Locked Rail Switch",
   "item.new-railways.redstone_block_copper_minecart": "Copper Minecart with Redstone Block",
   "item.new-railways.redstone_block_minecart": "Minecart with Redstone Block",
   "item.new-railways.spawner_copper_minecart": "Copper Minecart with Spawner",
