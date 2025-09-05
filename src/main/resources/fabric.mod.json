@@ -3,16 +3,15 @@
 	"id": "new-railways",
 	"version": "${version}",
 	"name": "New Railways",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A railway expansion mod!",
 	"authors": [
 		"Farpo",
-		"DinoTheOogle",
-		"Flexhd (Maybe)"
+		"DinoTheOogle"
 	],
 	"accessWidener" : "new-railways.accesswidener",
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://nexusrealms.de/",
+		"sources": "https://github.com/Nexusrealms/new-railways"
 	},
 	"license": "MIT",
 	"icon": "assets/new-railways/icon.png",
