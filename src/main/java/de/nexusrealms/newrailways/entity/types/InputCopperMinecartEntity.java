@@ -15,13 +15,8 @@ public class InputCopperMinecartEntity extends InputMinecartEntity {
     }
 
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(asItem());
-    }
-
-    @Override
     protected Item asItem() {
-        return RailwaysItems.FURNACE_COPPER_MINECART;
+        return RailwaysItems.INPUT_COPPER_MINECART;
     }
     @Override
     public boolean collidesWith(Entity other) {

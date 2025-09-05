@@ -5,7 +5,10 @@
   "mixins": [
     "AbstractMinecartEntityMixin",
     "DetectorRailMixin",
+    "DispenserBlockEntityMixin",
     "GameRulesMixin",
+    "MinecartDispenserBehaviorMixin",
+    "MinecartItemAccessor",
     "RailPlacementHelperMixin",
     "SpawnerMinecartEntityMixin",
     "TntMinecartEntityMixin"

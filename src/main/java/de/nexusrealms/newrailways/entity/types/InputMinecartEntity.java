@@ -6,7 +6,11 @@ import de.nexusrealms.newrailways.network.SetInputCartDataPacket;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.ComponentsAccess;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -14,10 +18,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class InputMinecartEntity extends AbstractMinecartEntity {
@@ -37,6 +43,28 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
         builder.add(ACTIVE_INSTS, 64);
         builder.add(NEXT_INST, 0);
     }
+
+    @Override
+    protected void copyComponentsFrom(ComponentsAccess from) {
+        super.copyComponentsFrom(from);
+        copyComponentFrom(from, RailwaysItems.Components.INPUT_CART_SEQUENCE);
+        copyComponentFrom(from, RailwaysItems.Components.INPUT_CART_LIMIT);
+
+    }
+
+    @Override
+    protected <T> boolean setApplicableComponent(ComponentType<T> type, T value) {
+        if(type == RailwaysItems.Components.INPUT_CART_SEQUENCE){
+            dataTracker.set(SEQUENCE, castComponentValue(RailwaysItems.Components.INPUT_CART_SEQUENCE, value));
+            return true;
+        }
+        if(type == RailwaysItems.Components.INPUT_CART_LIMIT){
+            dataTracker.set(ACTIVE_INSTS, castComponentValue(RailwaysItems.Components.INPUT_CART_LIMIT, value));
+            return true;
+        }
+        return super.setApplicableComponent(type, value);
+    }
+
     public boolean getNextInputAndMove(){
         int next = dataTracker.get(NEXT_INST);
         int active = dataTracker.get(ACTIVE_INSTS);
@@ -63,7 +91,12 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
         view.putInt("activeInsts", dataTracker.get(ACTIVE_INSTS));
         view.putInt("nextInst", dataTracker.get(NEXT_INST));
     }
-
+    public void killAndDropSelf(ServerWorld world, DamageSource damageSource) {
+        this.kill(world);
+        if (world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+            this.dropStack(world, getPickBlockStack());
+        }
+    }
     @Override
     public void readData(ReadView view) {
         super.readData(view);
@@ -94,7 +127,10 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
     }
     @Override
     public ItemStack getPickBlockStack() {
-        return new ItemStack(asItem());
+        ItemStack stack = new ItemStack(asItem());
+        stack.set(RailwaysItems.Components.INPUT_CART_LIMIT, dataTracker.get(ACTIVE_INSTS));
+        stack.set(RailwaysItems.Components.INPUT_CART_SEQUENCE, dataTracker.get(SEQUENCE));
+        return stack;
     }
 
     @Override
