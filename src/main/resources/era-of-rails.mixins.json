@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "package": "de.nexusrealms.eraofrails.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AbstractMinecartEntityMixin",
+    "DetectorRailMixin",
+    "DispenserBlockEntityMixin",
+    "GameRulesMixin",
+    "MinecartDispenserBehaviorMixin",
+    "MinecartItemAccessor",
+    "RailPlacementHelperMixin",
+    "SpawnerMinecartEntityMixin",
+    "TntMinecartEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "client.AbstractMinecartEntityRendererMixin",
+    "client.ClientWorldMixin",
+    "client.MinecartEntityRenderStateMixin"
+  ]
+}

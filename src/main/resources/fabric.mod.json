@@ -1,34 +1,34 @@
 {
 	"schemaVersion": 1,
-	"id": "new-railways",
+	"id": "era-of-rails",
 	"version": "${version}",
-	"name": "New Railways",
+	"name": "Era of Rails",
 	"description": "A railway expansion mod!",
 	"authors": [
 		"Farpo",
 		"DinoTheOogle"
 	],
-	"accessWidener" : "new-railways.accesswidener",
+	"accessWidener" : "era-of-rails.accesswidener",
 	"contact": {
 		"homepage": "https://nexusrealms.de/",
-		"sources": "https://github.com/Nexusrealms/new-railways"
+		"sources": "https://github.com/Nexusrealms/era-of-rails"
 	},
 	"license": "MIT",
-	"icon": "assets/new-railways/icon.png",
+	"icon": "assets/era-of-rails/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"de.nexusrealms.newrailways.NewRailways"
+			"de.nexusrealms.eraofrails.EraOfRails"
 		],
 		"client": [
-			"de.nexusrealms.newrailways.client.NewRailwaysClient"
+			"de.nexusrealms.eraofrails.client.EraOfRailsClient"
 		],
 		"fabric-datagen": [
-          "de.nexusrealms.newrailways.datagen.NewRailwaysDataGenerator"
+			"de.nexusrealms.eraofrails.datagen.EraOfRailsDataGenerator"
 		]
 	},
 	"mixins": [
-		"new-railways.mixins.json"
+		"era-of-rails.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.17.2",
@@ -41,8 +41,8 @@
 	},
 	"custom": {
 		"loom:injected_interfaces": {
-			"net/minecraft/class_1688": ["de/nexusrealms/newrailways/entity/CartLinker"],
-			"net/minecraft/class_10045": ["de/nexusrealms/newrailways/client/CartLinkerRenderState"]
+			"net/minecraft/class_1688": ["de/nexusrealms/eraofrails/entity/CartLinker"],
+			"net/minecraft/class_10045": ["de/nexusrealms/eraofrails/client/CartLinkerRenderState"]
 		}
 	}
 }

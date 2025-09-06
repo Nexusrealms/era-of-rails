@@ -10,7 +10,7 @@ base {
 	archivesName = project.archives_base_name
 }
 loom {
-	accessWidenerPath = file("src/main/resources/new-railways.accesswidener")
+	accessWidenerPath = file("src/main/resources/era-of-rails.accesswidener")
 }
 repositories {
 	// Add repositories to retrieve artifacts from in here.

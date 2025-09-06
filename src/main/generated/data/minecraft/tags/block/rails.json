@@ -1,8 +1,8 @@
 {
   "values": [
-    "#new-railways:input_rail",
-    "#new-railways:high_speed_rail",
-    "new-railways:switch_rail",
-    "new-railways:halt_rail"
+    "#era-of-rails:input_rail",
+    "#era-of-rails:high_speed_rail",
+    "era-of-rails:switch_rail",
+    "era-of-rails:halt_rail"
   ]
 }
