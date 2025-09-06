@@ -22,6 +22,8 @@ public class LangGen extends FabricLanguageProvider {
         generateBlockAndItem(tb, RailwaysBlocks.SWITCH_RAIL, "Rail Switch");
         //generateBlockAndItem(tb, RailwaysBlocks.LOCKED_SWITCH_RAIL, "Locked Rail Switch");
         generateBlockAndItem(tb, RailwaysBlocks.INPUT_RAIL, "Input Rail");
+        generateBlockAndItem(tb, RailwaysBlocks.HALT_RAIL, "Halt Rail");
+
     }
     private void generateBlockAndItem(TranslationBuilder translationBuilder, Block block, String translation){
         translationBuilder.add(block, translation);

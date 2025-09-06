@@ -1,17 +1,19 @@
 package de.nexusrealms.newrailways.entity;
 
 import de.nexusrealms.newrailways.block.RailwaysBlocks;
+import de.nexusrealms.newrailways.block.HaltRailBlock;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PoweredRailBlock;
+import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.ExperimentalMinecartController;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -103,21 +105,37 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
         BlockState blockState = minecart.getWorld().getBlockState(blockPos);
         return blockState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) && blockState.get(Properties.POWERED);
     }
-
+    protected Vec3d decelerateFromPoweredRail(Vec3d velocity, BlockState railState) {
+        if ((railState.isOf(Blocks.POWERED_RAIL) || railState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) || railState.isOf(RailwaysBlocks.HALT_RAIL)) && !railState.get(PoweredRailBlock.POWERED) && getLinkedParent().isEmpty()) {
+            return velocity.length() < 0.03 ? Vec3d.ZERO : velocity.multiply(0.5);
+        } else {
+            return velocity;
+        }
+    }
     @Override
     protected Vec3d accelerateFromPoweredRail(Vec3d velocity, BlockPos railPos, BlockState railState) {
-        if ((railState.isOf(Blocks.POWERED_RAIL) || railState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL)) && (Boolean)railState.get(PoweredRailBlock.POWERED)) {
+        if ((railState.isOf(Blocks.POWERED_RAIL) || railState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL)) && railState.get(PoweredRailBlock.POWERED)) {
             if (velocity.length() > 0.01) {
                 return velocity.normalize().multiply(velocity.length() + 0.06);
             } else {
                 Vec3d vec3d = this.minecart.getLaunchDirection(railPos);
                 return vec3d.lengthSquared() <= 0.0 ? velocity : vec3d.multiply(velocity.length() + 0.2);
             }
-        } else {
-            return velocity;
+        } else if(railState.isOf(RailwaysBlocks.HALT_RAIL) && railState.get(PoweredRailBlock.POWERED)) {
+            if(velocity.length() < 0.01) {
+                Direction.Axis axis = shapeToAxis(railState.get(Properties.STRAIGHT_RAIL_SHAPE));
+                Vec3d vec3d = (railState.get(HaltRailBlock.AXIAL) ? axis.getPositiveDirection() : axis.getNegativeDirection()).getDoubleVector();
+                return vec3d.lengthSquared() <= 0.0 ? velocity : vec3d.multiply(velocity.length() + 0.2);
+            }
         }
+        return velocity;
     }
-
+    private static Direction.Axis shapeToAxis(RailShape shape){
+        if(shape == RailShape.ASCENDING_EAST || shape == RailShape.ASCENDING_WEST || shape == RailShape.EAST_WEST){
+            return Direction.Axis.X;
+        }
+        return Direction.Axis.Z;
+    }
     @Override
     public Optional<CartLinker> getLinkedParent() {
         return minecart.getLinkedParent();

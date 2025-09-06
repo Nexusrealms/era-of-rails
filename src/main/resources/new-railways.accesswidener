@@ -5,3 +5,4 @@ extendable method net/minecraft/entity/vehicle/ExperimentalMinecartController ac
 accessible field net/minecraft/entity/passive/AbstractHorseEntity items Lnet/minecraft/inventory/SimpleInventory;
 accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity moveOnRail (Lnet/minecraft/server/world/ServerWorld;)V
 accessible method net/minecraft/entity/vehicle/ExperimentalMinecartController tickClient ()V
+extendable    method    net/minecraft/entity/vehicle/ExperimentalMinecartController    decelerateFromPoweredRail    (Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/block/BlockState;)Lnet/minecraft/util/math/Vec3d;

@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "axial=false,powered=false,shape=ascending_east": {
+      "model": "new-railways:block/halt_rail_raised_sw",
+      "y": 270
+    },
+    "axial=false,powered=false,shape=ascending_north": {
+      "model": "new-railways:block/halt_rail_raised_ne"
+    },
+    "axial=false,powered=false,shape=ascending_south": {
+      "model": "new-railways:block/halt_rail_raised_sw"
+    },
+    "axial=false,powered=false,shape=ascending_west": {
+      "model": "new-railways:block/halt_rail_raised_ne",
+      "y": 270
+    },
+    "axial=false,powered=false,shape=east_west": {
+      "model": "new-railways:block/halt_rail",
+      "y": 270
+    },
+    "axial=false,powered=false,shape=north_south": {
+      "model": "new-railways:block/halt_rail"
+    },
+    "axial=false,powered=true,shape=ascending_east": {
+      "model": "new-railways:block/halt_rail_on_raised_sw",
+      "y": 270
+    },
+    "axial=false,powered=true,shape=ascending_north": {
+      "model": "new-railways:block/halt_rail_on_raised_ne"
+    },
+    "axial=false,powered=true,shape=ascending_south": {
+      "model": "new-railways:block/halt_rail_on_raised_sw"
+    },
+    "axial=false,powered=true,shape=ascending_west": {
+      "model": "new-railways:block/halt_rail_on_raised_ne",
+      "y": 270
+    },
+    "axial=false,powered=true,shape=east_west": {
+      "model": "new-railways:block/halt_rail_on",
+      "y": 270
+    },
+    "axial=false,powered=true,shape=north_south": {
+      "model": "new-railways:block/halt_rail_on"
+    },
+    "axial=true,powered=false,shape=ascending_east": {
+      "model": "new-railways:block/halt_rail_raised_ne",
+      "y": 90
+    },
+    "axial=true,powered=false,shape=ascending_north": {
+      "model": "new-railways:block/halt_rail_raised_sw",
+      "y": 180
+    },
+    "axial=true,powered=false,shape=ascending_south": {
+      "model": "new-railways:block/halt_rail_raised_ne",
+      "y": 180
+    },
+    "axial=true,powered=false,shape=ascending_west": {
+      "model": "new-railways:block/halt_rail_raised_sw",
+      "y": 90
+    },
+    "axial=true,powered=false,shape=east_west": {
+      "model": "new-railways:block/halt_rail",
+      "y": 90
+    },
+    "axial=true,powered=false,shape=north_south": {
+      "model": "new-railways:block/halt_rail",
+      "y": 180
+    },
+    "axial=true,powered=true,shape=ascending_east": {
+      "model": "new-railways:block/halt_rail_on_raised_ne",
+      "y": 90
+    },
+    "axial=true,powered=true,shape=ascending_north": {
+      "model": "new-railways:block/halt_rail_on_raised_sw",
+      "y": 180
+    },
+    "axial=true,powered=true,shape=ascending_south": {
+      "model": "new-railways:block/halt_rail_on_raised_ne",
+      "y": 180
+    },
+    "axial=true,powered=true,shape=ascending_west": {
+      "model": "new-railways:block/halt_rail_on_raised_sw",
+      "y": 90
+    },
+    "axial=true,powered=true,shape=east_west": {
+      "model": "new-railways:block/halt_rail_on",
+      "y": 90
+    },
+    "axial=true,powered=true,shape=north_south": {
+      "model": "new-railways:block/halt_rail_on",
+      "y": 180
+    }
+  }
+}

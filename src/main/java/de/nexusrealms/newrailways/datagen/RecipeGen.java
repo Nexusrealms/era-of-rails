@@ -90,6 +90,15 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('S', Items.STICK)
                     .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                     .offerTo(exporter);
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.HALT_RAIL)
+                    .pattern("ISI")
+                    .pattern("IPI")
+                    .pattern("ISI")
+                    .input('I', Items.IRON_INGOT)
+                    .input('P', Items.REPEATER)
+                    .input('S', Items.STICK)
+                    .criterion(hasItem(Items.REPEATER), conditionsFromItem(Items.REPEATER))
+                    .offerTo(exporter);
             /*createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.LOCKED_SWITCH_RAIL)
                     .pattern("CSC")
                     .pattern("SRC")

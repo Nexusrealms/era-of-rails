@@ -3,10 +3,9 @@ package de.nexusrealms.newrailways.datagen;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import de.nexusrealms.newrailways.block.RailwaysBlocks;
+import de.nexusrealms.newrailways.block.HaltRailBlock;
 import de.nexusrealms.newrailways.block.SwitchRailBlock;
 import de.nexusrealms.newrailways.item.RailwaysItems;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
@@ -21,7 +20,6 @@ import net.minecraft.util.Identifier;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
@@ -36,6 +34,7 @@ public class ModelGen extends FabricModelProvider {
         registerSwitch(RailwaysBlocks.SWITCH_RAIL, blockStateModelGenerator);
         //registerSwitch(RailwaysBlocks.LOCKED_SWITCH_RAIL, blockStateModelGenerator);
         blockStateModelGenerator.registerStraightRail(RailwaysBlocks.INPUT_RAIL);
+        registerAxialRail(RailwaysBlocks.HALT_RAIL, blockStateModelGenerator);
 
     }
 
@@ -76,6 +75,33 @@ public class ModelGen extends FabricModelProvider {
                                     };
                                 }))
                 );
+    }
+    public final void registerAxialRail(Block rail, BlockStateModelGenerator modelGenerator) {
+        WeightedVariant nsOff = createWeightedVariant(modelGenerator.createSubModel(rail, "", Models.RAIL_FLAT, TextureMap::rail));
+        WeightedVariant raisedNEOff = createWeightedVariant(modelGenerator.createSubModel(rail, "", Models.TEMPLATE_RAIL_RAISED_NE, TextureMap::rail));
+        WeightedVariant raisedSWOff = createWeightedVariant(modelGenerator.createSubModel(rail, "", Models.TEMPLATE_RAIL_RAISED_SW, TextureMap::rail));
+        WeightedVariant nsOn = createWeightedVariant(modelGenerator.createSubModel(rail, "_on", Models.RAIL_FLAT, TextureMap::rail));
+        WeightedVariant raisedNEOn = createWeightedVariant(modelGenerator.createSubModel(rail, "_on", Models.TEMPLATE_RAIL_RAISED_NE, TextureMap::rail));
+        WeightedVariant raisedSWOn = createWeightedVariant(modelGenerator.createSubModel(rail, "_on", Models.TEMPLATE_RAIL_RAISED_SW, TextureMap::rail));
+
+        modelGenerator.registerItemModel(rail);
+        modelGenerator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(rail).with(BlockStateVariantMap.models(Properties.POWERED, Properties.STRAIGHT_RAIL_SHAPE, HaltRailBlock.AXIAL).generate((powered, shape, axial) -> {
+            WeightedVariant var10000;
+            switch (shape) {
+                case NORTH_SOUTH -> var10000 = (powered ? nsOn : nsOff).apply(axial ? ROTATE_Y_180 : NO_OP);
+                case EAST_WEST -> var10000 = (powered ? nsOn : nsOff).apply(axial ? ROTATE_Y_90 : ROTATE_Y_270);
+                case ASCENDING_EAST -> var10000 = fourState(axial, powered, raisedSWOff.apply(ROTATE_Y_270), raisedNEOff.apply(ROTATE_Y_90), raisedSWOn.apply(ROTATE_Y_270),  raisedNEOn.apply(ROTATE_Y_90));
+                case ASCENDING_WEST -> var10000 = fourState(axial, powered, raisedNEOff.apply(ROTATE_Y_270), raisedSWOff.apply(ROTATE_Y_90), raisedNEOn.apply(ROTATE_Y_270),  raisedSWOn.apply(ROTATE_Y_90));
+                case ASCENDING_NORTH -> var10000 = fourState(axial, powered, raisedNEOff, raisedSWOff.apply(ROTATE_Y_180), raisedNEOn,  raisedSWOn.apply(ROTATE_Y_180));
+                case ASCENDING_SOUTH -> var10000 = fourState(axial, powered, raisedSWOff, raisedNEOff.apply(ROTATE_Y_180), raisedSWOn,  raisedNEOn.apply(ROTATE_Y_180));
+                default -> throw new UnsupportedOperationException("Fix you generator!");
+            }
+
+            return var10000;
+        })));
+    }
+    private static <T> T fourState(boolean bl1, boolean bl2, T ff, T tf, T ft, T tt){
+        return bl1 ? (bl2 ? tt : tf) : (bl2 ? ft : ff);
     }
     private void registerSpawnEgg(ItemModelGenerator generator, EntityType<?> entityType){
         if(SpawnEggItem.forEntity(entityType) instanceof SpawnEggItem item){

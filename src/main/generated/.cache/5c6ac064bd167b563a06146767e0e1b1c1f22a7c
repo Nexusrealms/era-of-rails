@@ -1,5 +1,6 @@
 // 1.21.8	-999999999-01-01T00:00:00	New Railways/Model Definitions
 4187590b3209baa78dcedde1e1057b86e4b82c43 assets/new-railways/blockstates/copper_rail.json
+33ac49fdf5deecfe664136290abbdcf54e4c1bab assets/new-railways/blockstates/halt_rail.json
 893ee6ae80c74030d83aab4ad831f547424abc10 assets/new-railways/blockstates/input_rail.json
 35c861f0927871c341f482744cf478fec81a2a38 assets/new-railways/blockstates/switch_rail.json
 7886381c79c2af43d7644ca6b7ec5756dfce87dd assets/new-railways/items/chest_copper_minecart.json
@@ -7,6 +8,7 @@
 9d70f860f63ad5d65860fdc4c27b71cf58295dba assets/new-railways/items/copper_minecart.json
 0b3d6631857099e1d7af87d07ce260c1e0d235bc assets/new-railways/items/copper_rail.json
 3f9269f35fdf2e54382693fd4f2d9a114fae4607 assets/new-railways/items/furnace_copper_minecart.json
+392c9eda11341885637ace53101d9b5f6daced9a assets/new-railways/items/halt_rail.json
 c758cd22db5eb9601a4a7007b98000e196eea91f assets/new-railways/items/hopper_copper_minecart.json
 25031cafa5bfd656b6a8a10b092d2b44d9bdff86 assets/new-railways/items/input_copper_minecart.json
 fe96abc15f4a2e7f3a82cc994d5805466b51a0c9 assets/new-railways/items/input_minecart.json
@@ -25,6 +27,12 @@ dab6d1123d14e4c0bbc4b3dcef12e9d3af165761 assets/new-railways/models/block/copper
 f34a829a47abb437334963561953feff907da1c2 assets/new-railways/models/block/copper_rail_on_raised_sw.json
 363c8b45698e096cf95de87f5000255cabe4320a assets/new-railways/models/block/copper_rail_raised_ne.json
 be64af6f711c9131279c7f694f1199a1f4163fc1 assets/new-railways/models/block/copper_rail_raised_sw.json
+ace09792f4112ac84bf3ef158f32611ca04625de assets/new-railways/models/block/halt_rail.json
+d746cb76399ad91901dec39ea60cf17dd58c3fba assets/new-railways/models/block/halt_rail_on.json
+a68b3174bb6230dbdbea881ed6fdba053189b74e assets/new-railways/models/block/halt_rail_on_raised_ne.json
+372cdd905bdaa3d350358c77341a3a9a991e9f7a assets/new-railways/models/block/halt_rail_on_raised_sw.json
+81d1e2eae79cc331ef76a217646cdaf0aefe17d9 assets/new-railways/models/block/halt_rail_raised_ne.json
+50309f549e0bdc97fb240e3828b1298f2201bd5e assets/new-railways/models/block/halt_rail_raised_sw.json
 3f2e0a54cc0123432d9da73403a7f7a2694b6f40 assets/new-railways/models/block/input_rail.json
 d9774d2452e596cadea03712124df59bc1320a60 assets/new-railways/models/block/input_rail_on.json
 359eb6c7d879ee22f5b440d018c78741f565dd9b assets/new-railways/models/block/input_rail_on_raised_ne.json
@@ -40,6 +48,7 @@ d0fb65c8ef37c72ece40d688e88ce6ffbf54bec5 assets/new-railways/models/item/command
 5449fda0a5ba7a655a4dd1fb426c7bedfcd6ee87 assets/new-railways/models/item/copper_minecart.json
 9e9f77e86898f758f7dd058b128204ebd81a17fa assets/new-railways/models/item/copper_rail.json
 f5d06b627cc3287bc5ce55933bd3aba88270fa14 assets/new-railways/models/item/furnace_copper_minecart.json
+4b918d6ced8383020ac5788e15a7724722d8735e assets/new-railways/models/item/halt_rail.json
 3c5020b11ebe70e5332facb67dbc413b34862095 assets/new-railways/models/item/hopper_copper_minecart.json
 cf6a1e0e5ad8ee087a67c42c04e466d95181825e assets/new-railways/models/item/input_copper_minecart.json
 a7bd459d848351a4ce56bdde9084be960dd8e52f assets/new-railways/models/item/input_minecart.json
