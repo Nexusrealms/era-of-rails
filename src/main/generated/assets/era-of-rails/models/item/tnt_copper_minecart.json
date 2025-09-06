@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "era-of-rails:item/tnt_copper_minecart"
+  }
+}

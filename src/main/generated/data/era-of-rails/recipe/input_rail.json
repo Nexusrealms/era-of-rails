@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:iron_ingot",
+    "O": "minecraft:observer",
+    "R": "minecraft:redstone",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "CRC",
+    "COC",
+    "CSC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "era-of-rails:input_rail"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:jukebox",
+    "era-of-rails:copper_minecart"
+  ],
+  "result": {
+    "count": 1,
+    "id": "era-of-rails:jukebox_copper_minecart"
+  }
+}

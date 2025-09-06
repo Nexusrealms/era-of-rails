@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "era-of-rails:item/input_rail"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:observer",
+    "minecraft:minecart"
+  ],
+  "result": {
+    "count": 1,
+    "id": "era-of-rails:input_minecart"
+  }
+}
