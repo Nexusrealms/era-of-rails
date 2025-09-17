@@ -61,7 +61,7 @@ public class RecipeGen extends FabricRecipeProvider {
                     .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
                     .offerTo(exporter);
 
-            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.COPPER_RAIL)
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.COPPER_RAIL, 6)
                     .pattern("C C")
                     .pattern("CRC")
                     .pattern("CSC")
@@ -70,7 +70,7 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('S', Items.STICK)
                     .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
                     .offerTo(exporter);
-            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.INPUT_RAIL)
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.INPUT_RAIL, 6)
                     .pattern("CRC")
                     .pattern("COC")
                     .pattern("CSC")
@@ -80,7 +80,7 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('O', Blocks.OBSERVER)
                     .criterion(hasItem(Items.OBSERVER), conditionsFromItem(Items.OBSERVER))
                     .offerTo(exporter);
-            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.SWITCH_RAIL)
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.SWITCH_RAIL, 6)
                     .pattern("CSC")
                     .pattern("SRC")
                     .pattern("CSC")
@@ -89,7 +89,7 @@ public class RecipeGen extends FabricRecipeProvider {
                     .input('S', Items.STICK)
                     .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                     .offerTo(exporter);
-            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.HALT_RAIL)
+            createShaped(RecipeCategory.TRANSPORTATION, RailwaysBlocks.HALT_RAIL, 6)
                     .pattern("ISI")
                     .pattern("IPI")
                     .pattern("ISI")
