@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.entity.LazyEntityReference;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.util.dynamic.Codecs;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
 
@@ -30,5 +31,7 @@ public interface CartLinker {
     default AbstractMinecartEntity asEntity() {
         throw new AssertionError("Implemented in Mixin!");
     }
-
+    default void pushCornerPoint(Vec3d point){
+        throw new AssertionError("Implemented in Mixin!");
+    }
 }

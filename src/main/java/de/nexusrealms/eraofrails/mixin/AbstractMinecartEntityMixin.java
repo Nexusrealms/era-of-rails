@@ -1,6 +1,7 @@
 package de.nexusrealms.eraofrails.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.nexusrealms.eraofrails.entity.CartLinker;
@@ -11,15 +12,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LazyEntityReference;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.DefaultMinecartController;
-import net.minecraft.entity.vehicle.ExperimentalMinecartController;
-import net.minecraft.entity.vehicle.VehicleEntity;
+import net.minecraft.entity.vehicle.*;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -34,6 +34,7 @@ import java.util.function.Function;
 public abstract class AbstractMinecartEntityMixin extends VehicleEntity implements CartLinker {
     @Shadow public abstract void tick();
 
+    @Shadow @Final private MinecartController controller;
     @Unique
     private static final TrackedData<Optional<LazyEntityReference<AbstractMinecartEntity>>> LINKED_PARENT = DataTracker.registerData(AbstractMinecartEntity.class, RailwaysEntities.MINECART_REFERENCE);
     @Unique
@@ -119,5 +120,9 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
             dataTracker.set(LINKED_CHILD, Optional.of(new LazyEntityReference<>(cartLinker.asEntity())));
         }    }
 
+    @Override
+    public void pushCornerPoint(Vec3d point) {
+        ((RailwaysMinecartController) controller).pushCornerPoint(point);
+    }
 
 }

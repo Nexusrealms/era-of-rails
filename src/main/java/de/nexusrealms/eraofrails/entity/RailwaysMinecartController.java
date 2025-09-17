@@ -1,5 +1,6 @@
 package de.nexusrealms.eraofrails.entity;
 
+import de.nexusrealms.eraofrails.EraOfRails;
 import de.nexusrealms.eraofrails.block.RailwaysBlocks;
 import de.nexusrealms.eraofrails.block.HaltRailBlock;
 import net.minecraft.block.AbstractRailBlock;
@@ -17,15 +18,24 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.time.chrono.Era;
+import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Queue;
 
 public class RailwaysMinecartController extends ExperimentalMinecartController implements CartLinker{
-
+    private final Queue<Vec3d> cornerPoints = new LinkedList<>();
+    private Vec3d followedCorner = null;
+    private BlockPos lastPushedPos = null;
 
     public RailwaysMinecartController(AbstractMinecartEntity abstractMinecartEntity) {
         super(abstractMinecartEntity);
     }
 
+    @Override
+    public void pushCornerPoint(Vec3d point) {
+        cornerPoints.add(point);
+    }
 
     @Override
     public void tick() {
@@ -34,21 +44,31 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
             if(getLinkedParent().isPresent()) {
                 AbstractMinecartEntity parent = getLinkedParent().get().asEntity();
                 double distance = parent.distanceTo(this.minecart) - 1;
+                Vec3d trackedPos = parent.getPos();
+                if(followedCorner == null && !cornerPoints.isEmpty()){
+                    followedCorner = cornerPoints.poll();
+                }
+                if(followedCorner != null && BlockPos.ofFloored(followedCorner).equals(minecart.getRailOrMinecartPos())){
+                    followedCorner = null;
+                }
+                if(followedCorner != null) {
+                    trackedPos = followedCorner;
+                    EraOfRails.LOGGER.info("Tracking pos {}", followedCorner);
+                }
+                if(distance <= 12) {
+                    Vec3d towardsParent = trackedPos.subtract(getPos()).normalize();
 
-                if(distance <= 6) {
-                    Vec3d towardsParent = parent.getPos().subtract(getPos()).normalize();
-
-                    if(distance > 1) {
+                    if(distance > 1 || followedCorner != null) {
                         Vec3d parentVelocity = parent.getVelocity();
 
                         if(parentVelocity.length() == 0) {
-                            setVelocity(towardsParent.multiply(0.1));
+                            setVelocity(towardsParent.multiply(0.4));
                         }
                         else {
                             setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 5 ? 1.5 : 1));
                         }
                     }
-                    else if(distance < 0.5) {
+                    else if(distance < 0.5 && followedCorner == null) {
                         setVelocity(towardsParent.multiply(-0.1));
                     }
                     else {
@@ -63,16 +83,31 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                     setLinkedParent(null);
                 }
             }
+            else {
+                followedCorner = null;
+                cornerPoints.clear();
+            }
             {
-                BlockPos var5 = this.minecart.getRailOrMinecartPos();
-                BlockState blockState = this.getWorld().getBlockState(var5);
+                BlockPos pos = this.minecart.getRailOrMinecartPos();
+                BlockState blockState = this.getWorld().getBlockState(pos);
                 if (this.minecart.isFirstUpdate()) {
                     this.minecart.setOnRail(AbstractRailBlock.isRail(blockState));
-                    this.adjustToRail(var5, blockState, true);
+                    this.adjustToRail(pos, blockState, true);
                 }
 
                 this.minecart.applyGravity();
                 this.minecart.moveOnRail(serverWorld);
+                getLinkedChild().ifPresent(cartLinker -> {
+                    if(AbstractRailBlock.isRail(blockState) && !minecart.getRailOrMinecartPos().equals(lastPushedPos)){
+                        if(blockState.contains(Properties.RAIL_SHAPE)){
+                            if(isCurved(blockState.get(Properties.RAIL_SHAPE))){
+                                lastPushedPos = minecart.getRailOrMinecartPos();
+                                  cartLinker.pushCornerPoint(minecart.getRailOrMinecartPos().toBottomCenterPos());
+                            }
+                        }
+                    }
+                });
+
             }
         } else {
             this.tickClient();
@@ -81,19 +116,15 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
         }
 
     }
+    private static boolean isCurved(RailShape shape){
+        return shape == RailShape.NORTH_EAST || shape == RailShape.NORTH_WEST || shape == RailShape.SOUTH_EAST || shape == RailShape.SOUTH_WEST;
+    }
 
-    /*@Override
-    public boolean pushAwayFromEntities(Box box) {
-        if(getLinkedParent().isPresent()){
-            return false;
-        }
-        return super.pushAwayFromEntities(box);
-    }*/
 
     @Override
     public double getMaxSpeed(ServerWorld world) {
         double d = super.getMaxSpeed(world);
-        return d * (isMinecartOnPoweredCopperRail(minecart) ? 4 : 1);
+        return d * (isMinecartOnPoweredCopperRail(minecart) ? 4 : 4);
     }
 
     @Override
