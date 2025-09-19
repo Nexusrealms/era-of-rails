@@ -1,8 +1,10 @@
 package de.nexusrealms.eraofrails.network;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -10,7 +12,9 @@ import net.minecraft.network.packet.CustomPayload;
 public class RailwaysPackets {
     public static void init(){
         initC2S();
-        initS2C();
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT){
+            initS2C();
+        }
     }
     private static void initS2C(){
         registerClientReceiverPacket(CartJukeboxSongPacket.ID, CartJukeboxSongPacket.PACKET_CODEC);

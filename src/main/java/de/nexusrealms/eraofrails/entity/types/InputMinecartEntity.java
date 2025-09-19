@@ -3,6 +3,8 @@ package de.nexusrealms.eraofrails.entity.types;
 import de.nexusrealms.eraofrails.client.InputCartScreen;
 import de.nexusrealms.eraofrails.item.RailwaysItems;
 import de.nexusrealms.eraofrails.network.SetInputCartDataPacket;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -121,6 +123,7 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
         }
         return ActionResult.SUCCESS;
     }
+    @Environment(value = EnvType.CLIENT)
     public void openScreen(){
         MinecraftClient.getInstance().setScreen(new InputCartScreen(this));
     }
