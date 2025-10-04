@@ -38,17 +38,17 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                 if(distance <= 6) {
                     Vec3d towardsParent = parent.getPos().subtract(getPos()).normalize();
 
-                    if(distance > 1) {
+                    if(distance > 0.3) {
                         Vec3d parentVelocity = parent.getVelocity();
 
                         if(parentVelocity.length() == 0) {
                             setVelocity(towardsParent.multiply(0.1));
                         }
                         else {
-                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 5 ? 1.5 : 1));
+                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 5 ? 3 : 1));
                         }
                     }
-                    else if(distance < 0.5) {
+                    else if(distance < 0.2) {
                         setVelocity(towardsParent.multiply(-0.1));
                     }
                     else {
