@@ -97,5 +97,13 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+		maven {
+			name = "nexusrealmsSnapshots"
+			url = uri("https://maven.riftrealms.de/snapshots")
+			credentials(org.gradle.api.credentials.PasswordCredentials)
+			authentication{
+				basic(BasicAuthentication)
+			}
+		}
 	}
 }
