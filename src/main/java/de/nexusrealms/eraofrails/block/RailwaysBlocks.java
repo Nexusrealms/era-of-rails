@@ -23,6 +23,8 @@ public class RailwaysBlocks {
     //public static final Block LOCKED_SWITCH_RAIL = createWithItem("locked_switch_rail", LockedSwitchRailBlock::new, AbstractBlock.Settings.copy(SWITCH_RAIL), ItemGroups.REDSTONE, SWITCH_RAIL);
     public static final Block INPUT_RAIL = createWithItem("input_rail", InputRailBlock::new, AbstractBlock.Settings.copy(Blocks.DETECTOR_RAIL), ItemGroups.REDSTONE, SWITCH_RAIL);
     public static final Block HALT_RAIL = createWithItem("halt_rail", HaltRailBlock::new, AbstractBlock.Settings.copy(COPPER_RAIL), ItemGroups.REDSTONE, INPUT_RAIL);
+    public static final Block CROSS_RAIL = createWithItem("cross_rail", CrossRailBlock::new, AbstractBlock.Settings.copy(HALT_RAIL), ItemGroups.REDSTONE, HALT_RAIL);
+
     private static <T extends Block> T createWithItem(String name, Function<AbstractBlock.Settings, T> constructor, AbstractBlock.Settings settings, RegistryKey<ItemGroup> itemGroup){
         return createWithItem(name, constructor, settings, itemGroup, FabricItemGroupEntries::add);
     }
@@ -47,6 +49,7 @@ public class RailwaysBlocks {
         public static final TagKey<Block> HIGH_SPEED_RAIL = TagKey.of(RegistryKeys.BLOCK, EraOfRails.id("high_speed_rail"));
         public static final TagKey<Block> POWERED_HIGH_SPEED_RAIL = TagKey.of(RegistryKeys.BLOCK, EraOfRails.id("powered_high_speed_rail"));
         public static final TagKey<Block> INPUT_RAIL = TagKey.of(RegistryKeys.BLOCK, EraOfRails.id("input_rail"));
+        public static final TagKey<Block> CROSS_RAIL = TagKey.of(RegistryKeys.BLOCK, EraOfRails.id("cross_rail"));
 
     }
 }

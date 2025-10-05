@@ -1,5 +1,6 @@
 {
   "block.era-of-rails.copper_rail": "Copper Powered Rail",
+  "block.era-of-rails.cross_rail": "Rail Cross",
   "block.era-of-rails.halt_rail": "Halt Rail",
   "block.era-of-rails.input_rail": "Input Rail",
   "block.era-of-rails.switch_rail": "Rail Switch",
@@ -20,6 +21,7 @@
   "item.era-of-rails.command_block_copper_minecart": "Copper Minecart with Command Block",
   "item.era-of-rails.copper_minecart": "Copper Minecart",
   "item.era-of-rails.copper_rail": "Copper Powered Rail",
+  "item.era-of-rails.cross_rail": "Rail Cross",
   "item.era-of-rails.furnace_copper_minecart": "Copper Minecart with Furnace",
   "item.era-of-rails.halt_rail": "Halt Rail",
   "item.era-of-rails.hopper_copper_minecart": "Copper Minecart with Hopper",

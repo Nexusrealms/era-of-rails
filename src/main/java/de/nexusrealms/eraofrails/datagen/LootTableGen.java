@@ -39,6 +39,7 @@ public abstract class LootTableGen extends SimpleFabricLootTableProvider {
             //addDrop(RailwaysBlocks.LOCKED_SWITCH_RAIL);
             addDrop(RailwaysBlocks.INPUT_RAIL);
             addDrop(RailwaysBlocks.HALT_RAIL);
+            addDrop(RailwaysBlocks.CROSS_RAIL);
 
         }
     }

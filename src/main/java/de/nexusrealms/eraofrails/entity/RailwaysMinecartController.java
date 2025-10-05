@@ -25,7 +25,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
     public RailwaysMinecartController(AbstractMinecartEntity abstractMinecartEntity) {
         super(abstractMinecartEntity);
     }
-
+    Vec3d prevVel = Vec3d.ZERO;
 
     @Override
     public void tick() {
@@ -64,11 +64,23 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                 }
             }
             {
-                BlockPos var5 = this.minecart.getRailOrMinecartPos();
-                BlockState blockState = this.getWorld().getBlockState(var5);
+                BlockPos pos = this.minecart.getRailOrMinecartPos();
+                BlockState blockState = this.getWorld().getBlockState(pos);
+                if(blockState.isIn(RailwaysBlocks.Tags.CROSS_RAIL)) {
+                    RailShape shape = blockState.get(Properties.STRAIGHT_RAIL_SHAPE);
+                    Direction direction = Direction.getFacing(getVelocity().getHorizontal());
+                    if(getVelocity().horizontalLength() > 0) {
+                        if(shape == RailShape.NORTH_SOUTH && (direction == Direction.EAST || direction == Direction.WEST)) {
+                            getWorld().setBlockState(pos, blockState.with(Properties.STRAIGHT_RAIL_SHAPE, RailShape.EAST_WEST));
+                        } else if(shape == RailShape.EAST_WEST && (direction == Direction.NORTH || direction == Direction.SOUTH)) {
+                            getWorld().setBlockState(pos, blockState.with(Properties.STRAIGHT_RAIL_SHAPE, RailShape.NORTH_SOUTH));
+                        }
+                    }
+                }
+                prevVel = getVelocity();
                 if (this.minecart.isFirstUpdate()) {
                     this.minecart.setOnRail(AbstractRailBlock.isRail(blockState));
-                    this.adjustToRail(var5, blockState, true);
+                    this.adjustToRail(pos, blockState, true);
                 }
 
                 this.minecart.applyGravity();

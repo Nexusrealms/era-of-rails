@@ -6,6 +6,7 @@ import de.nexusrealms.eraofrails.item.RailwaysItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
+import net.minecraft.client.data.Models;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.RegistryWrapper;
@@ -23,6 +24,7 @@ public class LangGen extends FabricLanguageProvider {
         //generateBlockAndItem(tb, RailwaysBlocks.LOCKED_SWITCH_RAIL, "Locked Rail Switch");
         generateBlockAndItem(tb, RailwaysBlocks.INPUT_RAIL, "Input Rail");
         generateBlockAndItem(tb, RailwaysBlocks.HALT_RAIL, "Halt Rail");
+        generateBlockAndItem(tb, RailwaysBlocks.CROSS_RAIL, "Rail Cross");
 
     }
     private void generateBlockAndItem(TranslationBuilder translationBuilder, Block block, String translation){

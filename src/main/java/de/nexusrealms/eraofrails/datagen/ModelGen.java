@@ -35,7 +35,7 @@ public class ModelGen extends FabricModelProvider {
         //registerSwitch(RailwaysBlocks.LOCKED_SWITCH_RAIL, blockStateModelGenerator);
         blockStateModelGenerator.registerStraightRail(RailwaysBlocks.INPUT_RAIL);
         registerAxialRail(RailwaysBlocks.HALT_RAIL, blockStateModelGenerator);
-
+        blockStateModelGenerator.registerSingleton(RailwaysBlocks.CROSS_RAIL, TexturedModel.makeFactory(TextureMap::rail, Models.RAIL_FLAT));
     }
 
     @Override

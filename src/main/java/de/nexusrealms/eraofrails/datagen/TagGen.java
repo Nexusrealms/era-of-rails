@@ -39,9 +39,12 @@ public class TagGen {
                     .addTag(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL);
             valueLookupBuilder(RailwaysBlocks.Tags.INPUT_RAIL)
                     .add(RailwaysBlocks.INPUT_RAIL);
+            valueLookupBuilder(RailwaysBlocks.Tags.CROSS_RAIL)
+                    .add(RailwaysBlocks.CROSS_RAIL);
             valueLookupBuilder(BlockTags.RAILS)
                     .addTag(RailwaysBlocks.Tags.INPUT_RAIL)
                     .addTag(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
+                    .addTag(RailwaysBlocks.Tags.CROSS_RAIL)
                     .add(RailwaysBlocks.SWITCH_RAIL, RailwaysBlocks.HALT_RAIL)
                     //.add(RailwaysBlocks.LOCKED_SWITCH_RAIL)
             ;

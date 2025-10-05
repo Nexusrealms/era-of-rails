@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "era-of-rails:block/cross_rail"
+    }
+  }
+}

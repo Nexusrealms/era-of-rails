@@ -1,5 +1,6 @@
 // 1.21.8	-999999999-01-01T00:00:00	Era of Rails/Model Definitions
 c75dc024a57dad045eb76bf7f652b7166287337a assets/era-of-rails/blockstates/copper_rail.json
+ff64f408c518fff07fe3d714815db8d25f96a9b4 assets/era-of-rails/blockstates/cross_rail.json
 36d5a25211848eaba1ac7813d3c952f60d9353c5 assets/era-of-rails/blockstates/halt_rail.json
 6402de45bd21c110ab0bc85327b0d04661faf9d9 assets/era-of-rails/blockstates/input_rail.json
 ee585d5aa517f6c6eb20388b8ef161b9422a24f8 assets/era-of-rails/blockstates/switch_rail.json
@@ -7,6 +8,7 @@ ee585d5aa517f6c6eb20388b8ef161b9422a24f8 assets/era-of-rails/blockstates/switch_
 0547098182ee10e2e4d448e4f389b057034802aa assets/era-of-rails/items/command_block_copper_minecart.json
 830b74cc1c2f1210e75f087c9d05dab4326593cf assets/era-of-rails/items/copper_minecart.json
 0d738a71c4094884362b8f40176646f074a42be7 assets/era-of-rails/items/copper_rail.json
+5d379b85c5aebbcaf070c8f94d3890a1f8f6b2f1 assets/era-of-rails/items/cross_rail.json
 8ba4ed92832f2dda2f2dcc524d32b4f6b9a43f41 assets/era-of-rails/items/furnace_copper_minecart.json
 062694f538f52fa83e12d4033579b33662ca8cc3 assets/era-of-rails/items/halt_rail.json
 320013ba586a79b4f37526bca7df84df043b27f5 assets/era-of-rails/items/hopper_copper_minecart.json
@@ -27,6 +29,7 @@ ac87afc2559a12e16d8c5c973f9a96c8050adf2d assets/era-of-rails/models/block/copper
 7921fed99f5349bd5fa17eef3ebe4389e0579207 assets/era-of-rails/models/block/copper_rail_on_raised_sw.json
 c39178f73f9b024baea5072c04afa4b7e35e9bea assets/era-of-rails/models/block/copper_rail_raised_ne.json
 d1c37074cbc12a1e79ef49ba2596327029714035 assets/era-of-rails/models/block/copper_rail_raised_sw.json
+cc0cd9715f40ee051026df587daeb8fe46e43a98 assets/era-of-rails/models/block/cross_rail.json
 ef5ef85437e64834822609aa5b8a0218ff1d6ffb assets/era-of-rails/models/block/halt_rail.json
 4c75ffb95d0b09a131898fc96139bf62f0e72c2d assets/era-of-rails/models/block/halt_rail_on.json
 c09f4319da14c3dfc39d59536a9ec4ab27c98968 assets/era-of-rails/models/block/halt_rail_on_raised_ne.json

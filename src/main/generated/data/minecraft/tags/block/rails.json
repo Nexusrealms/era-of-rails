@@ -2,6 +2,7 @@
   "values": [
     "#era-of-rails:input_rail",
     "#era-of-rails:high_speed_rail",
+    "#era-of-rails:cross_rail",
     "era-of-rails:switch_rail",
     "era-of-rails:halt_rail"
   ]
