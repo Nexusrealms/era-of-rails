@@ -64,4 +64,12 @@ public class HaltRailBlock extends AbstractRailBlock {
     public Property<RailShape> getShapeProperty() {
         return SHAPE;
     }
+    public static Direction getFacingDirection(BlockState state){
+        RailShape shape = state.get(SHAPE);
+        Direction.Axis axis = switch (shape) {
+            case RailShape.ASCENDING_EAST, RailShape.ASCENDING_WEST, RailShape.EAST_WEST -> Direction.Axis.X;
+            default -> Direction.Axis.Z;
+        };
+        return state.get(AXIAL) ? axis.getPositiveDirection() : axis.getNegativeDirection();
+    }
 }

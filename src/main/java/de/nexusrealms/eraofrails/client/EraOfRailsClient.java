@@ -26,6 +26,8 @@ public class EraOfRailsClient implements ClientModInitializer {
         //BlockRenderLayerMap.putBlock(RailwaysBlocks.LOCKED_SWITCH_RAIL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(RailwaysBlocks.INPUT_RAIL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(RailwaysBlocks.HALT_RAIL, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(RailwaysBlocks.CROSS_RAIL, BlockRenderLayer.CUTOUT);
+
     }
     private static void initEntityRenderers(){
         EntityRendererRegistry.register(RailwaysEntities.JUKEBOX_MINECART, ctx -> new MinecartEntityRenderer(ctx, EntityModelLayers.MINECART));

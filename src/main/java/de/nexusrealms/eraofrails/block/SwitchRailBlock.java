@@ -94,6 +94,16 @@ public class SwitchRailBlock extends AbstractRailBlock {
         BlockState state = getDefaultState().with(ORIENTATION, direction).with(RIGHT_HANDED, rightHanded);
         return state.with(SHAPE, getShapeFromState(state));
     }
+    public static Direction getSidewaysDirection(BlockState state){
+        boolean rightHanded = state.get(RIGHT_HANDED);
+        Direction direction = state.get(ORIENTATION);
+        return switch (direction){
+            case WEST -> rightHanded ? Direction.NORTH : Direction.SOUTH;
+            case EAST -> rightHanded ? Direction.SOUTH : Direction.NORTH;
+            case NORTH -> rightHanded ? Direction.EAST : Direction.WEST;
+            default -> rightHanded ? Direction.WEST : Direction.EAST;
+        };
+    }
     @Override
     protected BlockState rotate(BlockState state, BlockRotation rotation) {
         BlockState state1 = state.with(ORIENTATION, rotation.rotate(state.get(ORIENTATION)));

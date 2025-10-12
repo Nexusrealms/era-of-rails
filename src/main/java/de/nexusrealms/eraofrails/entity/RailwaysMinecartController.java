@@ -135,14 +135,13 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
             }
         } else if(railState.isOf(RailwaysBlocks.HALT_RAIL) && railState.get(PoweredRailBlock.POWERED)) {
             if(velocity.length() < 0.01) {
-                Direction.Axis axis = shapeToAxis(railState.get(Properties.STRAIGHT_RAIL_SHAPE));
-                Vec3d vec3d = (railState.get(HaltRailBlock.AXIAL) ? axis.getPositiveDirection() : axis.getNegativeDirection()).getDoubleVector();
+                Vec3d vec3d = HaltRailBlock.getFacingDirection(railState).getDoubleVector();
                 return vec3d.lengthSquared() <= 0.0 ? velocity : vec3d.multiply(velocity.length() + 0.2);
             }
         }
         return velocity;
     }
-    private static Direction.Axis shapeToAxis(RailShape shape){
+    public static Direction.Axis shapeToAxis(RailShape shape){
         if(shape == RailShape.ASCENDING_EAST || shape == RailShape.ASCENDING_WEST || shape == RailShape.EAST_WEST){
             return Direction.Axis.X;
         }
