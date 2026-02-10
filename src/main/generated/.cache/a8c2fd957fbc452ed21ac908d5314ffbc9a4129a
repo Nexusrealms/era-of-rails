@@ -8,7 +8,7 @@ ee585d5aa517f6c6eb20388b8ef161b9422a24f8 assets/era-of-rails/blockstates/switch_
 0547098182ee10e2e4d448e4f389b057034802aa assets/era-of-rails/items/command_block_copper_minecart.json
 830b74cc1c2f1210e75f087c9d05dab4326593cf assets/era-of-rails/items/copper_minecart.json
 0d738a71c4094884362b8f40176646f074a42be7 assets/era-of-rails/items/copper_rail.json
-5d379b85c5aebbcaf070c8f94d3890a1f8f6b2f1 assets/era-of-rails/items/cross_rail.json
+7aff2f998537410400ec24437633392ba8e8585d assets/era-of-rails/items/cross_rail.json
 8ba4ed92832f2dda2f2dcc524d32b4f6b9a43f41 assets/era-of-rails/items/furnace_copper_minecart.json
 062694f538f52fa83e12d4033579b33662ca8cc3 assets/era-of-rails/items/halt_rail.json
 320013ba586a79b4f37526bca7df84df043b27f5 assets/era-of-rails/items/hopper_copper_minecart.json
@@ -50,6 +50,7 @@ c262705ee90511f39355beec382af30965539e85 assets/era-of-rails/models/item/chest_c
 1080dbcbc82c3d510ff9b68161d23353c3b8fe0b assets/era-of-rails/models/item/command_block_copper_minecart.json
 322db736b7ec687fc23f0fee4403d7f3fd25bcfb assets/era-of-rails/models/item/copper_minecart.json
 ad5b3aff704522a23c7b2b2197b380be0edb7501 assets/era-of-rails/models/item/copper_rail.json
+5baab9b6b3e858c6a6c06eeeb7f7230743dc7f64 assets/era-of-rails/models/item/cross_rail.json
 a7511d279a09b0f71c0f16619b97856f33cd179f assets/era-of-rails/models/item/furnace_copper_minecart.json
 e6d54c09e35ebf735a5fc0e30ef7899b3b32dfe2 assets/era-of-rails/models/item/halt_rail.json
 3faa58269d4458452f64d33ef8b5eb053a7b95e0 assets/era-of-rails/models/item/hopper_copper_minecart.json

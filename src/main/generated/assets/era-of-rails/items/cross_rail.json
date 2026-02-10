@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "era-of-rails:block/cross_rail"
+    "model": "era-of-rails:item/cross_rail"
   }
 }
