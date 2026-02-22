@@ -36,7 +36,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                 double distance = parent.distanceTo(this.minecart) - 1;
 
                 if(distance <= 6) {
-                    Vec3d towardsParent = parent.getPos().subtract(getPos()).normalize();
+                    Vec3d towardsParent = parent.getEntityPos().subtract(getPos()).normalize();
 
                     if(distance > 0.3) {
                         Vec3d parentVelocity = parent.getVelocity();
@@ -57,7 +57,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
                 }
                 else {
                     if(getWorld() instanceof ServerWorld world){
-                        minecart.dropItem(world, Items.CHAIN);
+                        minecart.dropItem(world, Items.IRON_CHAIN);
                     }
                     parent.setLinkedChild(null);
                     setLinkedParent(null);
@@ -114,7 +114,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
     }
     public static boolean isMinecartOnPoweredCopperRail(AbstractMinecartEntity minecart){
         BlockPos blockPos = minecart.getRailOrMinecartPos();
-        BlockState blockState = minecart.getWorld().getBlockState(blockPos);
+        BlockState blockState = minecart.getEntityWorld().getBlockState(blockPos);
         return blockState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) && blockState.get(Properties.POWERED);
     }
     protected Vec3d decelerateFromPoweredRail(Vec3d velocity, BlockState railState) {

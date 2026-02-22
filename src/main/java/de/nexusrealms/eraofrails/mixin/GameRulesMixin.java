@@ -2,7 +2,7 @@ package de.nexusrealms.eraofrails.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.rule.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

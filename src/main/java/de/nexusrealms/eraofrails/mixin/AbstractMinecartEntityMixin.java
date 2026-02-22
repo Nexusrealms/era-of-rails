@@ -68,24 +68,24 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
     @Inject(method = "tick", at = @At("HEAD"))
     public void updateLinkedCarts(CallbackInfo ci){
         dataTracker.get(LINKED_PARENT).ifPresent(abstractMinecartEntityLazyEntityReference -> {
-            if(abstractMinecartEntityLazyEntityReference.resolve(getWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
+            if(abstractMinecartEntityLazyEntityReference.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
                 if(!notNull.isRemoved()){
                     return;
                 }
             }
-            if(getWorld() instanceof ServerWorld world){
-                dropItem(world, Items.CHAIN);
+            if(getEntityWorld() instanceof ServerWorld world){
+                dropItem(world, Items.IRON_CHAIN);
             }
             dataTracker.set(LINKED_PARENT, Optional.empty());
         });
         dataTracker.get(LINKED_CHILD).ifPresent(abstractMinecartEntityLazyEntityReference -> {
-            if(abstractMinecartEntityLazyEntityReference.resolve(getWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
+            if(abstractMinecartEntityLazyEntityReference.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
                 if(!notNull.isRemoved()) {
                     return;
                 }
             }
-            if(getWorld() instanceof ServerWorld world){
-                dropItem(world, Items.CHAIN);
+            if(getEntityWorld() instanceof ServerWorld world){
+                dropItem(world, Items.IRON_CHAIN);
             }
             dataTracker.set(LINKED_CHILD, Optional.empty());
         });
@@ -96,19 +96,19 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
     }
 
     public Optional<CartLinker> getLinkedParent() {
-        return dataTracker.get(LINKED_PARENT).map(e -> e.resolve(getWorld(), AbstractMinecartEntity.class));
+        return dataTracker.get(LINKED_PARENT).map(e -> e.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class));
     }
 
     @Override
     public Optional<CartLinker> getLinkedChild() {
-        return dataTracker.get(LINKED_CHILD).map(e -> e.resolve(getWorld(), AbstractMinecartEntity.class));
+        return dataTracker.get(LINKED_CHILD).map(e -> e.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class));
     }
     @Override
     public void setLinkedParent(CartLinker cartLinker) {
         if(cartLinker == null){
             dataTracker.set(LINKED_PARENT, Optional.empty());
         } else {
-            dataTracker.set(LINKED_PARENT, Optional.of(new LazyEntityReference<>(cartLinker.asEntity())));
+            dataTracker.set(LINKED_PARENT, Optional.of(LazyEntityReference.of(cartLinker.asEntity())));
         }
     }
     @Override
@@ -116,7 +116,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
         if(cartLinker == null){
             dataTracker.set(LINKED_CHILD, Optional.empty());
         } else {
-            dataTracker.set(LINKED_CHILD, Optional.of(new LazyEntityReference<>(cartLinker.asEntity())));
+            dataTracker.set(LINKED_CHILD, Optional.of(LazyEntityReference.of(cartLinker.asEntity())));
         }    }
 
 

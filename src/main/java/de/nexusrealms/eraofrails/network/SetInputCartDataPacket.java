@@ -16,7 +16,7 @@ public record SetInputCartDataPacket(int entityId, Optional<Long> newSequence, O
     public static final PacketCodec<ByteBuf, SetInputCartDataPacket> PACKET_CODEC = PacketCodec.tuple(PacketCodecs.INTEGER, SetInputCartDataPacket::entityId ,PacketCodecs.optional(PacketCodecs.LONG), SetInputCartDataPacket::newSequence, PacketCodecs.optional(PacketCodecs.INTEGER), SetInputCartDataPacket::newActiveInsts, SetInputCartDataPacket::new);
     @Override
     public void receive(ServerPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(entityId);
+        Entity entity = context.player().getEntityWorld().getEntityById(entityId);
         if(entity instanceof InputMinecartEntity minecart){
             minecart.updateFromPacket(this);
         }

@@ -42,15 +42,15 @@ public class EraOfRails implements ModInitializer {
 	public void initCartLinkEvents(){
 		UseEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
 			ItemStack stack = playerEntity.getStackInHand(hand);
-			if(!playerEntity.getWorld().isClient() && stack.isIn(RailwaysItems.Tags.LINK_CARTS) && entity instanceof AbstractMinecartEntity interacted){
+			if(!playerEntity.getEntityWorld().isClient() && stack.isIn(RailwaysItems.Tags.LINK_CARTS) && entity instanceof AbstractMinecartEntity interacted){
 				if(!stack.contains(RailwaysItems.Components.LINKING_PARENT)){
 					if(interacted.getLinkedChild().isEmpty() && playerEntity.isSneaking()){
-						stack.set(RailwaysItems.Components.LINKING_PARENT, new LazyEntityReference<>(interacted));
+						stack.set(RailwaysItems.Components.LINKING_PARENT, LazyEntityReference.of(interacted));
 						playerEntity.getItemCooldownManager().set(stack, 20);
 						return ActionResult.SUCCESS;
 					}
 				} else if(interacted.getLinkedParent().isEmpty()){
-					if(stack.get(RailwaysItems.Components.LINKING_PARENT).resolve(world, AbstractMinecartEntity.class) instanceof AbstractMinecartEntity parent && !parent.equals(interacted)){
+					if(stack.get(RailwaysItems.Components.LINKING_PARENT).getEntityByClass(world, AbstractMinecartEntity.class) instanceof AbstractMinecartEntity parent && !parent.equals(interacted)){
 						parent.setLinkedChild(interacted);
 						interacted.setLinkedParent(parent);
 						stack.remove(RailwaysItems.Components.LINKING_PARENT);
@@ -58,7 +58,7 @@ public class EraOfRails implements ModInitializer {
 						playerEntity.getItemCooldownManager().set(stack, 20);
 						return ActionResult.SUCCESS;
 					}
-					if(stack.get(RailwaysItems.Components.LINKING_PARENT).resolve(world, AbstractMinecartEntity.class) == null) stack.remove(RailwaysItems.Components.LINKING_PARENT);
+					if(stack.get(RailwaysItems.Components.LINKING_PARENT).getEntityByClass(world, AbstractMinecartEntity.class) == null) stack.remove(RailwaysItems.Components.LINKING_PARENT);
 				}
 				return ActionResult.FAIL;
 			}

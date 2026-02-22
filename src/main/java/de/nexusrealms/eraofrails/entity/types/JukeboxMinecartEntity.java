@@ -79,24 +79,25 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
         manager.stopPlaying();
     }
 
+
     @Override
-    public void onActivatorRail(int x, int y, int z, boolean powered) {
+    public void onActivatorRail(ServerWorld serverWorld, int y, int z, int i, boolean powered) {
         if(powered){
-           dropRecord();
+            dropRecord();
         }
     }
 
     public boolean dropRecord() {
-        if (!this.getWorld().isClient()) {
+        if (!this.getEntityWorld().isClient()) {
             BlockPos blockPos = this.getBlockPos();
             ItemStack itemStack = this.getRecordStack();
             if (!itemStack.isEmpty()) {
                 this.setStack(ItemStack.EMPTY);
-                Vec3d vec3d = Vec3d.add(blockPos, 0.5, 1.01, 0.5).addRandom(this.getWorld().getRandom(), 0.7F);
+                Vec3d vec3d = Vec3d.add(blockPos, 0.5, 1.01, 0.5).addRandom(this.getEntityWorld().getRandom(), 0.7F);
                 ItemStack itemStack2 = itemStack.copy();
-                ItemEntity itemEntity = new ItemEntity(this.getWorld(), vec3d.getX(), vec3d.getY(), vec3d.getZ(), itemStack2);
+                ItemEntity itemEntity = new ItemEntity(this.getEntityWorld(), vec3d.getX(), vec3d.getY(), vec3d.getZ(), itemStack2);
                 itemEntity.setToDefaultPickupDelay();
-                this.getWorld().spawnEntity(itemEntity);
+                this.getEntityWorld().spawnEntity(itemEntity);
                 return true;
             }
         }
@@ -110,7 +111,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     }
 
     public int getComparatorOutput() {
-        return JukeboxSong.getSongEntryFromStack(this.getWorld().getRegistryManager(), this.recordStack)
+        return JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), this.recordStack)
                 .map(RegistryEntry::value)
                 .map(JukeboxSong::comparatorOutput)
                 .orElse(0);
@@ -151,7 +152,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     public void setStack(ItemStack stack) {
         this.recordStack = stack;
         boolean bl = !this.recordStack.isEmpty();
-        Optional<RegistryEntry<JukeboxSong>> optional = JukeboxSong.getSongEntryFromStack(this.getWorld().getRegistryManager(), this.recordStack);
+        Optional<RegistryEntry<JukeboxSong>> optional = JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), this.recordStack);
         //this.onRecordStackChanged(bl);
         if (bl && optional.isPresent()) {
             this.manager.startPlaying(optional.get());
@@ -168,12 +169,12 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     @VisibleForTesting
     public void setDisc(ItemStack stack) {
         this.recordStack = stack;
-        JukeboxSong.getSongEntryFromStack(this.getWorld().getRegistryManager(), stack).ifPresent(song -> this.manager.setValues(song, 0L));
+        JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), stack).ifPresent(song -> this.manager.setValues(song, 0L));
     }
 
     @VisibleForTesting
     public void reloadDisc() {
-        JukeboxSong.getSongEntryFromStack(this.getWorld().getRegistryManager(), this.getRecordStack()).ifPresent(this.manager::startPlaying);
+        JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), this.getRecordStack()).ifPresent(this.manager::startPlaying);
     }
     @Override
     public ItemStack getPickBlockStack() {
@@ -227,7 +228,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
             if (this.song != null) {
                 this.song = null;
                 this.songTicks = 0L;
-                getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_STOP_PLAY, getPos());
+                getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_STOP_PLAY, getEntityPos());
                 if(!getWorld().isClient()){
                     getWorld().getServer().getPlayerManager().sendToAround(null, getX(), getY(), getZ(), 64f, getWorld().getRegistryKey(), new CustomPayloadS2CPacket(new CartJukeboxSongPacket(getId(), 0, true)));
                 }
@@ -241,8 +242,8 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
                     this.stopPlaying();
                 } else {
                     if (this.hasSecondPassed()) {
-                        getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_PLAY, JukeboxMinecartEntity.super.getPos());
-                        spawnNoteParticles(getWorld(), JukeboxMinecartEntity.super.getPos());
+                        getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_PLAY, JukeboxMinecartEntity.super.getEntityPos());
+                        spawnNoteParticles(getWorld(), JukeboxMinecartEntity.super.getEntityPos());
                     }
 
                     this.songTicks++;
@@ -250,7 +251,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
             }
         }
         private World getWorld(){
-            return JukeboxMinecartEntity.super.getWorld();
+            return JukeboxMinecartEntity.super.getEntityWorld();
         }
         private boolean hasSecondPassed() {
             return this.songTicks % 20L == 0L;

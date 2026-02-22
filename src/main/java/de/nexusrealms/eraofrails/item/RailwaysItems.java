@@ -79,7 +79,7 @@ public class RailwaysItems {
         registerBehavior(JUKEBOX_COPPER_MINECART);
         registerBehavior(REDSTONE_BLOCK_COPPER_MINECART);
         registerBehavior(INPUT_COPPER_MINECART);
-        DispenserBlock.registerBehavior(Items.CHAIN, new ItemDispenserBehavior(){
+        DispenserBlock.registerBehavior(Items.IRON_CHAIN, new ItemDispenserBehavior(){
             private final ItemDispenserBehavior fallback = new ItemDispenserBehavior();
 
             @Override

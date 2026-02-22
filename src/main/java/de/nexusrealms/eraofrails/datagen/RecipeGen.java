@@ -27,7 +27,7 @@ public class RecipeGen extends FabricRecipeProvider {
 
     @Override
     public String getName() {
-        return EraOfRails.MOD_ID;
+        return EraOfRails.MOD_ID + "/recipes";
     }
 
     private static class Generator extends RecipeGenerator {

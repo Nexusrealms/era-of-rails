@@ -7,6 +7,7 @@ import net.minecraft.block.DetectorRailBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,7 +27,7 @@ public abstract class DetectorRailMixin extends AbstractRailBlock {
     }
 
     @Inject(method = "getComparatorOutput", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;getCarts(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/List;", ordinal = 0), cancellable = true)
-    public void addComparatorOutput(BlockState state, World world, BlockPos pos, CallbackInfoReturnable<Integer> cir){
+    public void addComparatorOutput(BlockState state, World world, BlockPos pos, Direction direction, CallbackInfoReturnable<Integer> cir){
         List<AbstractMinecartEntity> list = getCarts(world, pos, AbstractMinecartEntity.class, cart -> cart instanceof ComparatorOutputtingMinecart);
         if(!list.isEmpty() && list.get(0) instanceof ComparatorOutputtingMinecart comparatorOutputtingMinecart){
             cir.setReturnValue(comparatorOutputtingMinecart.getComparatorOutput());

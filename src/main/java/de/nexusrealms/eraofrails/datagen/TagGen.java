@@ -22,7 +22,7 @@ public class TagGen {
         @Override
         protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
             valueLookupBuilder(RailwaysItems.Tags.LINK_CARTS)
-                    .add(RailwaysItems.CART_LINKING_TOOL, Items.CHAIN);
+                    .add(RailwaysItems.CART_LINKING_TOOL, Items.IRON_CHAIN);
         }
     }
 

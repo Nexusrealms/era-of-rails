@@ -47,13 +47,14 @@ public class InputRailBlock extends AbstractRailBlock {
         return true;
     }
 
-    protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
-        if (!world.isClient) {
+    @Override
+    protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler, boolean bl) {
+        if (!world.isClient()) {
             if (!(Boolean)state.get(POWERED)) {
                 this.updatePoweredStatus(world, pos, state);
             }
-        }
-    }
+        }    }
+
 
     protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if(state.get(LOCKED)){

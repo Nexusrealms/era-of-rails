@@ -24,8 +24,8 @@ import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.rule.GameRules;
 
 public class InputMinecartEntity extends AbstractMinecartEntity {
     public static final TrackedData<Long> SEQUENCE = DataTracker.registerData(InputMinecartEntity.class, TrackedDataHandlerRegistry.LONG);
@@ -94,7 +94,7 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
     }
     public void killAndDropSelf(ServerWorld world, DamageSource damageSource) {
         this.kill(world);
-        if (world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+        if (world.getGameRules().getValue(GameRules.ENTITY_DROPS)) {
             this.dropStack(world, getPickBlockStack());
         }
     }
@@ -118,7 +118,7 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
-        if(getWorld().isClient()){
+        if(getEntityWorld().isClient()){
             openScreen();
         }
         return ActionResult.SUCCESS;

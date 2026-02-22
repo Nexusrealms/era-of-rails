@@ -6,6 +6,7 @@ import de.nexusrealms.eraofrails.network.SetInputCartDataPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.sound.SoundCategory;
@@ -76,6 +77,10 @@ public class InputCartScreen extends Screen {
     }
 
     @Override
+    public boolean mouseClicked(Click click, boolean doubled) {
+        return mouseClicked(click.x(), click.y(), click.button());
+    }
+
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(isWithinSwitchBounds(mouseX, mouseY)){
             double xOffset = mouseX - switchOriginX;
@@ -90,7 +95,7 @@ public class InputCartScreen extends Screen {
                 int newActiveInsts = i + 1;
                 ClientPlayNetworking.send(new SetInputCartDataPacket(minecart.getId(), Optional.empty(), Optional.of(newActiveInsts)));
             }
-            client.player.playSoundToPlayer(SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 1f, 1f);
+            client.player.playSound(SoundEvents.BLOCK_LEVER_CLICK, 1f, 1f);
 
         }
         return false;

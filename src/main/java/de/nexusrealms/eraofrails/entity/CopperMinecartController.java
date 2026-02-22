@@ -17,10 +17,8 @@ public class CopperMinecartController extends RailwaysMinecartController{
         super.tick();
         for(Entity other : getWorld().getOtherEntities(minecart, minecart.getBoundingBox().expand(0.5), entity -> CopperMinecartEntity.launches(minecart, entity))) {
             if(!getWorld().isClient() && other instanceof LivingEntity living && living.isAlive() && !living.hasVehicle() && minecart.getVelocity().length() > 1.5) {
-                Vec3d knockback = minecart.getVelocity().add(living.getPos().subtract(minecart.getPos()).normalize()).add(0, minecart.getVelocity().length() / 2, 0);
+                Vec3d knockback = minecart.getVelocity().add(living.getEntityPos().subtract(minecart.getEntityPos()).normalize()).add(0, minecart.getVelocity().length() / 2, 0);
                 living.addVelocity(knockback);
-                living.velocityModified = true;
-                EraOfRails.LOGGER.info("knockback " + knockback);
             }
         }
     }
