@@ -70,6 +70,7 @@ public abstract class AbstractMinecartEntityRendererMixin <T extends AbstractMin
                 vertices.vertex(matrix4f, x2, y, length).color(0xffffffff).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(entry, 0f, -1f, 0f);
                 vertices.vertex(matrix4f, x2, y, 0f).color(0xffffffff).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(entry, 0f, -1f, 0f);
             });
+            matrices.pop();
         }
     }
 }
