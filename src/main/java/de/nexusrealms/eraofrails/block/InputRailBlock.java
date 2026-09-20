@@ -2,7 +2,6 @@ package de.nexusrealms.eraofrails.block;
 
 import com.mojang.serialization.MapCodec;
 import de.nexusrealms.eraofrails.entity.types.InputMinecartEntity;
-import net.minecraft.block.*;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RailState;

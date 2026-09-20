@@ -1,7 +1,6 @@
 package de.nexusrealms.eraofrails.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.*;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;

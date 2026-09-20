@@ -28,8 +28,8 @@ public abstract class DetectorRailMixin extends BaseRailBlock {
     }
 
     @Inject(method = "getAnalogOutputSignal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/DetectorRailBlock;getInteractingMinecartOfType(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/List;", ordinal = 0), cancellable = true)
-    public void addComparatorOutput(BlockState state, Level world, BlockPos pos, Direction direction, CallbackInfoReturnable<Integer> cir){
-        List<AbstractMinecart> list = getInteractingMinecartOfType(world, pos, AbstractMinecart.class, cart -> cart instanceof ComparatorOutputtingMinecart);
+    public void addComparatorOutput(BlockState blockState, Level level, BlockPos blockPos, CallbackInfoReturnable<Integer> cir){
+        List<AbstractMinecart> list = getInteractingMinecartOfType(level, blockPos, AbstractMinecart.class, cart -> cart instanceof ComparatorOutputtingMinecart);
         if(!list.isEmpty() && list.get(0) instanceof ComparatorOutputtingMinecart comparatorOutputtingMinecart){
             cir.setReturnValue(comparatorOutputtingMinecart.getComparatorOutput());
         }

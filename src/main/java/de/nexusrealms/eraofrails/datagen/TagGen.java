@@ -21,7 +21,7 @@ public class TagGen {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
-            tag(RailwaysItems.Tags.LINK_CARTS)
+            getOrCreateTagBuilder(RailwaysItems.Tags.LINK_CARTS)
                     .add(RailwaysItems.CART_LINKING_TOOL, Items.CHAIN);
         }
     }
@@ -33,15 +33,15 @@ public class TagGen {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
-            tag(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL)
+            getOrCreateTagBuilder(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL)
                     .add(RailwaysBlocks.COPPER_RAIL);
-            tag(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
+            getOrCreateTagBuilder(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
                     .addTag(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL);
-            tag(RailwaysBlocks.Tags.INPUT_RAIL)
+            getOrCreateTagBuilder(RailwaysBlocks.Tags.INPUT_RAIL)
                     .add(RailwaysBlocks.INPUT_RAIL);
-            tag(RailwaysBlocks.Tags.CROSS_RAIL)
+            getOrCreateTagBuilder(RailwaysBlocks.Tags.CROSS_RAIL)
                     .add(RailwaysBlocks.CROSS_RAIL);
-            tag(BlockTags.RAILS)
+            getOrCreateTagBuilder(BlockTags.RAILS)
                     .addTag(RailwaysBlocks.Tags.INPUT_RAIL)
                     .addTag(RailwaysBlocks.Tags.HIGH_SPEED_RAIL)
                     .addTag(RailwaysBlocks.Tags.CROSS_RAIL)
@@ -60,7 +60,7 @@ public class TagGen {
 
         @Override
         protected void addTags(HolderLookup.Provider wrapperLookup) {
-            tag(RailwaysEntities.Tags.COPPER_MINECARTS)
+            getOrCreateTagBuilder(RailwaysEntities.Tags.COPPER_MINECARTS)
                     .add(
                             RailwaysEntities.COPPER_MINECART,
                             RailwaysEntities.CHEST_COPPER_MINECART,

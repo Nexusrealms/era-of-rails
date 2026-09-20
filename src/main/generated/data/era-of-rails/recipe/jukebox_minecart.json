@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:jukebox",
-    "minecraft:minecart"
+    {
+      "item": "minecraft:jukebox"
+    },
+    {
+      "item": "minecraft:minecart"
+    }
   ],
   "result": {
     "count": 1,

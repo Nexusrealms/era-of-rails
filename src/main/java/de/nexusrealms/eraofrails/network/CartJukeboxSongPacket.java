@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record CartJukeboxSongPacket(int entity, int song, boolean stop) implements ReceiverPacket<ClientPlayNetworking.Context>{
     public static final Type<CartJukeboxSongPacket> ID = new Type<>(EraOfRails.id("cart_jukebox_song"));
-    public static final StreamCodec<ByteBuf, CartJukeboxSongPacket> PACKET_CODEC = StreamCodec.composite(ByteBufCodecs.INT, CartJukeboxSongPacket::entity, ByteBufCodecs.INT, CartJukeboxSongPacket::song, ByteBufCodecs.BOOLEAN, CartJukeboxSongPacket::stop, CartJukeboxSongPacket::new);
+    public static final StreamCodec<ByteBuf, CartJukeboxSongPacket> PACKET_CODEC = StreamCodec.composite(ByteBufCodecs.INT, CartJukeboxSongPacket::entity, ByteBufCodecs.INT, CartJukeboxSongPacket::song, ByteBufCodecs.BOOL, CartJukeboxSongPacket::stop, CartJukeboxSongPacket::new);
     @Override
     public void receive(ClientPlayNetworking.Context context) {
         CartJukeboxHandler handler = ((CartJukeboxHandlerProvider) context.client().level).getHandler();

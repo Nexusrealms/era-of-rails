@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:observer",
-    "minecraft:minecart"
+    {
+      "item": "minecraft:observer"
+    },
+    {
+      "item": "minecraft:minecart"
+    }
   ],
   "result": {
     "count": 1,

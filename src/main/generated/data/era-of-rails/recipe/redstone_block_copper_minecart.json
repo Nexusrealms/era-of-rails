@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:redstone_block",
-    "era-of-rails:copper_minecart"
+    {
+      "item": "minecraft:redstone_block"
+    },
+    {
+      "item": "era-of-rails:copper_minecart"
+    }
   ],
   "result": {
     "count": 1,

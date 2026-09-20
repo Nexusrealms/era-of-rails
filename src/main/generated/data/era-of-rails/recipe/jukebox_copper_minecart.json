@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:jukebox",
-    "era-of-rails:copper_minecart"
+    {
+      "item": "minecraft:jukebox"
+    },
+    {
+      "item": "era-of-rails:copper_minecart"
+    }
   ],
   "result": {
     "count": 1,

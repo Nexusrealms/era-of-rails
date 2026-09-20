@@ -3,13 +3,8 @@
   "package": "de.nexusrealms.eraofrails.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "AbstractMinecartMixin",
     "DetectorRailMixin",
     "DispenserBlockEntityMixin",
-    "ExperimentalMinecartControllerMixin",
-    "GameRulesMixin",
-    "MinecartDispenserBehaviorMixin",
-    "MinecartItemAccessor",
     "RailStateMixin",
     "MinecartSpawnerMixin",
     "MinecartTNTMixin"
@@ -21,8 +16,6 @@
     "requireAnnotations": true
   },
   "client": [
-    "client.AbstractMinecartEntityRendererMixin",
-    "client.ClientLevelMixin",
-    "client.MinecartEntityRenderStateMixin"
+    "client.ClientLevelMixin"
   ]
 }

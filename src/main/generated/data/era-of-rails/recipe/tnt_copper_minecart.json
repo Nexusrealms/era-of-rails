@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:tnt",
-    "era-of-rails:copper_minecart"
+    {
+      "item": "minecraft:tnt"
+    },
+    {
+      "item": "era-of-rails:copper_minecart"
+    }
   ],
   "result": {
     "count": 1,

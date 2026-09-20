@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:redstone_block",
-    "minecraft:minecart"
+    {
+      "item": "minecraft:redstone_block"
+    },
+    {
+      "item": "minecraft:minecart"
+    }
   ],
   "result": {
     "count": 1,

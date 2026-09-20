@@ -37,7 +37,7 @@ public class CrossRailBlock extends BaseRailBlock {
         return CODEC;
     }
 
-
+    //TODO Re-add
     @Override
     public Property<RailShape> getShapeProperty() {
         return SHAPE;

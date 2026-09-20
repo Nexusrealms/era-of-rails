@@ -2,7 +2,6 @@ package de.nexusrealms.eraofrails.entity;
 
 import de.nexusrealms.eraofrails.EraOfRails;
 import de.nexusrealms.eraofrails.entity.types.*;
-import net.minecraft.entity.*;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.entity.Entity;
@@ -19,8 +18,6 @@ import net.minecraft.tags.TagKey;
 import java.util.Optional;
 
 public class RailwaysEntities {
-    public static final EntityDataSerializer<Optional<LazyCartReference>> MINECART_REFERENCE = EntityDataSerializer.forValueType(LazyCartReference.PACKET_CODEC.apply(ByteBufCodecs::optional));
-
 
     //Copper variants of vanilla minecarts
     public static final EntityType<CopperMinecartEntity> COPPER_MINECART = create("copper_minecart", EntityType.Builder.of(CopperMinecartEntity::new, MobCategory.MISC)
@@ -56,7 +53,6 @@ public class RailwaysEntities {
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build());
     }
     public static void init(){
-        EntityDataSerializers.registerSerializer(MINECART_REFERENCE);
     }
     public static class Tags {
         public static final TagKey<EntityType<?>> COPPER_MINECARTS = TagKey.create(Registries.ENTITY_TYPE, EraOfRails.id("copper_minecarts"));

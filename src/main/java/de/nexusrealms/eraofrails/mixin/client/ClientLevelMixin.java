@@ -15,22 +15,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.Supplier;
+
 @Mixin(ClientLevel.class)
 public class ClientLevelMixin implements CartJukeboxHandlerProvider {
     @Unique
     private CartJukeboxHandler cartJukeboxHandler;
     @Inject(method = "<init>", at = @At("TAIL"))
-    public void onInit(ClientPacketListener networkHandler,
-                       ClientLevel.ClientLevelData properties,
-                       ResourceKey<Level> registryRef,
-                       Holder<DimensionType> dimensionType,
-                       int loadDistance,
-                       int simulationDistance,
-                       LevelRenderer worldRenderer,
-                       boolean debugWorld,
-                       long seed,
-                       int seaLevel,
-                       CallbackInfo ci){
+    public void onInit(ClientPacketListener clientPacketListener, ClientLevel.ClientLevelData clientLevelData, ResourceKey resourceKey, Holder holder, int i, int j, Supplier supplier, LevelRenderer levelRenderer, boolean bl, long l, CallbackInfo ci){
         cartJukeboxHandler = new CartJukeboxHandler((ClientLevel) (Object) (this));
     }
 

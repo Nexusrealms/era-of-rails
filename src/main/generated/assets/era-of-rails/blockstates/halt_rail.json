@@ -19,7 +19,8 @@
       "y": 270
     },
     "axial=false,powered=false,shape=north_south": {
-      "model": "era-of-rails:block/halt_rail"
+      "model": "era-of-rails:block/halt_rail",
+      "y": 0
     },
     "axial=false,powered=true,shape=ascending_east": {
       "model": "era-of-rails:block/halt_rail_on_raised_sw",
@@ -40,7 +41,8 @@
       "y": 270
     },
     "axial=false,powered=true,shape=north_south": {
-      "model": "era-of-rails:block/halt_rail_on"
+      "model": "era-of-rails:block/halt_rail_on",
+      "y": 0
     },
     "axial=true,powered=false,shape=ascending_east": {
       "model": "era-of-rails:block/halt_rail_raised_ne",
