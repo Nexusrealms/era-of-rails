@@ -1,31 +1,31 @@
 package de.nexusrealms.eraofrails.entity.types;
 
 import de.nexusrealms.eraofrails.item.RailwaysItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.ChestMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.MinecartChest;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
-public class ChestCopperMinecartEntity extends ChestMinecartEntity {
+public class ChestCopperMinecartEntity extends MinecartChest {
 
-    public ChestCopperMinecartEntity(EntityType<? extends ChestMinecartEntity> entityType, World world) {
+    public ChestCopperMinecartEntity(EntityType<? extends MinecartChest> entityType, Level world) {
         super(entityType, world);
 
     }
 
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(asItem());
+    public ItemStack getPickResult() {
+        return new ItemStack(getDropItem());
     }
     @Override
-    public boolean collidesWith(Entity other) {
-        return other instanceof AbstractMinecartEntity;
+    public boolean canCollideWith(Entity other) {
+        return other instanceof AbstractMinecart;
     }
     @Override
-    protected Item asItem() {
+    protected Item getDropItem() {
         return RailwaysItems.CHEST_COPPER_MINECART;
     }
 }

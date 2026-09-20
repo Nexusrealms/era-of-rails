@@ -2,50 +2,50 @@ package de.nexusrealms.eraofrails.entity.types;
 
 import de.nexusrealms.eraofrails.entity.ComparatorOutputtingMinecart;
 import de.nexusrealms.eraofrails.item.RailwaysItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractBoatEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.MinecartEntity;
-import net.minecraft.entity.vehicle.VehicleInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
 
-public class CopperMinecartEntity extends MinecartEntity implements ComparatorOutputtingMinecart {
-    public CopperMinecartEntity(EntityType<?> entityType, World world) {
+public class CopperMinecartEntity extends Minecart implements ComparatorOutputtingMinecart {
+    public CopperMinecartEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
 
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(asItem());
+    public ItemStack getPickResult() {
+        return new ItemStack(getDropItem());
     }
 
     @Override
-    public boolean collidesWith(Entity other) {
-        return other instanceof AbstractMinecartEntity;
+    public boolean canCollideWith(Entity other) {
+        return other instanceof AbstractMinecart;
     }
-    public static boolean launches(AbstractMinecartEntity minecart, Entity other) {
-        return AbstractBoatEntity.canCollide(minecart, other);
+    public static boolean launches(AbstractMinecart minecart, Entity other) {
+        return Boat.canVehicleCollide(minecart, other);
     }
 
     @Override
-    protected Item asItem() {
+    protected Item getDropItem() {
         return RailwaysItems.COPPER_MINECART;
     }
 
     @Override
     public int getComparatorOutput() {
-        Inventory inventory = null;
+        Container inventory = null;
         Entity passenger = getFirstPassenger();
-        if(passenger instanceof PlayerEntity player) inventory = player.getInventory();
-        if(passenger instanceof AbstractHorseEntity horseEntity) inventory = horseEntity.items;
-        if(passenger instanceof VehicleInventory vehicleInventory) inventory = vehicleInventory;
-        return inventory != null ? ScreenHandler.calculateComparatorOutput(inventory) : 0;
+        if(passenger instanceof Player player) inventory = player.getInventory();
+        if(passenger instanceof AbstractHorse horseEntity) inventory = horseEntity.inventory;
+        if(passenger instanceof ContainerEntity vehicleInventory) inventory = vehicleInventory;
+        return inventory != null ? AbstractContainerMenu.getRedstoneSignalFromContainer(inventory) : 0;
     }
 }

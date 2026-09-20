@@ -1,24 +1,25 @@
 package de.nexusrealms.eraofrails.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class LockedSwitchRailBlock extends SwitchRailBlock {
 
-    protected LockedSwitchRailBlock(Settings settings) {
+    protected LockedSwitchRailBlock(Properties settings) {
         super(settings);
     }
     @Override
-    protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {
-        boolean bl = state.get(SWITCHED);
-        BlockState maybeInputRail = world.getBlockState(pos.offset(state.get(ORIENTATION).getOpposite()));
-        boolean bl2 = maybeInputRail.isIn(RailwaysBlocks.Tags.INPUT_RAIL) && maybeInputRail.get(InputRailBlock.POWERED);
+    protected void updateState(BlockState state, Level world, BlockPos pos, Block neighbor) {
+        boolean bl = state.getValue(SWITCHED);
+        BlockState maybeInputRail = world.getBlockState(pos.relative(state.getValue(ORIENTATION).getOpposite()));
+        boolean bl2 = maybeInputRail.is(RailwaysBlocks.Tags.INPUT_RAIL) && maybeInputRail.getValue(InputRailBlock.POWERED);
         if (bl2 != bl) {
-            state = state.with(SWITCHED, bl2);
+            state = state.setValue(SWITCHED, bl2);
         }
-        world.setBlockState(pos, state.with(SHAPE, getShapeFromState(state)), Block.NOTIFY_ALL);
+        world.setBlock(pos, state.setValue(SHAPE, getShapeFromState(state)), Block.UPDATE_ALL);
     }
 
 }

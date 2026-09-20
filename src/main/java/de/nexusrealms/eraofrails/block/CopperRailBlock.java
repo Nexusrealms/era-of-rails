@@ -1,11 +1,12 @@
 package de.nexusrealms.eraofrails.block;
 
-import net.minecraft.block.PoweredRailBlock;
+import net.minecraft.world.level.block.PoweredRailBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 
 public class CopperRailBlock extends PoweredRailBlock {
 
-    protected CopperRailBlock(Settings settings) {
+    protected CopperRailBlock(Properties settings) {
         super(settings);
     }
 

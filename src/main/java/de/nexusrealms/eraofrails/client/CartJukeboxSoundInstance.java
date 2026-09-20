@@ -1,15 +1,15 @@
 package de.nexusrealms.eraofrails.client;
 
-import net.minecraft.client.sound.MovingSoundInstance;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 
-public class CartJukeboxSoundInstance extends MovingSoundInstance {
-    private final AbstractMinecartEntity minecart;
+public class CartJukeboxSoundInstance extends AbstractTickableSoundInstance {
+    private final AbstractMinecart minecart;
 
-    protected CartJukeboxSoundInstance(SoundEvent soundEvent, SoundCategory soundCategory, Random random, AbstractMinecartEntity minecart) {
+    protected CartJukeboxSoundInstance(SoundEvent soundEvent, SoundSource soundCategory, RandomSource random, AbstractMinecart minecart) {
         super(soundEvent, soundCategory, random);
 
         this.minecart = minecart;
@@ -17,23 +17,23 @@ public class CartJukeboxSoundInstance extends MovingSoundInstance {
         this.y = (float) minecart.getY();
         this.z = (float) minecart.getZ();
     }
-    public static CartJukeboxSoundInstance ofSong(SoundEvent soundEvent, AbstractMinecartEntity minecart){
-        return new CartJukeboxSoundInstance(soundEvent, SoundCategory.RECORDS, minecart.getRandom(), minecart);
+    public static CartJukeboxSoundInstance ofSong(SoundEvent soundEvent, AbstractMinecart minecart){
+        return new CartJukeboxSoundInstance(soundEvent, SoundSource.RECORDS, minecart.getRandom(), minecart);
     }
     @Override
-    public boolean canPlay() {
+    public boolean canPlaySound() {
         return !this.minecart.isSilent();
     }
 
     @Override
-    public boolean shouldAlwaysPlay() {
+    public boolean canStartSilent() {
         return true;
     }
 
     @Override
     public void tick() {
         if (this.minecart.isRemoved()) {
-            this.setDone();
+            this.stop();
         } else {
             this.x = (float) this.minecart.getX();
             this.y = (float) this.minecart.getY();

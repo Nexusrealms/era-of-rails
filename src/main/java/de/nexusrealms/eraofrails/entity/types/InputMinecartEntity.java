@@ -5,47 +5,53 @@ import de.nexusrealms.eraofrails.item.RailwaysItems;
 import de.nexusrealms.eraofrails.network.SetInputCartDataPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-import net.minecraft.world.rule.GameRules;
+import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 
-public class InputMinecartEntity extends AbstractMinecartEntity {
-    public static final TrackedData<Long> SEQUENCE = DataTracker.registerData(InputMinecartEntity.class, TrackedDataHandlerRegistry.LONG);
-    public static final TrackedData<Integer> ACTIVE_INSTS = DataTracker.registerData(InputMinecartEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    public static final TrackedData<Integer> NEXT_INST = DataTracker.registerData(InputMinecartEntity.class, TrackedDataHandlerRegistry.INTEGER);
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+
+public class InputMinecartEntity extends AbstractMinecart {
+    public static final EntityDataAccessor<Long> SEQUENCE = SynchedEntityData.defineId(InputMinecartEntity.class, EntityDataSerializers.LONG);
+    public static final EntityDataAccessor<Integer> ACTIVE_INSTS = SynchedEntityData.defineId(InputMinecartEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> NEXT_INST = SynchedEntityData.defineId(InputMinecartEntity.class, EntityDataSerializers.INT);
 
 
-    public InputMinecartEntity(EntityType<?> entityType, World world) {
+    public InputMinecartEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        super.initDataTracker(builder);
-        builder.add(SEQUENCE, 0L);
-        builder.add(ACTIVE_INSTS, 64);
-        builder.add(NEXT_INST, 0);
+    public Item getDropItem(){
+        return RailwaysItems.INPUT_MINECART;
     }
-
     @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SEQUENCE, 0L);
+        builder.define(ACTIVE_INSTS, 64);
+        builder.define(NEXT_INST, 0);
+    }
+    //TODO Custom cart type enum
+    @Override
+    public Type getMinecartType() {
+        return Type.RIDEABLE;
+    }
+   /* @Override
     protected void copyComponentsFrom(ComponentsAccess from) {
         super.copyComponentsFrom(from);
         copyComponentFrom(from, RailwaysItems.Components.INPUT_CART_SEQUENCE);
@@ -65,10 +71,10 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
         }
         return super.setApplicableComponent(type, value);
     }
-
+*/
     public boolean getNextInputAndMove(){
-        int next = dataTracker.get(NEXT_INST);
-        int active = dataTracker.get(ACTIVE_INSTS);
+        int next = entityData.get(NEXT_INST);
+        int active = entityData.get(ACTIVE_INSTS);
         if(active == 0){
             return false;
         }
@@ -76,80 +82,78 @@ public class InputMinecartEntity extends AbstractMinecartEntity {
             dataTracker.set(NEXT_INST, 0);
             return getNextInputAndMove();
         }*/
-        long sequence = dataTracker.get(SEQUENCE);
+        long sequence = entityData.get(SEQUENCE);
         boolean bool = ((sequence >> next) & 1) != 0;
         if(next + 1 >= active){
-            dataTracker.set(NEXT_INST, 0);
+            entityData.set(NEXT_INST, 0);
         } else {
-            dataTracker.set(NEXT_INST, next + 1);
+            entityData.set(NEXT_INST, next + 1);
         }
         return bool;
     }
+
     @Override
-    public void writeData(WriteView view) {
-        super.writeData(view);
-        view.putLong("sequence", dataTracker.get(SEQUENCE));
-        view.putInt("activeInsts", dataTracker.get(ACTIVE_INSTS));
-        view.putInt("nextInst", dataTracker.get(NEXT_INST));
+    protected void addAdditionalSaveData(CompoundTag view) {
+        super.addAdditionalSaveData(view);
+        view.putLong("sequence", entityData.get(SEQUENCE));
+        view.putInt("activeInsts", entityData.get(ACTIVE_INSTS));
+        view.putInt("nextInst", entityData.get(NEXT_INST));
     }
-    public void killAndDropSelf(ServerWorld world, DamageSource damageSource) {
-        this.kill(world);
-        if (world.getGameRules().getValue(GameRules.ENTITY_DROPS)) {
-            this.dropStack(world, getPickBlockStack());
+
+    public void destroy(DamageSource damageSource) {
+        this.kill();
+        if (getCommandSenderWorld().getGameRules().getRule(GameRules.RULE_DOENTITYDROPS).get()) {
+            this.spawnAtLocation(getPickResult());
         }
     }
-    @Override
-    public void readData(ReadView view) {
-        super.readData(view);
-        dataTracker.set(SEQUENCE, view.getLong("sequence", 0L));
-        dataTracker.set(ACTIVE_INSTS, view.getInt("activeInsts", 64));
-        dataTracker.set(NEXT_INST, view.getInt("nextInst", 0));
 
+    @Override
+    protected void readAdditionalSaveData(CompoundTag view) {
+        super.readAdditionalSaveData(view);
+        entityData.set(SEQUENCE, view.getLong("sequence"));
+        entityData.set(ACTIVE_INSTS, view.getInt("activeInsts"));
+        entityData.set(NEXT_INST, view.getInt("nextInst"));
     }
     public long getSequence(){
-        return dataTracker.get(SEQUENCE);
+        return entityData.get(SEQUENCE);
     }
     public int getActiveInsts(){
-        return dataTracker.get(ACTIVE_INSTS);
+        return entityData.get(ACTIVE_INSTS);
     }
     public int getNextInst(){
-        return dataTracker.get(NEXT_INST);
+        return entityData.get(NEXT_INST);
     }
 
     @Override
-    public ActionResult interact(PlayerEntity player, Hand hand) {
-        if(getEntityWorld().isClient()){
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        if(getCommandSenderWorld().isClientSide()){
             openScreen();
         }
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
     @Environment(value = EnvType.CLIENT)
     public void openScreen(){
-        MinecraftClient.getInstance().setScreen(new InputCartScreen(this));
+        Minecraft.getInstance().setScreen(new InputCartScreen(this));
     }
     @Override
-    public ItemStack getPickBlockStack() {
-        ItemStack stack = new ItemStack(asItem());
-        stack.set(RailwaysItems.Components.INPUT_CART_LIMIT, dataTracker.get(ACTIVE_INSTS));
-        stack.set(RailwaysItems.Components.INPUT_CART_SEQUENCE, dataTracker.get(SEQUENCE));
+    public ItemStack getPickResult() {
+        ItemStack stack = new ItemStack(getDropItem());
+        stack.set(RailwaysItems.Components.INPUT_CART_LIMIT, entityData.get(ACTIVE_INSTS));
+        stack.set(RailwaysItems.Components.INPUT_CART_SEQUENCE, entityData.get(SEQUENCE));
         return stack;
     }
 
-    @Override
-    protected Item asItem() {
-        return RailwaysItems.INPUT_MINECART;
-    }
     public void updateFromPacket(SetInputCartDataPacket inputCartDataPacket){
-        inputCartDataPacket.newSequence().ifPresent(aLong -> dataTracker.set(SEQUENCE, aLong));
+        inputCartDataPacket.newSequence().ifPresent(aLong -> entityData.set(SEQUENCE, aLong));
         inputCartDataPacket.newActiveInsts().ifPresent(aInt -> {
-            dataTracker.set(ACTIVE_INSTS, aInt);
+            entityData.set(ACTIVE_INSTS, aInt);
             if(aInt <= getNextInst()){
-                dataTracker.set(NEXT_INST, 0);
+                entityData.set(NEXT_INST, 0);
             }
         });
     }
     @Override
-    public BlockState getDefaultContainedBlock() {
-        return Blocks.OBSERVER.getDefaultState();
+    public BlockState getDefaultDisplayBlockState() {
+        return Blocks.OBSERVER.defaultBlockState();
     }
 }

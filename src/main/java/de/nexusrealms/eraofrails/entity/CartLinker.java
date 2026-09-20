@@ -1,14 +1,13 @@
 package de.nexusrealms.eraofrails.entity;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.entity.LazyEntityReference;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.util.dynamic.Codecs;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.util.ExtraCodecs;
 
 import java.util.Optional;
 
 public interface CartLinker {
-    Codec<Optional<LazyEntityReference<AbstractMinecartEntity>>> MINECART_REFERENCE_CODEC = Codecs.optional(LazyEntityReference.createCodec());
+    Codec<Optional<LazyCartReference>> MINECART_REFERENCE_CODEC = ExtraCodecs.optionalEmptyMap(LazyCartReference.CODEC);
     default Optional<CartLinker> getLinkedParent() {
         throw new AssertionError("Implemented in Mixin!");
     }
@@ -27,7 +26,7 @@ public interface CartLinker {
 
     }
 
-    default AbstractMinecartEntity asEntity() {
+    default AbstractMinecart asEntity() {
         throw new AssertionError("Implemented in Mixin!");
     }
 

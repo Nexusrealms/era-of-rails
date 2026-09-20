@@ -1,75 +1,75 @@
 package de.nexusrealms.eraofrails.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.enums.RailShape;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 
-public class HaltRailBlock extends AbstractRailBlock {
-    public static final MapCodec<InputRailBlock> CODEC = createCodec(InputRailBlock::new);
-    public static final EnumProperty<RailShape> SHAPE = Properties.STRAIGHT_RAIL_SHAPE;
-    public static final BooleanProperty POWERED = Properties.POWERED;
-    public static final BooleanProperty AXIAL = BooleanProperty.of("axial");
-    protected HaltRailBlock(Settings settings) {
+public class HaltRailBlock extends BaseRailBlock {
+    public static final MapCodec<InputRailBlock> CODEC = simpleCodec(InputRailBlock::new);
+    public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final BooleanProperty AXIAL = BooleanProperty.create("axial");
+    protected HaltRailBlock(Properties settings) {
         super(true, settings);
-        setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false).with(WATERLOGGED, false).with(AXIAL, false));
+        registerDefaultState(this.stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH).setValue(POWERED, false).setValue(WATERLOGGED, false).setValue(AXIAL, false));
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(SHAPE, POWERED, AXIAL, WATERLOGGED);
     }
 
     @Override
-    protected MapCodec<? extends AbstractRailBlock> getCodec() {
+    protected MapCodec<? extends BaseRailBlock> codec() {
         return CODEC;
     }
-    protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {
-        boolean bl = state.get(POWERED);
-        boolean bl2 = world.isReceivingRedstonePower(pos);
+    protected void updateState(BlockState state, Level world, BlockPos pos, Block neighbor) {
+        boolean bl = state.getValue(POWERED);
+        boolean bl2 = world.hasNeighborSignal(pos);
         if (bl2 != bl) {
-            world.setBlockState(pos, state.with(POWERED, bl2), 3);
+            world.setBlock(pos, state.setValue(POWERED, bl2), 3);
         }
 
     }
-    protected BlockState rotate(BlockState state, BlockRotation rotation) {
+    /*protected BlockState rotate(BlockState state, BlockRotation rotation) {
         RailShape railShape = state.get(SHAPE);
         RailShape railShape2 = this.rotateShape(railShape, rotation);
         return state.with(SHAPE, railShape2);
-    }
-
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return super.getPlacementState(ctx).with(AXIAL, ctx.getHorizontalPlayerFacing().getDirection() == Direction.AxisDirection.POSITIVE);
     }
 
     protected BlockState mirror(BlockState state, BlockMirror mirror) {
         RailShape railShape = state.get(SHAPE);
         RailShape railShape2 = this.mirrorShape(railShape, mirror);
         return state.with(SHAPE, railShape2);
+    }*/
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return super.getStateForPlacement(ctx).setValue(AXIAL, ctx.getHorizontalDirection().getAxisDirection() == Direction.AxisDirection.POSITIVE);
     }
     @Override
     public Property<RailShape> getShapeProperty() {
         return SHAPE;
     }
     public static Direction getFacingDirection(BlockState state){
-        RailShape shape = state.get(SHAPE);
-        Direction.Axis axis = switch (shape) {
-            case RailShape.ASCENDING_EAST, RailShape.ASCENDING_WEST, RailShape.EAST_WEST -> Direction.Axis.X;
-            default -> Direction.Axis.Z;
+        RailShape shape = state.getValue(SHAPE);
+        boolean isX = switch (shape) {
+            case RailShape.ASCENDING_EAST, RailShape.ASCENDING_WEST, RailShape.EAST_WEST -> true;
+            default -> false;
         };
-        return state.get(AXIAL) ? axis.getPositiveDirection() : axis.getNegativeDirection();
+        return state.getValue(AXIAL) ? (isX ? Direction.EAST : Direction.SOUTH) : (isX ? Direction.WEST : Direction.NORTH);
     }
 }

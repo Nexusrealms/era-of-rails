@@ -5,9 +5,9 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class RailwaysPackets {
     public static void init(){
@@ -24,11 +24,11 @@ public class RailwaysPackets {
     }
 
 
-    private static <T extends ReceiverPacket<ClientPlayNetworking.Context>> void registerClientReceiverPacket(CustomPayload.Id<T> packetId, PacketCodec<? super RegistryByteBuf, T> packetCodec){
+    private static <T extends ReceiverPacket<ClientPlayNetworking.Context>> void registerClientReceiverPacket(CustomPacketPayload.Type<T> packetId, StreamCodec<? super RegistryFriendlyByteBuf, T> packetCodec){
         PayloadTypeRegistry.playS2C().register(packetId, packetCodec);
         ClientPlayNetworking.registerGlobalReceiver(packetId, ReceiverPacket::receive);
     }
-    private static <T extends ReceiverPacket<ServerPlayNetworking.Context>> void registerServerReceiverPacket(CustomPayload.Id<T> packetId, PacketCodec<? super RegistryByteBuf, T> packetCodec){
+    private static <T extends ReceiverPacket<ServerPlayNetworking.Context>> void registerServerReceiverPacket(CustomPacketPayload.Type<T> packetId, StreamCodec<? super RegistryFriendlyByteBuf, T> packetCodec){
         PayloadTypeRegistry.playC2S().register(packetId, packetCodec);
         ServerPlayNetworking.registerGlobalReceiver(packetId, ReceiverPacket::receive);
     }

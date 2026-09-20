@@ -4,20 +4,20 @@ import de.nexusrealms.eraofrails.block.RailwaysBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.context.ContextType;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 
 public abstract class LootTableGen extends SimpleFabricLootTableProvider {
-    protected final RegistryWrapper.WrapperLookup registryLookup;
+    protected final HolderLookup.Provider registryLookup;
 
-    protected LootTableGen(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup, ContextType contextType) {
+    protected LootTableGen(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup, LootContextParamSet contextType) {
         super(dataOutput, registryLookup, contextType);
         try {
             this.registryLookup = registryLookup.get();
@@ -28,29 +28,29 @@ public abstract class LootTableGen extends SimpleFabricLootTableProvider {
     }
 
     public static class Block extends FabricBlockLootTableProvider {
-        protected Block(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        protected Block(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
             super(dataOutput, registryLookup);
         }
 
         @Override
         public void generate() {
-            addDrop(RailwaysBlocks.COPPER_RAIL);
-            addDrop(RailwaysBlocks.SWITCH_RAIL);
+            dropSelf(RailwaysBlocks.COPPER_RAIL);
+            dropSelf(RailwaysBlocks.SWITCH_RAIL);
             //addDrop(RailwaysBlocks.LOCKED_SWITCH_RAIL);
-            addDrop(RailwaysBlocks.INPUT_RAIL);
-            addDrop(RailwaysBlocks.HALT_RAIL);
-            addDrop(RailwaysBlocks.CROSS_RAIL);
+            dropSelf(RailwaysBlocks.INPUT_RAIL);
+            dropSelf(RailwaysBlocks.HALT_RAIL);
+            dropSelf(RailwaysBlocks.CROSS_RAIL);
 
         }
     }
 
     public static class Entity extends LootTableGen {
-        public Entity(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
-            super(output, registryLookup, LootContextTypes.ENCHANTED_ENTITY);
+        public Entity(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+            super(output, registryLookup, LootContextParamSets.ENCHANTED_ENTITY);
         }
 
         @Override
-        public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
+        public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
 
         }
 

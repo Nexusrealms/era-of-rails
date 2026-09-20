@@ -8,10 +8,10 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.LazyEntityReference;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +23,8 @@ public class EraOfRails implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static Identifier id(String name){
-		return Identifier.of(MOD_ID, name);
+	public static ResourceLocation id(String name){
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
 	}
 	@Override
 	public void onInitialize() {
@@ -41,28 +41,28 @@ public class EraOfRails implements ModInitializer {
 	}
 	public void initCartLinkEvents(){
 		UseEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
-			ItemStack stack = playerEntity.getStackInHand(hand);
-			if(!playerEntity.getEntityWorld().isClient() && stack.isIn(RailwaysItems.Tags.LINK_CARTS) && entity instanceof AbstractMinecartEntity interacted){
-				if(!stack.contains(RailwaysItems.Components.LINKING_PARENT)){
-					if(interacted.getLinkedChild().isEmpty() && playerEntity.isSneaking()){
+			ItemStack stack = playerEntity.getItemInHand(hand);
+			if(!playerEntity.getCommandSenderWorld().isClientSide() && stack.is(RailwaysItems.Tags.LINK_CARTS) && entity instanceof AbstractMinecart interacted){
+				if(!stack.has(RailwaysItems.Components.LINKING_PARENT)){
+					if(interacted.getLinkedChild().isEmpty() && playerEntity.isShiftKeyDown()){
 						stack.set(RailwaysItems.Components.LINKING_PARENT, LazyEntityReference.of(interacted));
-						playerEntity.getItemCooldownManager().set(stack, 20);
-						return ActionResult.SUCCESS;
+						playerEntity.getCooldowns().addCooldown(stack, 20);
+						return InteractionResult.SUCCESS;
 					}
 				} else if(interacted.getLinkedParent().isEmpty()){
-					if(stack.get(RailwaysItems.Components.LINKING_PARENT).getEntityByClass(world, AbstractMinecartEntity.class) instanceof AbstractMinecartEntity parent && !parent.equals(interacted)){
+					if(stack.get(RailwaysItems.Components.LINKING_PARENT).getEntityByClass(world, AbstractMinecart.class) instanceof AbstractMinecart parent && !parent.equals(interacted)){
 						parent.setLinkedChild(interacted);
 						interacted.setLinkedParent(parent);
 						stack.remove(RailwaysItems.Components.LINKING_PARENT);
-						stack.decrementUnlessCreative(1, playerEntity);
-						playerEntity.getItemCooldownManager().set(stack, 20);
-						return ActionResult.SUCCESS;
+						stack.consume(1, playerEntity);
+						playerEntity.getCooldowns().addCooldown(stack, 20);
+						return InteractionResult.SUCCESS;
 					}
-					if(stack.get(RailwaysItems.Components.LINKING_PARENT).getEntityByClass(world, AbstractMinecartEntity.class) == null) stack.remove(RailwaysItems.Components.LINKING_PARENT);
+					if(stack.get(RailwaysItems.Components.LINKING_PARENT).getEntityByClass(world, AbstractMinecart.class) == null) stack.remove(RailwaysItems.Components.LINKING_PARENT);
 				}
-				return ActionResult.FAIL;
+				return InteractionResult.FAIL;
 			}
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         });
 	}
 

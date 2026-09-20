@@ -1,8 +1,4 @@
 accessWidener v2 named
-extendable method net/minecraft/client/data/Model createTextureMap (Lnet/minecraft/client/data/TextureMap;)Ljava/util/Map;
-accessible field net/minecraft/client/data/Model parent Ljava/util/Optional;
-extendable method net/minecraft/entity/vehicle/ExperimentalMinecartController accelerateFromPoweredRail (Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Lnet/minecraft/util/math/Vec3d;
-accessible field net/minecraft/entity/passive/AbstractHorseEntity items Lnet/minecraft/inventory/SimpleInventory;
-accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity moveOnRail (Lnet/minecraft/server/world/ServerWorld;)V
-accessible method net/minecraft/entity/vehicle/ExperimentalMinecartController tickClient ()V
-extendable    method    net/minecraft/entity/vehicle/ExperimentalMinecartController    decelerateFromPoweredRail    (Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/block/BlockState;)Lnet/minecraft/util/math/Vec3d;
+accessible field net/minecraft/data/models/model/ModelTemplate model Ljava/util/Optional;
+accessible field net/minecraft/world/entity/animal/horse/AbstractHorse inventory Lnet/minecraft/world/SimpleContainer;
+extendable    method    net/minecraft/world/entity/vehicle/VehicleEntity    getDropItem    ()Lnet/minecraft/world/item/Item;

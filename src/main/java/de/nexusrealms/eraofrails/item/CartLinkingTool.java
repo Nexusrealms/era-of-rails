@@ -1,9 +1,10 @@
 package de.nexusrealms.eraofrails.item;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
 
 public class CartLinkingTool extends Item {
-    public CartLinkingTool(Settings settings) {
+    public CartLinkingTool(Properties settings) {
         super(settings);
     }
 

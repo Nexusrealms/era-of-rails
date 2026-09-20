@@ -1,10 +1,10 @@
 package de.nexusrealms.eraofrails.mixin;
 
 import de.nexusrealms.eraofrails.block.SwitchRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RailPlacementHelper;
-import net.minecraft.block.enums.RailShape;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RailState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,18 +14,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(RailPlacementHelper.class)
-public abstract class RailPlacementHelperMixin {
+@Mixin(RailState.class)
+public abstract class RailStateMixin {
     @Shadow private BlockState state;
 
-    @Shadow @Final private List<BlockPos> neighbors;
+    @Shadow @Final private List<BlockPos> connections;
 
     @Shadow @Final private BlockPos pos;
 
-    @Inject(method = "computeNeighbors", at = @At(value = "INVOKE", target = "Ljava/util/List;clear()V", shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "updateConnections", at = @At(value = "INVOKE", target = "Ljava/util/List;clear()V", shift = At.Shift.AFTER), cancellable = true)
     public void setSwitchNeighbors(RailShape shape, CallbackInfo ci){
         if(state.getBlock() instanceof SwitchRailBlock switchRailBlock){
-            neighbors.addAll(switchRailBlock.getNeighbors(pos, state));
+            connections.addAll(switchRailBlock.getNeighbors(pos, state));
         }
     }
 }

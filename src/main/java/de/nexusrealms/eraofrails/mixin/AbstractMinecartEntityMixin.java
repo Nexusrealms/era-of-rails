@@ -1,25 +1,23 @@
+// TODO(Ravel): Failed to fully resolve file: null cannot be cast to non-null type com.intellij.psi.PsiClass
 package de.nexusrealms.eraofrails.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import de.nexusrealms.eraofrails.entity.CartLinker;
-import de.nexusrealms.eraofrails.entity.CopperMinecartController;
-import de.nexusrealms.eraofrails.entity.RailwaysEntities;
-import de.nexusrealms.eraofrails.entity.RailwaysMinecartController;
-import net.minecraft.entity.EntityType;
+import de.nexusrealms.eraofrails.entity.*;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.entity.LazyEntityReference;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.entity.vehicle.DefaultMinecartController;
 import net.minecraft.entity.vehicle.ExperimentalMinecartController;
-import net.minecraft.entity.vehicle.VehicleEntity;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.entity.vehicle.VehicleEntity;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,93 +28,93 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 import java.util.function.Function;
 
-@Mixin(AbstractMinecartEntity.class)
-public abstract class AbstractMinecartEntityMixin extends VehicleEntity implements CartLinker {
+@Mixin(AbstractMinecart.class)
+public abstract class AbstractMinecartMixin extends VehicleEntity implements CartLinker {
     @Shadow public abstract void tick();
 
     @Unique
-    private static final TrackedData<Optional<LazyEntityReference<AbstractMinecartEntity>>> LINKED_PARENT = DataTracker.registerData(AbstractMinecartEntity.class, RailwaysEntities.MINECART_REFERENCE);
+    private static final EntityDataAccessor<Optional<LazyCartReference>> LINKED_PARENT = SynchedEntityData.defineId(AbstractMinecart.class, RailwaysEntities.MINECART_REFERENCE);
     @Unique
-    private static final TrackedData<Optional<LazyEntityReference<AbstractMinecartEntity>>> LINKED_CHILD = DataTracker.registerData(AbstractMinecartEntity.class, RailwaysEntities.MINECART_REFERENCE);
+    private static final EntityDataAccessor<Optional<LazyCartReference>> LINKED_CHILD = SynchedEntityData.defineId(AbstractMinecart.class, RailwaysEntities.MINECART_REFERENCE);
 
-    public AbstractMinecartEntityMixin(EntityType<?> entityType, World world) {
+    public AbstractMinecartMixin(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
-    @WrapOperation(method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V", at = @At(value = "NEW", target = "(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;)Lnet/minecraft/entity/vehicle/ExperimentalMinecartController;"))
-    public ExperimentalMinecartController useRailwayController(AbstractMinecartEntity abstractMinecartEntity, Operation<DefaultMinecartController> original, EntityType<?> entityType, World world){
-        return entityType.isIn(RailwaysEntities.Tags.COPPER_MINECARTS) ? new CopperMinecartController(abstractMinecartEntity) : new RailwaysMinecartController(abstractMinecartEntity);
+    @WrapOperation(method = "<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;)V", at = @At(value = "NEW", target = "(Lnet/minecraft/world/entity/vehicle/AbstractMinecart;)Lnet/minecraft/entity/vehicle/ExperimentalMinecartController;"))
+    public ExperimentalMinecartController useRailwayController(AbstractMinecart abstractMinecartEntity, Operation<DefaultMinecartController> original, EntityType<?> entityType, Level world){
+        return entityType.is(RailwaysEntities.Tags.COPPER_MINECARTS) ? new CopperMinecartController(abstractMinecartEntity) : new RailwaysMinecartController(abstractMinecartEntity);
     }
     @ModifyReturnValue(method = "areMinecartImprovementsEnabled", at = @At("TAIL"))
     private static boolean theyAreAlwaysEnabled(boolean original){
         return true;
     }
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    public void addToDataTracker(DataTracker.Builder builder, CallbackInfo ci){
-        builder.add(LINKED_PARENT, Optional.empty());
-        builder.add(LINKED_CHILD, Optional.empty());
+    @Inject(method = "defineSynchedData", at = @At("TAIL"))
+    public void addToDataTracker(SynchedEntityData.Builder builder, CallbackInfo ci){
+        builder.define(LINKED_PARENT, Optional.empty());
+        builder.define(LINKED_CHILD, Optional.empty());
     }
     @Inject(method = "writeCustomData", at = @At("TAIL"))
     public void writeAdditionalData(WriteView view, CallbackInfo ci){
-        view.put("linkedParent", CartLinker.MINECART_REFERENCE_CODEC, dataTracker.get(LINKED_PARENT));
-        view.put("linkedChild", CartLinker.MINECART_REFERENCE_CODEC, dataTracker.get(LINKED_CHILD));
+        view.put("linkedParent", CartLinker.MINECART_REFERENCE_CODEC, entityData.get(LINKED_PARENT));
+        view.put("linkedChild", CartLinker.MINECART_REFERENCE_CODEC, entityData.get(LINKED_CHILD));
     }
     @Inject(method = "readCustomData", at = @At("TAIL"))
     public void readAdditionalData(ReadView view, CallbackInfo ci){
-        dataTracker.set(LINKED_PARENT, view.read("linkedParent", CartLinker.MINECART_REFERENCE_CODEC).flatMap(Function.identity()));
-        dataTracker.set(LINKED_CHILD, view.read("linkedChild", CartLinker.MINECART_REFERENCE_CODEC).flatMap(Function.identity()));
+        entityData.set(LINKED_PARENT, view.read("linkedParent", CartLinker.MINECART_REFERENCE_CODEC).flatMap(Function.identity()));
+        entityData.set(LINKED_CHILD, view.read("linkedChild", CartLinker.MINECART_REFERENCE_CODEC).flatMap(Function.identity()));
     }
     @Inject(method = "tick", at = @At("HEAD"))
     public void updateLinkedCarts(CallbackInfo ci){
-        dataTracker.get(LINKED_PARENT).ifPresent(abstractMinecartEntityLazyEntityReference -> {
-            if(abstractMinecartEntityLazyEntityReference.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
+        entityData.get(LINKED_PARENT).ifPresent(abstractMinecartEntityLazyEntityReference -> {
+            if(abstractMinecartEntityLazyEntityReference.getEntityByClass(getCommandSenderWorld(), AbstractMinecart.class) instanceof AbstractMinecart notNull){
                 if(!notNull.isRemoved()){
                     return;
                 }
             }
-            if(getEntityWorld() instanceof ServerWorld world){
-                dropItem(world, Items.IRON_CHAIN);
+            if(getCommandSenderWorld() instanceof ServerLevel world){
+                spawnAtLocation(world, Items.IRON_CHAIN);
             }
-            dataTracker.set(LINKED_PARENT, Optional.empty());
+            entityData.set(LINKED_PARENT, Optional.empty());
         });
-        dataTracker.get(LINKED_CHILD).ifPresent(abstractMinecartEntityLazyEntityReference -> {
-            if(abstractMinecartEntityLazyEntityReference.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class) instanceof AbstractMinecartEntity notNull){
+        entityData.get(LINKED_CHILD).ifPresent(abstractMinecartEntityLazyEntityReference -> {
+            if(abstractMinecartEntityLazyEntityReference.getEntityByClass(getCommandSenderWorld(), AbstractMinecart.class) instanceof AbstractMinecart notNull){
                 if(!notNull.isRemoved()) {
                     return;
                 }
             }
-            if(getEntityWorld() instanceof ServerWorld world){
-                dropItem(world, Items.IRON_CHAIN);
+            if(getCommandSenderWorld() instanceof ServerLevel world){
+                spawnAtLocation(world, Items.IRON_CHAIN);
             }
-            dataTracker.set(LINKED_CHILD, Optional.empty());
+            entityData.set(LINKED_CHILD, Optional.empty());
         });
     }
     @Override
-    public AbstractMinecartEntity asEntity() {
-        return (AbstractMinecartEntity) (Object) this;
+    public AbstractMinecart asEntity() {
+        return (AbstractMinecart) (Object) this;
     }
 
     public Optional<CartLinker> getLinkedParent() {
-        return dataTracker.get(LINKED_PARENT).map(e -> e.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class));
+        return entityData.get(LINKED_PARENT).map(e -> e.getEntityByClass(getCommandSenderWorld(), AbstractMinecart.class));
     }
 
     @Override
     public Optional<CartLinker> getLinkedChild() {
-        return dataTracker.get(LINKED_CHILD).map(e -> e.getEntityByClass(getEntityWorld(), AbstractMinecartEntity.class));
+        return entityData.get(LINKED_CHILD).map(e -> e.getEntityByClass(getCommandSenderWorld(), AbstractMinecart.class));
     }
     @Override
     public void setLinkedParent(CartLinker cartLinker) {
         if(cartLinker == null){
-            dataTracker.set(LINKED_PARENT, Optional.empty());
+            entityData.set(LINKED_PARENT, Optional.empty());
         } else {
-            dataTracker.set(LINKED_PARENT, Optional.of(LazyEntityReference.of(cartLinker.asEntity())));
+            entityData.set(LINKED_PARENT, Optional.of(LazyEntityReference.of(cartLinker.asEntity())));
         }
     }
     @Override
     public void setLinkedChild(CartLinker cartLinker) {
         if(cartLinker == null){
-            dataTracker.set(LINKED_CHILD, Optional.empty());
+            entityData.set(LINKED_CHILD, Optional.empty());
         } else {
-            dataTracker.set(LINKED_CHILD, Optional.of(LazyEntityReference.of(cartLinker.asEntity())));
+            entityData.set(LINKED_CHILD, Optional.of(LazyEntityReference.of(cartLinker.asEntity())));
         }    }
 
 

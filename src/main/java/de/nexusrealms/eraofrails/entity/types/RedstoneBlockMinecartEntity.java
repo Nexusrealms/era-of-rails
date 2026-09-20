@@ -1,31 +1,37 @@
 package de.nexusrealms.eraofrails.entity.types;
 
 import de.nexusrealms.eraofrails.item.RailwaysItems;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
-public class RedstoneBlockMinecartEntity extends AbstractMinecartEntity {
-    public RedstoneBlockMinecartEntity(EntityType<?> entityType, World world) {
+public class RedstoneBlockMinecartEntity extends AbstractMinecart {
+    public RedstoneBlockMinecartEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
-
+    //TODO Custom cart type enum
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(asItem());
+    public Type getMinecartType() {
+        return Type.SPAWNER;
     }
 
     @Override
-    protected Item asItem() {
+    public ItemStack getPickResult() {
+        return new ItemStack(getDropItem());
+    }
+
+    @Override
+    protected Item getDropItem() {
         return RailwaysItems.REDSTONE_BLOCK_MINECART;
     }
 
     @Override
-    public BlockState getDefaultContainedBlock() {
-        return Blocks.REDSTONE_BLOCK.getDefaultState();
+    public BlockState getDefaultDisplayBlockState() {
+        return Blocks.REDSTONE_BLOCK.defaultBlockState();
     }
 }

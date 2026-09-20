@@ -1,14 +1,15 @@
 package de.nexusrealms.eraofrails.mixin;
 
 import de.nexusrealms.eraofrails.entity.ComparatorOutputtingMinecart;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DetectorRailBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DetectorRailBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,16 +20,16 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Mixin(DetectorRailBlock.class)
-public abstract class DetectorRailMixin extends AbstractRailBlock {
-    @Shadow protected abstract <T extends AbstractMinecartEntity> List<T> getCarts(World world, BlockPos pos, Class<T> entityClass, Predicate<Entity> entityPredicate);
+public abstract class DetectorRailMixin extends BaseRailBlock {
+    @Shadow protected abstract <T extends AbstractMinecart> List<T> getInteractingMinecartOfType(Level world, BlockPos pos, Class<T> entityClass, Predicate<Entity> entityPredicate);
 
-    protected DetectorRailMixin(boolean forbidCurves, Settings settings) {
+    protected DetectorRailMixin(boolean forbidCurves, Properties settings) {
         super(forbidCurves, settings);
     }
 
-    @Inject(method = "getComparatorOutput", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;getCarts(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/List;", ordinal = 0), cancellable = true)
-    public void addComparatorOutput(BlockState state, World world, BlockPos pos, Direction direction, CallbackInfoReturnable<Integer> cir){
-        List<AbstractMinecartEntity> list = getCarts(world, pos, AbstractMinecartEntity.class, cart -> cart instanceof ComparatorOutputtingMinecart);
+    @Inject(method = "getAnalogOutputSignal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/DetectorRailBlock;getInteractingMinecartOfType(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/List;", ordinal = 0), cancellable = true)
+    public void addComparatorOutput(BlockState state, Level world, BlockPos pos, Direction direction, CallbackInfoReturnable<Integer> cir){
+        List<AbstractMinecart> list = getInteractingMinecartOfType(world, pos, AbstractMinecart.class, cart -> cart instanceof ComparatorOutputtingMinecart);
         if(!list.isEmpty() && list.get(0) instanceof ComparatorOutputtingMinecart comparatorOutputtingMinecart){
             cir.setReturnValue(comparatorOutputtingMinecart.getComparatorOutput());
         }

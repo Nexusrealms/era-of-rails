@@ -2,61 +2,61 @@ package de.nexusrealms.eraofrails.entity;
 
 import de.nexusrealms.eraofrails.block.RailwaysBlocks;
 import de.nexusrealms.eraofrails.block.HaltRailBlock;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PoweredRailBlock;
-import net.minecraft.block.enums.RailShape;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PoweredRailBlock;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.entity.vehicle.ExperimentalMinecartController;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
 public class RailwaysMinecartController extends ExperimentalMinecartController implements CartLinker{
 
 
-    public RailwaysMinecartController(AbstractMinecartEntity abstractMinecartEntity) {
+    public RailwaysMinecartController(AbstractMinecart abstractMinecartEntity) {
         super(abstractMinecartEntity);
     }
-    Vec3d prevVel = Vec3d.ZERO;
+    Vec3 prevVel = Vec3.ZERO;
 
     @Override
     public void tick() {
-        World blockPos = this.getWorld();
-        if (blockPos instanceof ServerWorld serverWorld) {
+        Level blockPos = this.getWorld();
+        if (blockPos instanceof ServerLevel serverWorld) {
             if(getLinkedParent().isPresent()) {
-                AbstractMinecartEntity parent = getLinkedParent().get().asEntity();
+                AbstractMinecart parent = getLinkedParent().get().asEntity();
                 double distance = parent.distanceTo(this.minecart) - 1;
 
                 if(distance <= 6) {
-                    Vec3d towardsParent = parent.getEntityPos().subtract(getPos()).normalize();
+                    Vec3 towardsParent = parent.getEntityPos().subtract(getPos()).normalize();
 
                     if(distance > 0.3) {
-                        Vec3d parentVelocity = parent.getVelocity();
+                        Vec3 parentVelocity = parent.getDeltaMovement();
 
                         if(parentVelocity.length() == 0) {
-                            setVelocity(towardsParent.multiply(0.1));
+                            setVelocity(towardsParent.scale(0.1));
                         }
                         else {
-                            setVelocity(towardsParent.multiply(parentVelocity.length()).multiply(distance * (distance) > 5 ? 3 : 1));
+                            setVelocity(towardsParent.scale(parentVelocity.length()).scale(distance * (distance) > 5 ? 3 : 1));
                         }
                     }
                     else if(distance < 0.2) {
-                        setVelocity(towardsParent.multiply(-0.1));
+                        setVelocity(towardsParent.scale(-0.1));
                     }
                     else {
-                        setVelocity(Vec3d.ZERO);
+                        setVelocity(Vec3.ZERO);
                     }
                 }
                 else {
-                    if(getWorld() instanceof ServerWorld world){
+                    if(getWorld() instanceof ServerLevel world){
                         minecart.dropItem(world, Items.IRON_CHAIN);
                     }
                     parent.setLinkedChild(null);
@@ -66,20 +66,20 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
             {
                 BlockPos pos = this.minecart.getRailOrMinecartPos();
                 BlockState blockState = this.getWorld().getBlockState(pos);
-                if(blockState.isIn(RailwaysBlocks.Tags.CROSS_RAIL)) {
-                    RailShape shape = blockState.get(Properties.STRAIGHT_RAIL_SHAPE);
-                    Direction direction = Direction.getFacing(getVelocity().getHorizontal());
+                if(blockState.is(RailwaysBlocks.Tags.CROSS_RAIL)) {
+                    RailShape shape = blockState.getValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT);
+                    Direction direction = Direction.getNearest(getVelocity().getHorizontal());
                     if(getVelocity().horizontalLength() > 0) {
                         if(shape == RailShape.NORTH_SOUTH && (direction == Direction.EAST || direction == Direction.WEST)) {
-                            getWorld().setBlockState(pos, blockState.with(Properties.STRAIGHT_RAIL_SHAPE, RailShape.EAST_WEST));
+                            getWorld().setBlockState(pos, blockState.setValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT, RailShape.EAST_WEST));
                         } else if(shape == RailShape.EAST_WEST && (direction == Direction.NORTH || direction == Direction.SOUTH)) {
-                            getWorld().setBlockState(pos, blockState.with(Properties.STRAIGHT_RAIL_SHAPE, RailShape.NORTH_SOUTH));
+                            getWorld().setBlockState(pos, blockState.setValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT, RailShape.NORTH_SOUTH));
                         }
                     }
                 }
                 prevVel = getVelocity();
                 if (this.minecart.isFirstUpdate()) {
-                    this.minecart.setOnRail(AbstractRailBlock.isRail(blockState));
+                    this.minecart.setOnRail(BaseRailBlock.isRail(blockState));
                     this.adjustToRail(pos, blockState, true);
                 }
 
@@ -88,7 +88,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
             }
         } else {
             this.tickClient();
-            boolean bl = AbstractRailBlock.isRail(this.getWorld().getBlockState(this.minecart.getRailOrMinecartPos()));
+            boolean bl = BaseRailBlock.isRail(this.getWorld().getBlockState(this.minecart.getRailOrMinecartPos()));
             this.minecart.setOnRail(bl);
         }
 
@@ -103,7 +103,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
     }*/
 
     @Override
-    public double getMaxSpeed(ServerWorld world) {
+    public double getMaxSpeed(ServerLevel world) {
         double d = super.getMaxSpeed(world);
         return d * (isMinecartOnPoweredCopperRail(minecart) ? 4 : 1);
     }
@@ -112,31 +112,31 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
     public double getSpeedRetention() {
         return isMinecartOnPoweredCopperRail(minecart) ? 1 : super.getSpeedRetention();
     }
-    public static boolean isMinecartOnPoweredCopperRail(AbstractMinecartEntity minecart){
+    public static boolean isMinecartOnPoweredCopperRail(AbstractMinecart minecart){
         BlockPos blockPos = minecart.getRailOrMinecartPos();
-        BlockState blockState = minecart.getEntityWorld().getBlockState(blockPos);
-        return blockState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) && blockState.get(Properties.POWERED);
+        BlockState blockState = minecart.getCommandSenderWorld().getBlockState(blockPos);
+        return blockState.is(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) && blockState.getValue(BlockStateProperties.POWERED);
     }
-    protected Vec3d decelerateFromPoweredRail(Vec3d velocity, BlockState railState) {
-        if ((railState.isOf(Blocks.POWERED_RAIL) || railState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) || railState.isOf(RailwaysBlocks.HALT_RAIL)) && !railState.get(PoweredRailBlock.POWERED) && getLinkedParent().isEmpty()) {
-            return velocity.length() < 0.03 ? Vec3d.ZERO : velocity.multiply(0.5);
+    protected Vec3 decelerateFromPoweredRail(Vec3 velocity, BlockState railState) {
+        if ((railState.is(Blocks.POWERED_RAIL) || railState.is(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL) || railState.is(RailwaysBlocks.HALT_RAIL)) && !railState.getValue(PoweredRailBlock.POWERED) && getLinkedParent().isEmpty()) {
+            return velocity.length() < 0.03 ? Vec3.ZERO : velocity.scale(0.5);
         } else {
             return velocity;
         }
     }
     @Override
-    protected Vec3d accelerateFromPoweredRail(Vec3d velocity, BlockPos railPos, BlockState railState) {
-        if ((railState.isOf(Blocks.POWERED_RAIL) || railState.isIn(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL)) && railState.get(PoweredRailBlock.POWERED)) {
+    protected Vec3 accelerateFromPoweredRail(Vec3 velocity, BlockPos railPos, BlockState railState) {
+        if ((railState.is(Blocks.POWERED_RAIL) || railState.is(RailwaysBlocks.Tags.POWERED_HIGH_SPEED_RAIL)) && railState.getValue(PoweredRailBlock.POWERED)) {
             if (velocity.length() > 0.01) {
-                return velocity.normalize().multiply(velocity.length() + 0.06);
+                return velocity.normalize().scale(velocity.length() + 0.06);
             } else {
-                Vec3d vec3d = this.minecart.getLaunchDirection(railPos);
-                return vec3d.lengthSquared() <= 0.0 ? velocity : vec3d.multiply(velocity.length() + 0.2);
+                Vec3 vec3d = this.minecart.getLaunchDirection(railPos);
+                return vec3d.lengthSqr() <= 0.0 ? velocity : vec3d.scale(velocity.length() + 0.2);
             }
-        } else if(railState.isOf(RailwaysBlocks.HALT_RAIL) && railState.get(PoweredRailBlock.POWERED)) {
+        } else if(railState.is(RailwaysBlocks.HALT_RAIL) && railState.getValue(PoweredRailBlock.POWERED)) {
             if(velocity.length() < 0.01) {
-                Vec3d vec3d = HaltRailBlock.getFacingDirection(railState).getDoubleVector();
-                return vec3d.lengthSquared() <= 0.0 ? velocity : vec3d.multiply(velocity.length() + 0.2);
+                Vec3 vec3d = HaltRailBlock.getFacingDirection(railState).getDoubleVector();
+                return vec3d.lengthSqr() <= 0.0 ? velocity : vec3d.scale(velocity.length() + 0.2);
             }
         }
         return velocity;
@@ -169,7 +169,7 @@ public class RailwaysMinecartController extends ExperimentalMinecartController i
     }
 
     @Override
-    public AbstractMinecartEntity asEntity() {
+    public AbstractMinecart asEntity() {
         return minecart;
     }
 }

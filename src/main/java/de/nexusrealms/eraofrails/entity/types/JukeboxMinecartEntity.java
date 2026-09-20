@@ -4,37 +4,39 @@ import com.google.common.annotations.VisibleForTesting;
 import de.nexusrealms.eraofrails.entity.ComparatorOutputtingMinecart;
 import de.nexusrealms.eraofrails.item.RailwaysItems;
 import de.nexusrealms.eraofrails.network.CartJukeboxSongPacket;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.jukebox.JukeboxSong;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.JukeboxSong;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class JukeboxMinecartEntity extends AbstractMinecartEntity implements ComparatorOutputtingMinecart {
-    public JukeboxMinecartEntity(EntityType<?> entityType, World world) {
+public class JukeboxMinecartEntity extends AbstractMinecart implements ComparatorOutputtingMinecart {
+    public JukeboxMinecartEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
     private ItemStack recordStack = ItemStack.EMPTY;
@@ -44,26 +46,26 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
         return this.manager;
     }
     @Override
-    public BlockState getDefaultContainedBlock() {
-        return Blocks.JUKEBOX.getDefaultState();
+    public BlockState getDefaultDisplayBlockState() {
+        return Blocks.JUKEBOX.defaultBlockState();
     }
     @Override
-    public ActionResult interact(PlayerEntity player, Hand hand) {
-        if(hand == Hand.MAIN_HAND){
-            ItemStack stack = player.getStackInHand(hand);
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        if(hand == InteractionHand.MAIN_HAND){
+            ItemStack stack = player.getItemInHand(hand);
             boolean dropped = dropRecord();
             if(isValid(stack)){
                 setStack(stack);
-                player.setStackInHand(hand, ItemStack.EMPTY);
-                return ActionResult.SUCCESS;
+                player.setItemInHand(hand, ItemStack.EMPTY);
+                return InteractionResult.SUCCESS;
             }
-            return dropped ? ActionResult.SUCCESS : ActionResult.FAIL;
+            return dropped ? InteractionResult.SUCCESS : InteractionResult.FAIL;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
     @Override
-    public void killAndDropSelf(ServerWorld world, DamageSource damageSource) {
-        super.killAndDropSelf(world, damageSource);
+    public void destroy(DamageSource damageSource) {
+        super.destroy(damageSource);
         this.dropRecord();
     }
 
@@ -74,30 +76,29 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     }
 
     @Override
-    public void kill(ServerWorld world) {
-        super.kill(world);
+    public void kill() {
+        super.kill();
         manager.stopPlaying();
     }
 
-
     @Override
-    public void onActivatorRail(ServerWorld serverWorld, int y, int z, int i, boolean powered) {
+    public void activateMinecart(int x, int y, int z, boolean powered) {
         if(powered){
             dropRecord();
-        }
-    }
+        }    }
+
 
     public boolean dropRecord() {
-        if (!this.getEntityWorld().isClient()) {
-            BlockPos blockPos = this.getBlockPos();
+        if (!this.getCommandSenderWorld().isClientSide()) {
+            BlockPos blockPos = this.blockPosition();
             ItemStack itemStack = this.getRecordStack();
             if (!itemStack.isEmpty()) {
                 this.setStack(ItemStack.EMPTY);
-                Vec3d vec3d = Vec3d.add(blockPos, 0.5, 1.01, 0.5).addRandom(this.getEntityWorld().getRandom(), 0.7F);
+                Vec3 vec3d = Vec3.atLowerCornerWithOffset(blockPos, 0.5, 1.01, 0.5).offsetRandom(this.getCommandSenderWorld().getRandom(), 0.7F);
                 ItemStack itemStack2 = itemStack.copy();
-                ItemEntity itemEntity = new ItemEntity(this.getEntityWorld(), vec3d.getX(), vec3d.getY(), vec3d.getZ(), itemStack2);
-                itemEntity.setToDefaultPickupDelay();
-                this.getEntityWorld().spawnEntity(itemEntity);
+                ItemEntity itemEntity = new ItemEntity(this.getCommandSenderWorld(), vec3d.x(), vec3d.y(), vec3d.z(), itemStack2);
+                itemEntity.setDefaultPickUpDelay();
+                this.getCommandSenderWorld().addFreshEntity(itemEntity);
                 return true;
             }
         }
@@ -111,38 +112,40 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     }
 
     public int getComparatorOutput() {
-        return JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), this.recordStack)
-                .map(RegistryEntry::value)
+        return JukeboxSong.fromStack(this.getCommandSenderWorld().registryAccess(), this.recordStack)
+                .map(Holder::value)
                 .map(JukeboxSong::comparatorOutput)
                 .orElse(0);
     }
 
     @Override
-    public void readData(ReadView view) {
-        super.readData(view);
-        ItemStack itemStack = view.read("recordItem", ItemStack.CODEC).orElse(ItemStack.EMPTY);
-        if (!this.recordStack.isEmpty() && !ItemStack.areItemsAndComponentsEqual(itemStack, this.recordStack)) {
-            this.manager.stopPlaying();
+    protected void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
+        if (nbt.contains("RecordItem", Tag.TAG_COMPOUND)) {
+            this.recordStack = (ItemStack) ItemStack.parse(registryAccess(), nbt.getCompound("RecordItem")).orElse(ItemStack.EMPTY);
+        } else {
+            this.recordStack = ItemStack.EMPTY;
         }
 
-        this.recordStack = itemStack;
-        view.getOptionalLong("songTicks")
-                .ifPresent(
-                        ticksSinceSongStarted -> JukeboxSong.getSongEntryFromStack(view.getRegistries(), this.recordStack)
-                                .ifPresent(song -> this.manager.setValues(song, ticksSinceSongStarted))
-                );
+        if (nbt.contains("ticks_since_song_started", Tag.TAG_LONG)) {
+            JukeboxSong.fromStack(registryAccess(), this.recordStack).ifPresent(song -> this.manager.setValues(song, nbt.getLong("ticks_since_song_started")));
+        }
     }
 
     @Override
-    public void writeData(WriteView view) {
-        super.writeData(view);
-        if (!this.getRecordStack().isEmpty()) {
-            view.put("recordItem", ItemStack.CODEC, this.getRecordStack());
+    protected void addAdditionalSaveData(CompoundTag nbt) {
+        if (!recordStack.isEmpty()) {
+            nbt.put("RecordItem", this.recordStack.save(registryAccess()));
         }
 
         if (this.manager.getSong() != null) {
-            view.putLong("songTicks", this.manager.getTicksSinceSongStarted());
+            nbt.putLong("ticks_since_song_started", this.manager.getTicksSinceSongStarted());
         }
+    }
+    //TODO Custom cart type enum
+    @Override
+    public Type getMinecartType() {
+        return Type.SPAWNER;
     }
 
     public ItemStack getRecordStack() {
@@ -152,7 +155,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     public void setStack(ItemStack stack) {
         this.recordStack = stack;
         boolean bl = !this.recordStack.isEmpty();
-        Optional<RegistryEntry<JukeboxSong>> optional = JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), this.recordStack);
+        Optional<Holder<JukeboxSong>> optional = JukeboxSong.fromStack(this.getCommandSenderWorld().registryAccess(), this.recordStack);
         //this.onRecordStackChanged(bl);
         if (bl && optional.isPresent()) {
             this.manager.startPlaying(optional.get());
@@ -162,27 +165,27 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
     }
 
     public boolean isValid(ItemStack stack) {
-        return stack.contains(DataComponentTypes.JUKEBOX_PLAYABLE) && this.getRecordStack().isEmpty();
+        return stack.has(DataComponents.JUKEBOX_PLAYABLE) && this.getRecordStack().isEmpty();
     }
 
 
     @VisibleForTesting
     public void setDisc(ItemStack stack) {
         this.recordStack = stack;
-        JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), stack).ifPresent(song -> this.manager.setValues(song, 0L));
+        JukeboxSong.fromStack(this.getCommandSenderWorld().registryAccess(), stack).ifPresent(song -> this.manager.setValues(song, 0L));
     }
 
     @VisibleForTesting
     public void reloadDisc() {
-        JukeboxSong.getSongEntryFromStack(this.getEntityWorld().getRegistryManager(), this.getRecordStack()).ifPresent(this.manager::startPlaying);
+        JukeboxSong.fromStack(this.getCommandSenderWorld().registryAccess(), this.getRecordStack()).ifPresent(this.manager::startPlaying);
     }
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(asItem());
+    public ItemStack getPickResult() {
+        return new ItemStack(getDropItem());
     }
 
     @Override
-    protected Item asItem() {
+    protected Item getDropItem() {
         return RailwaysItems.JUKEBOX_MINECART;
     }
 
@@ -191,7 +194,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
         public static final int TICKS_PER_SECOND = 20;
         private long songTicks;
         @Nullable
-        private RegistryEntry<JukeboxSong> song;
+        private Holder<JukeboxSong> song;
         @Nullable
         private BlockPos startedPlayingPos;
 
@@ -208,19 +211,19 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
             return this.songTicks;
         }
 
-        public void setValues(RegistryEntry<JukeboxSong> song, long ticksPlaying) {
-            if (!song.value().shouldStopPlaying(ticksPlaying)) {
+        public void setValues(Holder<JukeboxSong> song, long ticksPlaying) {
+            if (!song.value().hasFinished(ticksPlaying)) {
                 this.song = song;
                 this.songTicks = ticksPlaying;
             }
         }
 
-        public void startPlaying(RegistryEntry<JukeboxSong> song) {
+        public void startPlaying(Holder<JukeboxSong> song) {
             this.song = song;
-            startedPlayingPos = JukeboxMinecartEntity.super.getBlockPos();
+            startedPlayingPos = JukeboxMinecartEntity.super.blockPosition();
             this.songTicks = 0L;
-            int i = JukeboxMinecartEntity.super.getRegistryManager().getOrThrow(RegistryKeys.JUKEBOX_SONG).getRawId(this.song.value());
-            if(!getWorld().isClient()) getWorld().getServer().getPlayerManager().sendToAround(null, getX(), getY(), getZ(), 64f, getWorld().getRegistryKey(), new CustomPayloadS2CPacket(new CartJukeboxSongPacket(getId(), i, false)));
+            int i = JukeboxMinecartEntity.super.registryAccess().registryOrThrow(Registries.JUKEBOX_SONG).getId(this.song.value());
+            if(!getWorld().isClientSide()) getWorld().getServer().getPlayerList().broadcast(null, getX(), getY(), getZ(), 64f, getWorld().dimension(), new ClientboundCustomPayloadPacket(new CartJukeboxSongPacket(getId(), i, false)));
             //JukeboxMinecartEntity.super.not;
         }
 
@@ -228,9 +231,9 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
             if (this.song != null) {
                 this.song = null;
                 this.songTicks = 0L;
-                getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_STOP_PLAY, getEntityPos());
-                if(!getWorld().isClient()){
-                    getWorld().getServer().getPlayerManager().sendToAround(null, getX(), getY(), getZ(), 64f, getWorld().getRegistryKey(), new CustomPayloadS2CPacket(new CartJukeboxSongPacket(getId(), 0, true)));
+                getWorld().gameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_STOP_PLAY, position());
+                if(!getWorld().isClientSide()){
+                    getWorld().getServer().getPlayerList().broadcast(null, getX(), getY(), getZ(), 64f, getWorld().dimension(), new ClientboundCustomPayloadPacket(new CartJukeboxSongPacket(getId(), 0, true)));
                 }
                 //this.changeNotifier.notifyChange();
             }
@@ -238,30 +241,30 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Com
 
         public void tick() {
             if (this.song != null) {
-                if (this.song.value().shouldStopPlaying(this.songTicks)) {
+                if (this.song.value().hasFinished(this.songTicks)) {
                     this.stopPlaying();
                 } else {
                     if (this.hasSecondPassed()) {
-                        getWorld().emitGameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_PLAY, JukeboxMinecartEntity.super.getEntityPos());
-                        spawnNoteParticles(getWorld(), JukeboxMinecartEntity.super.getEntityPos());
+                        getWorld().gameEvent(JukeboxMinecartEntity.this, GameEvent.JUKEBOX_PLAY, JukeboxMinecartEntity.super.position());
+                        spawnNoteParticles(getWorld(), JukeboxMinecartEntity.super.position());
                     }
 
                     this.songTicks++;
                 }
             }
         }
-        private World getWorld(){
-            return JukeboxMinecartEntity.super.getEntityWorld();
+        private Level getWorld(){
+            return JukeboxMinecartEntity.super.getCommandSenderWorld();
         }
         private boolean hasSecondPassed() {
             return this.songTicks % 20L == 0L;
         }
 
-        private static void spawnNoteParticles(WorldAccess world, Vec3d pos) {
-            if (world instanceof ServerWorld serverWorld) {
-                Vec3d vec3d = pos.add(0.0, 1.2F, 0.0);
+        private static void spawnNoteParticles(LevelAccessor world, Vec3 pos) {
+            if (world instanceof ServerLevel serverWorld) {
+                Vec3 vec3d = pos.add(0.0, 1.2F, 0.0);
                 float f = world.getRandom().nextInt(4) / 24.0F;
-                serverWorld.spawnParticles(ParticleTypes.NOTE, vec3d.getX(), vec3d.getY(), vec3d.getZ(), 0, f, 0.0, 0.0, 1.0);
+                serverWorld.sendParticles(ParticleTypes.NOTE, vec3d.x(), vec3d.y(), vec3d.z(), 0, f, 0.0, 0.0, 1.0);
             }
         }
     }

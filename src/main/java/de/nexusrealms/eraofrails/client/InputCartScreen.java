@@ -4,32 +4,30 @@ import de.nexusrealms.eraofrails.EraOfRails;
 import de.nexusrealms.eraofrails.entity.types.InputMinecartEntity;
 import de.nexusrealms.eraofrails.network.SetInputCartDataPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
 
 public class InputCartScreen extends Screen {
-    private static final Identifier BACKGROUND = EraOfRails.id("textures/gui/input_cart_screen_background.png");
-    private static final Identifier DISABLED = EraOfRails.id("textures/gui/input_switch_inactive.png");
-    private static final Identifier DISABLED_ON = EraOfRails.id("textures/gui/input_switch_inactive_on.png");
-    private static final Identifier SWITCH = EraOfRails.id("textures/gui/input_switch.png");
-    private static final Identifier SWITCH_ON = EraOfRails.id("textures/gui/input_switch_on.png");
-    private static final Identifier SWITCH_NEXT = EraOfRails.id("textures/gui/input_switch_next.png");
-    private static final Identifier SWITCH_ON_NEXT = EraOfRails.id("textures/gui/input_switch_on_next.png");
+    private static final ResourceLocation BACKGROUND = EraOfRails.id("textures/gui/input_cart_screen_background.png");
+    private static final ResourceLocation DISABLED = EraOfRails.id("textures/gui/input_switch_inactive.png");
+    private static final ResourceLocation DISABLED_ON = EraOfRails.id("textures/gui/input_switch_inactive_on.png");
+    private static final ResourceLocation SWITCH = EraOfRails.id("textures/gui/input_switch.png");
+    private static final ResourceLocation SWITCH_ON = EraOfRails.id("textures/gui/input_switch_on.png");
+    private static final ResourceLocation SWITCH_NEXT = EraOfRails.id("textures/gui/input_switch_next.png");
+    private static final ResourceLocation SWITCH_ON_NEXT = EraOfRails.id("textures/gui/input_switch_on_next.png");
     private int originX, originY, switchOriginX, switchOriginY;
     private final InputMinecartEntity minecart;
 
     public InputCartScreen(InputMinecartEntity minecart) {
-        super(Text.translatable(Blocks.STRUCTURE_BLOCK.getTranslationKey()));
+        super(Component.translatable(Blocks.STRUCTURE_BLOCK.getDescriptionId()));
         this.minecart = minecart;
 
     }
@@ -43,25 +41,25 @@ public class InputCartScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+    public void renderBackground(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
         super.renderBackground(context, mouseX, mouseY, deltaTicks);
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, BACKGROUND, originX, originY, 0, 0, 256, 256, 256, 256);
+        context.blit(BACKGROUND, originX, originY, 0, 0, 256, 256, 256, 256);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
         super.render(context, mouseX, mouseY, deltaTicks);
         for (int i = 0; i < 64; i++) {
             renderSwitch(context, i);
         }
     }
-    public void renderSwitch(DrawContext context, int i){
+    public void renderSwitch(GuiGraphics context, int i){
         int x = switchOriginX + (26 * (i % 8));
         int y = switchOriginY + (26 * (i / 8));
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, getSwitchTexture(i), x, y, 0, 0, 26, 26, 26, 26);
+        context.blit(getSwitchTexture(i), x, y, 0, 0, 26, 26, 26, 26);
     }
-    private Identifier getSwitchTexture(int i){
+    private ResourceLocation getSwitchTexture(int i){
         boolean isDisabled = i >= minecart.getActiveInsts();
         boolean isActive = ((minecart.getSequence() >> i) & 1) != 0;
         if(isDisabled){
@@ -72,16 +70,11 @@ public class InputCartScreen extends Screen {
         }
     }
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
-    @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
-        return mouseClicked(click.x(), click.y(), click.button());
-    }
-
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if(isWithinSwitchBounds(mouseX, mouseY)){
             double xOffset = mouseX - switchOriginX;
             double yOffset = mouseY - switchOriginY;
@@ -95,7 +88,7 @@ public class InputCartScreen extends Screen {
                 int newActiveInsts = i + 1;
                 ClientPlayNetworking.send(new SetInputCartDataPacket(minecart.getId(), Optional.empty(), Optional.of(newActiveInsts)));
             }
-            client.player.playSound(SoundEvents.BLOCK_LEVER_CLICK, 1f, 1f);
+            minecraft.player.playSound(SoundEvents.LEVER_CLICK, 1f, 1f);
 
         }
         return false;

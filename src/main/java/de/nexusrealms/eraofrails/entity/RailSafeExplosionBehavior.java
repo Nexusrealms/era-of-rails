@@ -1,21 +1,21 @@
 package de.nexusrealms.eraofrails.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.explosion.Explosion;
-import net.minecraft.world.explosion.ExplosionBehavior;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 
-public class RailSafeExplosionBehavior extends ExplosionBehavior {
+public class RailSafeExplosionBehavior extends ExplosionDamageCalculator {
     @Override
-    public boolean canDestroyBlock(Explosion explosion, BlockView world, BlockPos pos, BlockState state, float power) {
-        return super.canDestroyBlock(explosion, world, pos, state, power) && !isRailOrRailSupport(world, pos, state);
+    public boolean shouldBlockExplode(Explosion explosion, BlockGetter world, BlockPos pos, BlockState state, float power) {
+        return super.shouldBlockExplode(explosion, world, pos, state, power) && !isRailOrRailSupport(world, pos, state);
     }
 
-    private boolean isRailOrRailSupport(BlockView world, BlockPos pos, BlockState state){
-        if(state.isIn(BlockTags.RAILS)){
+    private boolean isRailOrRailSupport(BlockGetter world, BlockPos pos, BlockState state){
+        if(state.is(BlockTags.RAILS)){
             return true;
-        } else return world.getBlockState(pos.up()).isIn(BlockTags.RAILS);
+        } else return world.getBlockState(pos.above()).is(BlockTags.RAILS);
     }
 }
