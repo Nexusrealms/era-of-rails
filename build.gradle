@@ -29,6 +29,10 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven {
+		name "nexusrealmsReleases"
+		url "https://maven.riftrealms.de/releases"
+	}
 }
 
 fabricApi {
@@ -48,6 +52,7 @@ dependencies {
 	//modLocalRuntime "maven.modrinth:cubes-without-borders:3.0.0+1.21.5"
 	//modLocalRuntime "maven.modrinth:e4mc:5.4.1-fabric"
 	//Its in the mods folder now not sure why it works
+	modImplementation "com.notunanancyowen:minecart-backport:1.2.2"
 
 
 }

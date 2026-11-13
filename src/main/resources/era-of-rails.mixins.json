@@ -5,9 +5,10 @@
   "mixins": [
     "DetectorRailMixin",
     "DispenserBlockEntityMixin",
-    "RailStateMixin",
+    "MinecartControllerMixin",
     "MinecartSpawnerMixin",
-    "MinecartTNTMixin"
+    "MinecartTNTMixin",
+    "RailStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1
