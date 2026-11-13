@@ -1,5 +1,6 @@
 package de.nexusrealms.eraofrails.item;
 
+import com.notunanancyowen.minecart.dataholders.ImprovedMinecart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
@@ -84,6 +85,15 @@ public class BetterMinecartItem extends Item {
             abstractMinecart.xo = x;
             abstractMinecart.yo = y;
             abstractMinecart.zo = z;
+            if(abstractMinecart instanceof ImprovedMinecart im){
+                BlockPos blockPos = im.getRailOrMinecartPos();
+                BlockState blockState = level.getBlockState(blockPos);
+                abstractMinecart.xOld = x;
+                abstractMinecart.yOld = y;
+                abstractMinecart.zOld = z;
+                if(im.getController() != null && im.getController().minecart == null) im.getController().minecart = abstractMinecart;
+                im.getController().adjustToRail(blockPos, blockState, true);
+            }
             return abstractMinecart;
         };
         DispenserBlock.registerBehavior(this, DISPENSE_ITEM_BEHAVIOR);
