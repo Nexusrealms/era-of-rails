@@ -5,6 +5,7 @@ import de.nexusrealms.eraofrails.entity.RailwaysEntities;
 import de.nexusrealms.eraofrails.item.RailwaysItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
@@ -23,6 +24,8 @@ public class TagGen {
         protected void addTags(HolderLookup.Provider wrapperLookup) {
             getOrCreateTagBuilder(RailwaysItems.Tags.LINK_CARTS)
                     .add(RailwaysItems.CART_LINKING_TOOL, Items.CHAIN);
+            getOrCreateTagBuilder(ItemTags.RAILS)
+                    .add(RailwaysBlocks.COPPER_RAIL.asItem(), RailwaysBlocks.HALT_RAIL.asItem(), RailwaysBlocks.INPUT_RAIL.asItem(), RailwaysBlocks.CROSS_RAIL.asItem(), RailwaysBlocks.SWITCH_RAIL.asItem());
         }
     }
 
